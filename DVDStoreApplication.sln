@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DVDStore.ConsoleApp", "DVDS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DVDStore.DAL", "DVDStore.DAL\DVDStore.DAL.csproj", "{B4CF170D-C1F0-49BC-8E2E-6C18BC432E53}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DVDStore.Web", "DVDStore.Web\DVDStore.Web.csproj", "{0AC59FD3-0A6F-4082-892D-355B8558496D}"
+EndProject
 Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -47,5 +49,17 @@ Global
 		{B4CF170D-C1F0-49BC-8E2E-6C18BC432E53}.Release|x64.Build.0 = Release|Any CPU
 		{B4CF170D-C1F0-49BC-8E2E-6C18BC432E53}.Release|x86.ActiveCfg = Release|Any CPU
 		{B4CF170D-C1F0-49BC-8E2E-6C18BC432E53}.Release|x86.Build.0 = Release|Any CPU
+		{0AC59FD3-0A6F-4082-892D-355B8558496D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AC59FD3-0A6F-4082-892D-355B8558496D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AC59FD3-0A6F-4082-892D-355B8558496D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0AC59FD3-0A6F-4082-892D-355B8558496D}.Debug|x64.Build.0 = Debug|Any CPU
+		{0AC59FD3-0A6F-4082-892D-355B8558496D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0AC59FD3-0A6F-4082-892D-355B8558496D}.Debug|x86.Build.0 = Debug|Any CPU
+		{0AC59FD3-0A6F-4082-892D-355B8558496D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AC59FD3-0A6F-4082-892D-355B8558496D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AC59FD3-0A6F-4082-892D-355B8558496D}.Release|x64.ActiveCfg = Release|Any CPU
+		{0AC59FD3-0A6F-4082-892D-355B8558496D}.Release|x64.Build.0 = Release|Any CPU
+		{0AC59FD3-0A6F-4082-892D-355B8558496D}.Release|x86.ActiveCfg = Release|Any CPU
+		{0AC59FD3-0A6F-4082-892D-355B8558496D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
