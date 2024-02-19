@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ConsoleAppPrototype": {
+      "commandName": "Project",
+      "commandLineArgs": "-param1 Value 1 with space -param2 Value2WithoutSpace -param3 Value 3 with space again -param4 false"
+    }
+  }
+}
