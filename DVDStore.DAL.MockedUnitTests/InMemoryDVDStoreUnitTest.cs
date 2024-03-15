@@ -159,6 +159,10 @@ namespace DVDStore.DAL.MockedUnitTests
                 Assert.AreEqual(film.Rating, retrievedFilm.Rating, "Film rating is not as expected.");
                 Assert.AreEqual(film.Specialfeatures, retrievedFilm.Specialfeatures, "Film special features are not as expected.");
                 Assert.AreEqual(film.Lastupdate, retrievedFilm.Lastupdate, "Film last update is not as expected.");
+
+                // Count assertion
+                var filmCount = context.Films.Count();
+                Assert.AreEqual(11, filmCount, "Film count is not as expected.");
             }
         }
 
@@ -259,7 +263,7 @@ namespace DVDStore.DAL.MockedUnitTests
             // Arrange
             using (var context = new DVDStoreDbContext(_options))
             {
-                var customer = new Customer { Customerid = 11, Storeid = 1, Firstname = "John", Lastname = "Doe", Email = "john.doe@example.com", Addressid = 1, Active = "Y", Createdate = DateTime.Now, Lastupdate = DateTime.Now };
+                var customer = new Customer { Customerid = 11, Storeid = 1, Firstname = "Cindi", Lastname = "Garlit", Email = "Cindi.Garlit@example.com", Addressid = 1, Active = "Y", Createdate = new DateTime(2006, 02, 14, 22, 04, 36), Lastupdate = new DateTime(2006, 02, 15, 04, 57, 20) };
 
                 // Act
                 context.Customers.Add(customer);
@@ -267,8 +271,22 @@ namespace DVDStore.DAL.MockedUnitTests
 
                 // Assert
                 var retrievedCustomer = context.Customers.FirstOrDefault(c => c.Customerid == customer.Customerid);
-                Assert.IsNotNull(retrievedCustomer);
-                // Add additional assertions as needed
+                Assert.IsNotNull(retrievedCustomer, "Retrieved customer is not null.");
+
+                // Additional assertions for expected values
+                Assert.AreEqual(customer.Customerid, retrievedCustomer.Customerid, "Customer ID is not as expected.");
+                Assert.AreEqual(customer.Storeid, retrievedCustomer.Storeid, "Store ID is not as expected.");
+                Assert.AreEqual(customer.Firstname, retrievedCustomer.Firstname, "First name is not as expected.");
+                Assert.AreEqual(customer.Lastname, retrievedCustomer.Lastname, "Last name is not as expected.");
+                Assert.AreEqual(customer.Email, retrievedCustomer.Email, "Email is not as expected.");
+                Assert.AreEqual(customer.Addressid, retrievedCustomer.Addressid, "Address ID is not as expected.");
+                Assert.AreEqual(customer.Active, retrievedCustomer.Active, "Active status is not as expected.");
+                Assert.AreEqual(customer.Createdate, retrievedCustomer.Createdate, "Create date is not as expected.");
+                Assert.AreEqual(customer.Lastupdate, retrievedCustomer.Lastupdate, "Last update is not as expected.");
+
+                // Count assertion
+                var customerCount = context.Customers.Count();
+                Assert.AreEqual(11, customerCount, "Customer count is not as expected.");
             }
         }
 
