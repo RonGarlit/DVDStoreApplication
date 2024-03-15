@@ -16,10 +16,6 @@ using System.Threading.Tasks;
 
 namespace DVDStore.DAL
 {
-    // ****************************************************************************************************
-    // This is not a commercial licence, therefore only a few tables/views/stored procedures are generated.
-    // ****************************************************************************************************
-
     public partial interface IDVDStoreDbContext : IDisposable
     {
         DbSet<Actor> Actors { get; set; } // actor
