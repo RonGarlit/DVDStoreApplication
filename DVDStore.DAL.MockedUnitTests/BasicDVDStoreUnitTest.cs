@@ -1,7 +1,35 @@
 // Ensure you are using the correct namespace for EF Core's DbSet
 using Microsoft.EntityFrameworkCore;
 using Moq;
-
+/**********************************************************************************
+**
+**  DVDStore.DAL.MockedUnitTests v1.0
+**
+**  Copyright 2024
+**  Developed by:
+**     Ronald Garlit.
+**
+**  This software is released into the public domain for training purposes and use 
+**  for presentations to members of the Southwest Florida Coders User group.
+**
+**  Use is subject to license terms.
+***********************************************************************************
+**
+**  FileName: BasicDVDStoreUnitTest.cs (DVDStore.DAL.MockedUnitTests)
+**  Version: 1.0
+**  Author: Ronald Garlit
+**
+**  Description: 
+**  This class was my starter class during development and uses MOQ for Mocking.
+**  
+**  
+**
+**  Change History
+**
+**  WHEN			WHO        WHAT
+**---------------------------------------------------------------------------------
+**  2024-03-10		RGARLIT     STARTED DEVELOPMENT 
+***********************************************************************************/
 namespace DVDStore.DAL.MockedUnitTests
 {
     [TestClass]

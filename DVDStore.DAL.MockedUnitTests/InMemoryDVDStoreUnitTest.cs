@@ -3,14 +3,45 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+/**********************************************************************************
+**
+**  DVDStore.DAL.MockedUnitTests v1.0
+**
+**  Copyright 2024
+**  Developed by:
+**     Ronald Garlit.
+**
+**  This software is released into the public domain for training purposes and use 
+**  for presentations to members of the Southwest Florida Coders User group.
+**
+**  Use is subject to license terms.
+***********************************************************************************
+**
+**  FileName: InMemoryDVDStoreUnitTest.cs (DVDStore.DAL.MockedUnitTests)
+**  Version: 1.0
+**  Author: Ronald Garlit
+**
+**  Description: 
+**  This database provider allows Entity Framework Core to be used with an in-memory 
+**  database. While some users use the in-memory database for testing, this is 
+**  NORMALLY discouraged. Our DAL design and DbContext used in he DVDStore.DAL is 
+**  specifically designed for the way we test allowing for integration with our MVC 
+**  Controllers and other classes.
+**  
+**
+**  Change History
+**
+**  WHEN			WHO        WHAT
+**---------------------------------------------------------------------------------
+**  2024-03-15		RGARLIT     STARTED DEVELOPMENT 
+***********************************************************************************/
 namespace DVDStore.DAL.MockedUnitTests
 {
     [TestClass]
     public class InMemoryDVDStoreUnitTest
     {
         #region Private Fields
-
+        // In-memory database options for the DbContext
         private DbContextOptions<DVDStoreDbContext>? _options;
 
         #endregion Private Fields
@@ -301,13 +332,31 @@ namespace DVDStore.DAL.MockedUnitTests
                 // Act
                 if (customer != null)
                 {
+                    var originalFirstname = customer.Firstname;
                     customer.Firstname = "UpdatedFirstName";
                     context.SaveChanges();
 
                     // Assert
                     var updatedCustomer = context.Customers.Find(customer.Customerid);
-                    Assert.AreEqual("UpdatedFirstName", updatedCustomer?.Firstname);
-                    // Add additional assertions as needed
+                    Assert.IsNotNull(updatedCustomer, "Updated customer is not null.");
+
+                    // Additional assertions for expected values
+                    Assert.AreEqual("UpdatedFirstName", updatedCustomer?.Firstname, "First name is not as expected.");
+
+                    // Check and assert record count
+                    var customerCount = context.Customers.Count();
+                    Assert.AreEqual(10, customerCount, "Customer count is not as expected.");
+
+                    // Find and assert values for specific customer
+                    var specificCustomer = context.Customers.FirstOrDefault(c => c.Customerid == customer.Customerid);
+                    Assert.IsNotNull(specificCustomer, "Specific customer is found.");
+                    Assert.AreEqual("UpdatedFirstName", specificCustomer?.Firstname, "Specific customer's first name is not as expected.");
+                    Assert.AreEqual(customer.Lastname, specificCustomer?.Lastname, "Specific customer's last name is not as expected.");
+                    Assert.AreEqual(customer.Email, specificCustomer?.Email, "Specific customer's email is not as expected.");
+                    Assert.AreEqual(customer.Addressid, specificCustomer?.Addressid, "Specific customer's address ID is not as expected.");
+                    Assert.AreEqual(customer.Active, specificCustomer?.Active, "Specific customer's active status is not as expected.");
+                    Assert.AreEqual(customer.Createdate, specificCustomer?.Createdate, "Specific customer's create date is not as expected.");
+                    Assert.AreEqual(customer.Lastupdate, specificCustomer?.Lastupdate, "Specific customer's last update is not as expected.");
                 }
                 else
                 {
@@ -332,8 +381,15 @@ namespace DVDStore.DAL.MockedUnitTests
 
                     // Assert
                     var deletedCustomer = context.Customers.Find(customer.Customerid);
-                    Assert.IsNull(deletedCustomer);
-                    // Add additional assertions as needed
+                    Assert.IsNull(deletedCustomer, "Deleted customer is null.");
+
+                    // Check and assert record count
+                    var customerCount = context.Customers.Count();
+                    Assert.AreEqual(9, customerCount, "Customer count is not as expected.");
+
+                    // Find and assert values for specific customer
+                    var specificCustomer = context.Customers.FirstOrDefault(c => c.Customerid == customer.Customerid);
+                    Assert.IsNull(specificCustomer, "Specific customer is not found.");
                 }
                 else
                 {
@@ -352,16 +408,38 @@ namespace DVDStore.DAL.MockedUnitTests
                 var customers = context.Customers.ToList();
 
                 // Assert
-                Assert.IsNotNull(customers);
-                // Add additional assertions as needed
+                Assert.IsNotNull(customers, "Customers list is not null.");
+
+                // Add additional assertions for record count
+                Assert.AreEqual(10, customers.Count, "Customer count is not as expected.");
+
+                // Find and assert specific customer
+                var specificCustomer = customers.FirstOrDefault(c => c.Customerid == 8);
+                Assert.IsNotNull(specificCustomer, "Customer with ID 8 is found.");
+
+                // Assert specific values in the customer
+                Assert.AreEqual("SUSAN", specificCustomer?.Firstname, "Customer firstname is not as expected.");
+                Assert.AreEqual("WILSON", specificCustomer?.Lastname, "Customer lastname is not as expected.");
+                Assert.AreEqual("SUSAN.WILSON@DVDStorecustomer.org", specificCustomer?.Email, "Customer email is not as expected.");
+                Assert.AreEqual(2, specificCustomer?.Storeid, "Customer store ID is not as expected.");
+                Assert.AreEqual(12, specificCustomer?.Addressid, "Customer address ID is not as expected.");
+                Assert.AreEqual("Y", specificCustomer?.Active, "Customer active status is not as expected.");
+                Assert.AreEqual(DateTime.Parse("2006-02-14 22:04:36"), specificCustomer?.Createdate, "Customer created date is not as expected.");
+                Assert.AreEqual(DateTime.Parse("2006-02-15 04:57:20"), specificCustomer?.Lastupdate, "Customer last update date is not as expected.");
             }
         }
+
 
         [TestInitialize]
         public void TestInitialize()
         {
+            // Create a new instance of the DbContext options for each test
+            // This ensures that each test has a clean and isolated database to work 
+            // with and avoids any cross-test interference
             _options = new DbContextOptionsBuilder<DVDStoreDbContext>()
-                .UseInMemoryDatabase(databaseName: "Test_DVDStore")
+            // Use the in-memory database for this test and configure it to be created with the default settings
+            // The database is created for each test method and is destroyed when the test method is finished
+                .UseInMemoryDatabase(databaseName: "Test_DVDStore") 
                 .Options;
 
             // Seed the in-memory database with test data
