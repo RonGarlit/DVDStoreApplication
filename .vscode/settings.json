@@ -1,0 +1,4 @@
+{
+    "dotnet.defaultSolution": "ConsoleAppPrototype.sln",
+    "csharp.debug.console": "externalTerminal"
+}

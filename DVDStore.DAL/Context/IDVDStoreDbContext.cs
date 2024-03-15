@@ -14,7 +14,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ReversePOCOTest
+namespace DVDStore.DAL
 {
     // ****************************************************************************************************
     // This is not a commercial licence, therefore only a few tables/views/stored procedures are generated.

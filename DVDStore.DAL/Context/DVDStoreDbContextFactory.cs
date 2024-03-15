@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Design;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ReversePOCOTest
+namespace DVDStore.DAL
 {
     public partial class DVDStoreDbContextFactory : IDesignTimeDbContextFactory<DVDStoreDbContext>
     {

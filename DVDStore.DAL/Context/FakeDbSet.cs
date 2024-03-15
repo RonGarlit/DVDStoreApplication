@@ -21,7 +21,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ReversePOCOTest
+namespace DVDStore.DAL
 {
     // ************************************************************************
     // Fake DbSet

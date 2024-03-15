@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ReversePOCOTest
+namespace DVDStore.DAL
 {
     // payment
     public partial class PaymentMap : IEntityTypeConfiguration<Payment>

@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ReversePOCOTest
+namespace DVDStore.DAL
 {
     // inventory
     public partial class Inventory

@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ReversePOCOTest
+namespace DVDStore.DAL
 {
     // address
     public partial class Address
