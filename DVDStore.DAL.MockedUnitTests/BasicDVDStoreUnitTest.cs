@@ -212,6 +212,13 @@ namespace DVDStore.DAL.MockedUnitTests
             _dvdStoreDbContext = dvdStoreDbContextMock.Object;
         }
 
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            // Set the private field to null
+            _dvdStoreDbContext = null;
+        }
+
         #endregion Public Methods
 
         #region Private Methods

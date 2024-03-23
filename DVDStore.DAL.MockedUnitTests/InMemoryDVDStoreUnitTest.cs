@@ -445,16 +445,22 @@ namespace DVDStore.DAL.MockedUnitTests
             // Seed the in-memory database with test data
             using (var context = new DVDStoreDbContext(_options))
             {
-                // Clear existing data
-                context.Actors.RemoveRange(context.Actors);
-                context.Films.RemoveRange(context.Films);
-                context.Customers.RemoveRange(context.Customers);
-                context.SaveChanges();
-
+              
+                // Add test data to the in-memory database
                 context.Actors.AddRange(GetActorList());
                 context.Films.AddRange(GetFilmList());
                 context.Customers.AddRange(GetCustomerList());
                 context.SaveChanges();
+            }
+        }
+
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            // Clean up the in-memory database after each test
+            using (var context = new DVDStoreDbContext(_options))
+            {
+                context.Database.EnsureDeleted();
             }
         }
 
