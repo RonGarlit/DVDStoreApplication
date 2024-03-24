@@ -1,0 +1,90 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+            "name": ".NET Core Launch (web) - Edge",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/DVDStore.Web.MVC/bin/Debug/net8.0/DVDStore.Web.MVC.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/DVDStore.Web.MVC",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            },
+            "launchBrowser": {
+                "enabled": true,
+                "args": "${auto-detect-url}",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start msedge ${auto-detect-url}"
+                }
+            }
+        },
+        {
+            "name": ".NET Core Launch (web) - Chrome",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/DVDStore.Web.MVC/bin/Debug/net8.0/DVDStore.Web.MVC.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/DVDStore.Web.MVC",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            },
+            "launchBrowser": {
+                "enabled": true,
+                "args": "${auto-detect-url}",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start chrome ${auto-detect-url}"
+                }
+            }
+        },
+        {
+            "name": ".NET Core Launch (web) - Firefox",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/DVDStore.Web.MVC/bin/Debug/net8.0/DVDStore.Web.MVC.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/DVDStore.Web.MVC",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            },
+            "launchBrowser": {
+                "enabled": true,
+                "args": "${auto-detect-url}",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start firefox ${auto-detect-url}"
+                }
+            }
+        }
+    ]
+}
