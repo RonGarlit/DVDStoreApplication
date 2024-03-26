@@ -1,4 +1,30 @@
 {
     "dotnet.defaultSolution": "ConsoleAppPrototype.sln",
-    "csharp.debug.console": "externalTerminal"
+    "csharp.debug.console": "externalTerminal",
+    "cSpell.words": [
+        "Actorid",
+        "Addressid",
+        "Baloon",
+        "Cindi",
+        "Createdate",
+        "Customerid",
+        "Custs",
+        "Filmid",
+        "Firstname",
+        "Garlit",
+        "GOLDFINGER",
+        "GUINESS",
+        "IDVD",
+        "JOHANSSON",
+        "Languageid",
+        "Lastname",
+        "MOSTEL",
+        "Releaseyear",
+        "Rentalduration",
+        "Rentalrate",
+        "Replacementcost",
+        "Specialfeatures",
+        "Storeid",
+        "WAHLBERG"
+    ]
 }
