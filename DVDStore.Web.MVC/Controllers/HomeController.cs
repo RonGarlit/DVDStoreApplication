@@ -13,15 +13,18 @@ public class HomeController : Controller
     }
     public IActionResult Index()
     {
+        Debug.WriteLine("Entered Index method of HomeController");
         return View();
     }
     public IActionResult Privacy()
     {
+        Debug.WriteLine("Entered Privacy method of HomeController");
         return View();
     }
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
+        Debug.WriteLine("Entered Error method of HomeController");
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

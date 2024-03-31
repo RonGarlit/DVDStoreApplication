@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DVDStore.Web.MVC.Areas.Admin.Controllers
@@ -17,6 +18,7 @@ namespace DVDStore.Web.MVC.Areas.Admin.Controllers
         [Route("Admin/Index")]
         public IActionResult Index()
         {
+            Debug.WriteLine("Entered Index method of AdminController");
             return View();
         }
     }
