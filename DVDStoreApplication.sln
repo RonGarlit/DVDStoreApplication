@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DVDStore.DAL.MockedUnitTest
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DVDStore.Web.MVC", "DVDStore.Web.MVC\DVDStore.Web.MVC.csproj", "{AF09592A-F083-40AE-9613-DE1D4CB1303D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DVDStore.DAL.LiveDbTests", "DVDStore.DAL.LiveDbTests\DVDStore.DAL.LiveDbTests.csproj", "{7556DFB9-425A-4CD4-BD2F-9966B3C890E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{AF09592A-F083-40AE-9613-DE1D4CB1303D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF09592A-F083-40AE-9613-DE1D4CB1303D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF09592A-F083-40AE-9613-DE1D4CB1303D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7556DFB9-425A-4CD4-BD2F-9966B3C890E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7556DFB9-425A-4CD4-BD2F-9966B3C890E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7556DFB9-425A-4CD4-BD2F-9966B3C890E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7556DFB9-425A-4CD4-BD2F-9966B3C890E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
