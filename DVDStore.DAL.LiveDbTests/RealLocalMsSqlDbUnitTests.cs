@@ -9,7 +9,7 @@ namespace DVDStore.DAL.LiveDbTests
     public class RealLocalMsSqlDbUnitTests
     {
         private DVDStoreDbContext? _context;
-        private List<string> tableNames = new List<string>();
+        private List<string> tableNames = [];
 
         [TestInitialize]
         public async Task TestInitializeAsync()
@@ -19,28 +19,29 @@ namespace DVDStore.DAL.LiveDbTests
                 .Options;
 
             _context = new DVDStoreDbContext(options);
-            tableNames = new List<string>(); // Ensure this is reset for each test if needed
-
-            // Fetch and add the record counts for each table
-            tableNames.Add($"Payments: {await _context!.Payments.CountAsync()}");
-            tableNames.Add($"Rentals: {await _context!.Rentals.CountAsync()}");
-            tableNames.Add($"FilmActors: {await _context!.Filmactors.CountAsync()}");
-            tableNames.Add($"Inventories: {await _context!.Inventories.CountAsync()}");
-            tableNames.Add($"FilmRevs: {await _context!.FilmRevs.CountAsync()}");
-            tableNames.Add($"FilmCategories: {await _context!.Filmcategories.CountAsync()}");
-            tableNames.Add($"Films: {await _context!.Films.CountAsync()}");
-            tableNames.Add($"Addresses: {await _context!.Addresses.CountAsync()}");
-            tableNames.Add($"Cities: {await _context!.Cities.CountAsync()}");
-            tableNames.Add($"Customers: {await _context!.Customers.CountAsync()}");
-            tableNames.Add($"Actors: {await _context!.Actors.CountAsync()}");
-            tableNames.Add($"Countries: {await _context!.Countries.CountAsync()}");
-            tableNames.Add($"Categories: {await _context!.Categories.CountAsync()}");
-            tableNames.Add($"Languages: {await _context!.Languages.CountAsync()}");
-            tableNames.Add($"Stores: {await _context!.Stores.CountAsync()}");
-            tableNames.Add($"Staff: {await _context!.Staffs.CountAsync()}");
-            // Assuming TempActorFilmListings and Filmtexts are also exposed as DbSet properties
-            tableNames.Add($"TempActorFilmListings: {await _context!.TempActorFilmListings.CountAsync()}");
-            tableNames.Add($"FilmTexts: {await _context!.Filmtexts.CountAsync()}");
+            tableNames =
+            [
+                // Fetch and add the record counts for each table
+                $"Payments: {await _context!.Payments.CountAsync()}",
+                $"Rentals: {await _context!.Rentals.CountAsync()}",
+                $"FilmActors: {await _context!.Filmactors.CountAsync()}",
+                $"Inventories: {await _context!.Inventories.CountAsync()}",
+                $"FilmRevs: {await _context!.FilmRevs.CountAsync()}",
+                $"FilmCategories: {await _context!.Filmcategories.CountAsync()}",
+                $"Films: {await _context!.Films.CountAsync()}",
+                $"Addresses: {await _context!.Addresses.CountAsync()}",
+                $"Cities: {await _context!.Cities.CountAsync()}",
+                $"Customers: {await _context!.Customers.CountAsync()}",
+                $"Actors: {await _context!.Actors.CountAsync()}",
+                $"Countries: {await _context!.Countries.CountAsync()}",
+                $"Categories: {await _context!.Categories.CountAsync()}",
+                $"Languages: {await _context!.Languages.CountAsync()}",
+                $"Stores: {await _context!.Stores.CountAsync()}",
+                $"Staff: {await _context!.Staffs.CountAsync()}",
+                // Assuming TempActorFilmListings and Filmtexts are also exposed as DbSet properties
+                $"TempActorFilmListings: {await _context!.TempActorFilmListings.CountAsync()}",
+                $"FilmTexts: {await _context!.Filmtexts.CountAsync()}",
+            ]; // Ensure this is reset for each test if needed
         }
 
         [TestMethod]
