@@ -16,6 +16,9 @@ using System.Threading.Tasks;
 
 namespace DVDStore.DAL
 {
+    // ****************************************************************************************************
+    // This is not a commercial licence, therefore only a few tables/views/stored procedures are generated.
+    // ****************************************************************************************************
 
     public partial class FakeDVDStoreDbContext : IDVDStoreDbContext
     {
@@ -34,6 +37,7 @@ namespace DVDStore.DAL
         public DbSet<Filmtext> Filmtexts { get; set; } // filmtext
         public DbSet<Inventory> Inventories { get; set; } // inventory
         public DbSet<Language> Languages { get; set; } // language
+        public DbSet<NLog> NLogs { get; set; } // NLog
         public DbSet<Payment> Payments { get; set; } // payment
         public DbSet<Rental> Rentals { get; set; } // rental
         public DbSet<Salesbyfilmcategory> Salesbyfilmcategories { get; set; } // salesbyfilmcategory
@@ -62,6 +66,7 @@ namespace DVDStore.DAL
             Filmtexts = new FakeDbSet<Filmtext>("Filmid");
             Inventories = new FakeDbSet<Inventory>("Inventoryid");
             Languages = new FakeDbSet<Language>("Languageid");
+            NLogs = new FakeDbSet<NLog>("Id");
             Payments = new FakeDbSet<Payment>("Paymentid");
             Rentals = new FakeDbSet<Rental>("Rentalid");
             Salesbyfilmcategories = new FakeDbSet<Salesbyfilmcategory>();
@@ -271,6 +276,13 @@ namespace DVDStore.DAL
 
 
         // Stored Procedures
+
+        public int NLogAddEntryP(string machineName, DateTime? logged, string level, string message, string logger, string properties, string exception)
+        {
+            return 0;
+        }
+
+        // NLogAddEntryPAsync() cannot be created due to having out parameters, or is relying on the procedure result (int)
 
         public DbSet<UspGetDatabaseStatisticsReturnModel> UspGetDatabaseStatisticsReturnModel { get; set; }
         public List<UspGetDatabaseStatisticsReturnModel> UspGetDatabaseStatistics()
