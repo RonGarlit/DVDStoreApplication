@@ -67,8 +67,6 @@ public static class Program
             {
                 // Run the application
                 app.Run();
-                // Log the stop of the application
-                logger.Debug("stop main");
             }
             else
             {
@@ -83,13 +81,13 @@ public static class Program
             // Perform any necessary cleanup here before exiting
             // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
             NLog.LogManager.Shutdown();
-            Environment.Exit(666); // Use a non-zero code to indicate an error
         }
         finally
         {
+            logger.Debug("exit main");
+            logger.Debug("Shutting down NLog");
             // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
             NLog.LogManager.Shutdown();
-            Environment.Exit(0);
         }
     }
 }
