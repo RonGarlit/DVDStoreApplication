@@ -1,57 +1,95 @@
+using DVDStore.Web.MVC.Common.Exceptions;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using NLog;
+using NLog.Web;
+using System;
+
 namespace DVDStore.Web.MVC;
 
-public class Program
+public static class Program
 {
     public static void Main(string[] args)
     {
-        var builder = WebApplication.CreateBuilder(args);
-
-        // Add services to the container.
-        builder.Services.AddControllersWithViews();
-
-        var app = builder.Build();
-
-        // Configure the HTTP request pipeline.
-        if (!app.Environment.IsDevelopment())
+        // Initialize the logger at the start of the Main method
+        var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+        try
         {
-            app.UseExceptionHandler("/Home/Error");
-            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-            app.UseHsts();
+            // Log the start of the application
+            logger.Debug("init main");
+            // Create the host builder
+            var builder = WebApplication.CreateBuilder(args);
+            // This line already exists in your code, ensuring configuration is available
+            var config = builder.Configuration;
+
+            // Initialize NLog for ASP.NET Core and add it to the builder
+            builder.Logging.ClearProviders(); // Remove other loggers from the builder
+            builder.Host.UseNLog();  // This ensures NLog is used throughout the application
+
+            // Add services to the container and configure the application
+            builder.Services.AddControllersWithViews();  // Add MVC services to the container
+
+            // Build the application and create the host instance
+            var app = builder.Build();
+
+            // Configure the HTTP request pipeline.
+            if (!app.Environment.IsDevelopment())
+            {
+                // Use the exception handler middleware to log exceptions
+                app.UseExceptionHandler("/Home/Error"); // Use the home controller to handle errors
+                // Enable HSTS to ensure the application is only accessible over HTTPS
+                app.UseHsts();
+            }
+            // Redirect HTTP requests to HTTPS
+            app.UseHttpsRedirection();
+            // Serve static files
+            app.UseStaticFiles();
+            // Enable routing
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            // Add endpoints to the request pipeline to handle requests to controllers and Razor pages
+            app.MapControllers(); // Add controllers to the request pipeline
+            app.MapDefaultControllerRoute(); // Add a default controller route
+
+            app.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Home}/{action=Index}/{id?}");
+            // Log the start of the application
+            logger.Debug("start main");
+            // Read the value from the configuration
+            bool triggerIntentionalException = config.GetValue<bool>("TriggerIntentionalException");
+
+            // Check if the TriggerIntentionalException is set to true in the appsettings.ENVIRONMENT.json file.
+            if (!triggerIntentionalException)
+            {
+                // Run the application
+                app.Run();
+                // Log the stop of the application
+                logger.Debug("stop main");
+            }
+            else
+            {
+                // Trigger the intentional exception for testing
+                throw new IntentionalException("Intentional Exception for testing of Global Exception Handler");
+            }
         }
-
-        app.UseHttpsRedirection();
-        app.UseStaticFiles();
-
-        app.UseRouting();
-
-        app.UseAuthorization();
-        //=====================================================================================
-        // Call MapControllers to map attribute routed controllers.
-        // Ref: https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/routing?view=aspnetcore-6.0
-        // Using this with Attribute Routing gives us better explicit control with the routing in our application.
-        // Call MapControllers to map attribute routed controllers.
-        //=====================================================================================
-        app.MapControllers();
-        //=====================================================================================
-        // The URL path / uses the route template default Home controllers and Index action. The
-        // URL path /Home uses the route template default Index action.
-        //
-        // Here we use the convenience method MapDefaultControllerRoute:
-        app.MapDefaultControllerRoute();
-        //=====================================================================================
-
-        //=====================================================================================
-        // Non Attribute Routing would be done as follows with EACH AREA having and individual
-        // call to the MapControllerRoute.  Along with the creation of the "default" route.
-        //=====================================================================================
-        // AREA Routing See: https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/areas?view=aspnetcore-6.0
-        //app.MapControllerRoute(
-        //      name: "Residents",
-        //      pattern: "{area:exists}/{controller=Residents}/{action=Index}/{id?}");
-        app.MapControllerRoute(
-            name: "default",
-            pattern: "{controller=Home}/{action=Index}/{id?}");
-
-        app.Run();
+        catch (Exception ex)
+        {
+            // Use the already declared logger to log the exception and throw it
+            logger.Error(ex, "Stopped program because of exception");
+            // Perform any necessary cleanup here before exiting
+            // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
+            NLog.LogManager.Shutdown();
+            Environment.Exit(666); // Use a non-zero code to indicate an error
+        }
+        finally
+        {
+            // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
+            NLog.LogManager.Shutdown();
+            Environment.Exit(0);
+        }
     }
 }
