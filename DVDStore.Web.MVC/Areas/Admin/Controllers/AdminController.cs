@@ -9,13 +9,14 @@ namespace DVDStore.Web.MVC.Areas.Admin.Controllers
     /// 
     /// </summary>
     [Area("Admin")]
+    [Route("Admin/[controller]")]
     public class AdminController : Controller
     {
         /// <summary>
         ///  Index Action
         /// </summary>
         /// <returns></returns>
-        [Route("Admin/Index")]
+        [Route("Index")]
         public IActionResult Index()
         {
             Debug.WriteLine("Entered Index method of AdminController");
