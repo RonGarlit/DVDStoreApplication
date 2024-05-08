@@ -5,5 +5,6 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Naming", "VSSpell001:Spell Check", Justification = "<Pending>", Scope = "namespace", Target = "~N:DVDStore.Web.MVC.Areas.Admin.Controllers")]
-[assembly: SuppressMessage("Naming", "VSSpell001:Spell Check", Justification = "<Pending>", Scope = "type", Target = "~T:DVDStore.Web.MVC.Areas.Admin.Controllers.AdminController")]
+// New global suppression for the entire project
+[assembly: SuppressMessage("Naming", "VSSpell001:Spell Check", Justification = "Ignore spelling issues project-wide", Scope = "module")]
+[assembly: SuppressMessage("Style", "IDE0290:Use primary constructor", Justification = "Global suppression for primary constructor suggestion", Scope = "module")]
