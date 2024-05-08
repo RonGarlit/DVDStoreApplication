@@ -1,3 +1,4 @@
+using DVDStore.DAL;
 using DVDStore.Web.MVC.Common.Exceptions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
@@ -27,6 +28,18 @@ public static class Program
             var builder = WebApplication.CreateBuilder(args);
             // This line already exists in your code, ensuring configuration is available
             var config = builder.Configuration;
+
+            //=====================================================================================
+            // Add services to the container.
+            //=====================================================================================
+            // Dependency Injection Area
+            // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-6.0
+            //=====================================================================================
+            // Register the DbContext class
+            // Here we are registering DbContext class
+            builder.Services.AddScoped<IDVDStoreDbContext, DVDStoreDbContext>();
+
+
 
             // Initialize NLog for ASP.NET Core and add it to the builder
             builder.Logging.ClearProviders(); // Remove other loggers from the builder
