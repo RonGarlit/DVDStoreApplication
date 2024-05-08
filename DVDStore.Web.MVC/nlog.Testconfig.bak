@@ -33,7 +33,7 @@
 		<!-- IMPORTANT: Change connection string for the environment database for logging-->
 		<target xsi:type="Database" name="database"
                 dbProvider="Microsoft.Data.SqlClient"
-                connectionString="Data Source=(local);Initial Catalog=ScholarAppDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;"
+                connectionString="Data Source=MT1-MSSQL14;Initial Catalog=ScholarAppDb;User ID=scholappusr;Password=application;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False"
                 keepConnection="true"
                 commandText="insert into dbo.logs (Level,Callsite,Type,Message,StackTrace,InnerException,AdditionalInfo) values (@level, @callSite, @type, @message, @stackTrace, @innerException, @additionalInfo);">
 			<parameter name="@level" layout="${level}"/>
