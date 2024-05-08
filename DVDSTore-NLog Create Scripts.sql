@@ -1,79 +1,80 @@
-﻿USE dvdstore
+﻿USE DVDStore
+GO
 
-go
+/****** Object:  Table [dbo].[Logs]    Script Date: 5/8/2024 11:30:01 AM ******/
+SET ANSI_NULLS ON
+GO
 
-/****** Object:  Table [dbo].[Logs]    Script Date: 5/6/2024 7:48:12 PM ******/
-SET ansi_nulls ON
+SET QUOTED_IDENTIFIER ON
+GO
 
-go
+CREATE TABLE [dbo].[Logs](
+	[LogId] [int] IDENTITY(1,1) NOT NULL,
+	[Level] [varchar](max) NOT NULL,
+	[CallSite] [varchar](max) NOT NULL,
+	[Type] [varchar](max) NOT NULL,
+	[Message] [varchar](max) NOT NULL,
+	[StackTrace] [varchar](max) NOT NULL,
+	[InnerException] [varchar](max) NOT NULL,
+	[AdditionalInfo] [varchar](max) NOT NULL,
+	[LoggedOnDate] [datetime] NOT NULL,
+ CONSTRAINT [pk_logs] PRIMARY KEY CLUSTERED 
+(
+	[LogId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
 
-SET quoted_identifier ON
+ALTER TABLE [dbo].[Logs] ADD  CONSTRAINT [df_logs_loggedondate]  DEFAULT (getdate()) FOR [LoggedOnDate]
+GO
 
-go
+USE DVDStore
+GO
 
-CREATE TABLE [dbo].[logs]
-  (
-     [logid]          [INT] IDENTITY(1, 1) NOT NULL,
-     [level]          [VARCHAR](max) NOT NULL,
-     [callsite]       [VARCHAR](max) NOT NULL,
-     [type]           [VARCHAR](max) NOT NULL,
-     [message]        [VARCHAR](max) NOT NULL,
-     [stacktrace]     [VARCHAR](max) NOT NULL,
-     [innerexception] [VARCHAR](max) NOT NULL,
-     [additionalinfo] [VARCHAR](max) NOT NULL,
-     [loggedondate]   [DATETIME] NOT NULL,
-     CONSTRAINT [pk_logs] PRIMARY KEY CLUSTERED ( [logid] ASC )WITH (pad_index =
-     OFF, statistics_norecompute = OFF, ignore_dup_key = OFF, allow_row_locks =
-     on, allow_page_locks = on, optimize_for_sequential_key = OFF) ON [PRIMARY]
-  )
-ON [PRIMARY]
-textimage_on [PRIMARY]
+/****** Object:  StoredProcedure [dbo].[InsertLog]    Script Date: 5/8/2024 11:30:33 AM ******/
+SET ANSI_NULLS ON
+GO
 
-go
+SET QUOTED_IDENTIFIER ON
+GO
 
-ALTER TABLE [dbo].[logs]
-  ADD CONSTRAINT [df_logs_loggedondate] DEFAULT (Getdate()) FOR [LoggedOnDate]
-
-go
-
-USE dvdstore
-
-go
-
-/****** Object:  StoredProcedure [dbo].[InsertLog]    Script Date: 5/6/2024 7:37:12 PM ******/
-SET ansi_nulls ON
-
-go
-
-SET quoted_identifier ON
-
-go
 
 /*
-                Create InsertLog stored procedure
+	Create InsertLog stored procedure
 */
-CREATE PROCEDURE [dbo].[Insertlog] (@level          VARCHAR(max),
-                                    @callSite       VARCHAR(max),
-                                    @type           VARCHAR(max),
-                                    @message        VARCHAR(max),
-                                    @stackTrace     VARCHAR(max),
-                                    @innerException VARCHAR(max),
-                                    @additionalInfo VARCHAR(max))
-AS
-    INSERT INTO dbo.logs
-                ([level],
-                 callsite,
-                 [type],
-                 [message],
-                 stacktrace,
-                 innerexception,
-                 additionalinfo)
-    VALUES      ( @level,
-                  @callSite,
-                  @type,
-                  @message,
-                  @stackTrace,
-                  @innerException,
-                  @additionalInfo )
 
-go 
+create procedure [dbo].[InsertLog] 
+(
+	@level varchar(max),
+	@callSite varchar(max),
+	@type varchar(max),
+	@message varchar(max),
+	@stackTrace varchar(max),
+	@innerException varchar(max),
+	@additionalInfo varchar(max)
+)
+as
+
+insert into dbo.Logs
+(
+	[Level],
+	CallSite,
+	[Type],
+	[Message],
+	StackTrace,
+	InnerException,
+	AdditionalInfo
+)
+values
+(
+	@level,
+	@callSite,
+	@type,
+	@message,
+	@stackTrace,
+	@innerException,
+	@additionalInfo
+)
+
+GO
+
