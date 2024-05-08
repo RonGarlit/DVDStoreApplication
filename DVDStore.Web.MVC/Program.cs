@@ -12,8 +12,13 @@ public static class Program
 {
     public static void Main(string[] args)
     {
-        // Initialize the logger at the start of the Main method
-        var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+        //=====================================================================================
+        // NLog: setup the logger first to catch all errors
+        //=====================================================================================
+        // Using nlog.config for configuration, so no need to load from appsettings.json explicitly.
+        var logger = NLog.LogManager.Setup().LoadConfigurationFromFile("nlog.config", optional: false).GetCurrentClassLogger();
+
+        logger.Debug("Init main method in the program.cs");
         try
         {
             // Log the start of the application
