@@ -144,7 +144,7 @@ public static class Program
             // the value from hours to no more than a single day in case you need to revert the
             // HTTPS infrastructure to HTTP. After you're confident in the sustainability of the
             // HTTPS configuration, increase the HSTS max-age value; a commonly used value is one year.
-            // Here is how to add Hsts for Strict-Transport-Security (HSTS) header to responses.
+            // Here is how to add HSTS for Strict-Transport-Security (HSTS) header to responses.
             // Ref lINK:
             // https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.builder.hstsservicesextensions.addhsts?view=aspnetcore-6.0
             // On-line example of using AddHsts:
@@ -177,7 +177,7 @@ public static class Program
             else
             {
                 logger.Info($"Application Environment Code - Running in {Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")} Environment ");
-                // Exception Handling Middleware - This middleware catches exceptions that occur in
+                // Exception Handling Middle-ware - This middle-ware catches exceptions that occur in
                 // the request pipeline and generates an error page response. The error page is made
                 // available only to local requests. You can use the ExceptionHandlerOptions to control
                 // the behavior of the error page.
