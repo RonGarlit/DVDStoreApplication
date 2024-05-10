@@ -1,5 +1,6 @@
 using DVDStore.DAL;
 using DVDStore.Web.MVC.Areas.Identity.Data;
+using DVDStore.Web.MVC.Areas.Identity.Services;
 using DVDStore.Web.MVC.Common.Exceptions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -224,6 +225,25 @@ public static class Program
             //=====================================================================================
             // End Middle-ware configuration
             //=====================================================================================
+
+            // Insert the new seeding logic here for users and roles
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                try
+                {
+                    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+                    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                    IdentityDataInitializer.SeedData(userManager, roleManager).Wait();
+                    logger.Info("Identity data seeded successfully.");
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "An error occurred while seeding the identity data.");
+                    throw;  // Ensure that failure in seeding prevents app start
+                }
+            }
+
 
             logger.Info("Application Middle-ware Setup Completed - Starting the WebApplication via Run Method");
             // Run the application
