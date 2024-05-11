@@ -15,7 +15,7 @@ namespace DVDStore.Web.MVC.Areas.Identity.Services
         public static async Task SeedRoles(RoleManager<IdentityRole> roleManager)
         {
             // List of roles to seed
-            string[] roleNames = { "Administrator", "User", "Manager" }; // Add or remove roles as needed
+            string[] roleNames = { "Administrator", "Manager", "User"  }; // Add or remove roles as needed
 
             foreach (var roleName in roleNames)
             {
