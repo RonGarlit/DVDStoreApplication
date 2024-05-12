@@ -1,0 +1,107 @@
+﻿using DVDStore.Web.MVC.Areas.Identity.Data;
+using DVDStore.Web.MVC.Areas.Security.Models;
+using DVDStore.Web.MVC.Common.Extensions;
+using DVDStore.Web.MVC.Common;
+using DVDStore.Web.MVC.Common.PropertyMapping;
+
+namespace DVDStore.Web.MVC.Areas.Security.Repositories
+{
+    public class UserRepository : IUserRepository
+    {
+        private readonly SecurityDbContext _context;
+        private readonly IUsersPropertyMapper _UsersPropertyMapper;
+
+        public UserRepository(SecurityDbContext context)
+        {
+            _context = context;
+            _UsersPropertyMapper = new UsersPropertyMapper();
+        }
+
+        public ICollection<ApplicationUser> GetUsers()
+        {
+            return _context.Users.ToList();
+        }
+
+        public ApplicationUser GetUser(string id)
+        {
+            return _context.Users.FirstOrDefault(u => u.Id == id);
+        }
+
+        public UsersPagedModel<ApplicationUser> GetUsersPagedList(UsersResourceParameters UsersResourceParameters)
+        {
+            //=================================================================
+            // Check parameters
+            //=================================================================
+
+            // Check for null
+            if (UsersResourceParameters == null)
+            {
+                throw new ArgumentNullException(nameof(UsersResourceParameters));
+            }
+
+            // Setup IQueryable for table object we are going to get data for.
+            // We load the collection var accordingly as we process the resource
+            // parameter object passed into the repository
+
+            var collection = _context.Users as IQueryable<ApplicationUser>;
+
+            //if (!string.IsNullOrWhiteSpace(ResidentResourceParameters.FilterTerm))
+            //{
+            //    var FilterTerm = ResidentResourceParameters.FilterTerm.Trim();
+
+            //    collection = collection.Where(a => a.FirstName.Contains(FilterTerm));
+
+            //}
+
+            //if (!string.IsNullOrWhiteSpace(ResidentResourceParameters.FilterCollegeSchool))
+            //{
+            //    var FilterCollegeSchool = ResidentResourceParameters.FilterCollegeSchool.Trim();
+
+            //    collection = collection.Where(a => a.LastName.Contains(FilterCollegeSchool));
+
+            //}
+
+            // Check and run for the search parameter and get the collection for
+            // columns we have chosen to allow search-able
+            if (!string.IsNullOrWhiteSpace(UsersResourceParameters.SearchQuery))
+            {
+                // Get and clean up the Search Query
+                var searchQuery = UsersResourceParameters.SearchQuery.Trim();
+                // Build out the IQueryable collection in EF LINQ of the columns
+                // we want to search here.
+                collection = collection.Where(a => a.FirstName.Contains(searchQuery)
+                || a.LastName.Contains(searchQuery)
+                || a.Email.Contains(searchQuery)
+                );
+            }
+
+            // Next check the orderby parameter and then apply the sort
+            if (!string.IsNullOrWhiteSpace(UsersResourceParameters.OrderBy))
+            {
+                // get property mapping dictionary
+                // Not using DTO right now by my mapper is IS for other stuff involved in search.
+                var UsersPropertyMappingDictionary = _UsersPropertyMapper.GetPropertyMapping<ApplicationUser, ApplicationUser>();
+
+                collection = collection.ApplySort(UsersResourceParameters.OrderBy, UsersPropertyMappingDictionary);
+            }
+
+            // FINALLY run the collection through the Paging process
+            return UsersPagedModel<ApplicationUser>.Create(collection, UsersResourceParameters.PageNumber, UsersResourceParameters.PageSize);
+        }
+
+        public ApplicationUser UpdateUser(ApplicationUser user)
+        {
+            _context.Update(user);
+            _context.SaveChanges();
+
+            return user;
+        }
+        public ApplicationUser DeleteUser(ApplicationUser user)
+        {
+            _context.Users.Remove(user);
+            _context.SaveChanges();
+
+            return user;
+        }
+    }
+}

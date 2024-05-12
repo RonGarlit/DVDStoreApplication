@@ -1,0 +1,70 @@
+﻿@model DVDStore.Web.MVC.Areas.Security.Models.DetailsUserModel
+
+@{
+}
+
+<main>
+    <div class="text-start">
+        <h2>User Details</h2>
+    </div>
+
+    <div class="row">
+        <div class="col-md-7 col-lg-8">
+
+            @Html.HiddenFor(h => @Model.User.Id)
+            ;
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    <label asp-for="@Model.User.FirstName" class="form-label"></label>
+                    <input asp-for="@Model.User.FirstName" class="form-control" autocomplete="on" aria-required="true" disabled="disabled" />
+                    <span asp-validation-for="@Model.User.FirstName" class="text-danger">
+                    </span>
+                </div>
+
+                <div class="form-group col-sm-6">
+                    <label asp-for="@Model.User.LastName" class="form-label"></label>
+                    <input asp-for="@Model.User.LastName" class="form-control" autocomplete="on" aria-required="true" disabled="disabled" />
+                    <span asp-validation-for="@Model.User.LastName" class="text-danger">
+                    </span>
+                </div>
+
+                <div class="form-group col-12">
+                    <label asp-for="@Model.User.Email" class="form-label"></label>
+                    <div class="input-group has-validation">
+                        <span class="input-group-text"></span>
+                        <input asp-for="@Model.User.Email" class="form-control" autocomplete="on" aria-required="true" disabled="disabled" />
+                        <span asp-validation-for="@Model.User.Email" class="text-danger">
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="">
+
+            <h4 class="mb-3">Roles</h4>
+
+            <div class="">
+
+                @for (int i = 0; i < @Model.Roles.Count(); i++)
+                {
+                    <div class="form-check">
+                        @Html.CheckBoxFor(c => @Model.Roles[i].Selected, new {disabled="disabled"}) 
+                        @Html.HiddenFor(h => @Model.Roles[i].Value)
+
+                        @Html.LabelFor(l => @Model.Roles[i].Selected, @Model.Roles[i].Text, new {@class="form-check-label"})
+                        @Html.HiddenFor(h => @Model.Roles[i].Text)
+                    </div>
+                }
+            </div>
+
+            <hr class="">
+
+            <div>
+                <a class="btn btn-warning" asp-controller="User" asp-action="Edit" asp-route-id="@Model.User.Id">Edit</a>
+                @*<a class="btn btn-primary" asp-controller="User" asp-action="Index">Back to List</a>*@
+                <a class="btn btn-primary" asp-action="Index" asp-route-SearchQuery="@ViewBag.IndexSearchQuery">Back to List</a>
+            </div>
+
+        </div>
+    </div>
+</main>

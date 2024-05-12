@@ -14,6 +14,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Include="Areas\Security\Views\User\delete.cshtml" />
+	  <None Include="Areas\Security\Views\User\Details.cshtml" />
+	  <None Include="Areas\Security\Views\User\Edit.cshtml" />
+	  <None Include="Areas\Security\Views\User\Index.cshtml" />
+	  <None Include="Areas\Security\Views\User\_ViewImports.cshtml" />
+	  <None Include="Areas\Security\Views\User\_ViewStart.cshtml" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="LazZiya.TagHelpers" Version="6.0.2" />
 		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.4" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.4" />

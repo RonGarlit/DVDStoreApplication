@@ -1,0 +1,122 @@
+﻿@{
+    ViewData["Title"] = "Users";
+}
+@model DVDStore.Web.MVC.Areas.Security.Models.UsersPagedModel<DVDStore.Web.MVC.Areas.Identity.Data.ApplicationUser>
+
+<div class="container-fluid">
+
+    <h1>User Administration</h1>
+
+    @*Setup the Search Box Form*@
+    <form method="get" class="form-inline">
+        <div class="row">
+            <div class="col-sm-4 col-md-3 col-lg-3 col-xl-2">
+                <label for="SearchQuery" class="form-label">Search: </label>
+            </div>
+            <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                <input type="text" name="SearchQuery"
+                       value="@(Context.Request.Query["SearchQuery"])"
+                       class="form-control"
+                       placeholder="Place text you want to search for here..."
+                       aria-describedby="button-addon" />
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-sm-2 col-md-3 col-lg-3 col-xl-2">
+            </div>
+            <div class="col col-sm-4 col-md-3 col-lg-3 col-xl-4">
+                <p></p> @* This HTML paragraph tag is being used for hard spacing *@
+                <button class="btn btn-primary"
+                        type="submit"
+                        id="button-addon">
+                    Filter/Search
+                </button>
+                <p></p> @* This HTML paragraph tag is being used for hard spacing *@
+            </div>
+            <div class="col col-sm-2 col-md-3 col-lg-3 col-xl-2">
+            </div>
+            <div class="col col-sm-3 col-md-3 col-lg-3 col-xl-2">
+                <p></p> @* This HTML paragraph tag is being used for hard spacing *@
+                @*Display Print search button based on data selected *@
+
+                <p></p> @* This HTML paragraph tag is being used for hard spacing *@
+            </div>
+        </div>
+    </form>
+
+    <paging total-records="Model.TotalCount"
+            page-no="Model.CurrentPage"
+            page-size="Model.PageSize"
+            show-page-size-nav="false"
+            query-string-key-page-no="pageNo"
+            query-string-key-page-size="pageSize"
+            max-displayed-pages="5"
+            class-total-pages="badge bg-primary"
+            class-total-records="badge bg-primary"
+            class-paging-control="pagination pagination-sm"
+            class-page-link="bg-light text-dark"
+            class-active-page="bg-primary text-light"
+            class-disabled-jumping-button="disabled ">
+
+    </paging>
+    <p class="bg-primary text-light">Page @(Model.TotalPages < Model.CurrentPage ? 0 : Model.CurrentPage)</p>
+
+    <div class="table-responsive-lg">
+        @if (@Model != null && @Model.Any())
+        {
+            <table class="table table-hover table-striped">
+                <thead class="table-primary">
+                    <tr>
+                        <th scope="col">User ID</th>
+                        <th scope="col">First</th>
+                        <th scope="col">Last</th>
+                        <th scope="col">Lot Number</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Details</th>
+                        <th scope="col">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <th scope="row">@user.Id</th>
+                            <td>@user.FirstName</td>
+                            <td>@user.LastName</td>
+                            <td>@user.Email</td>
+                            <td>
+                                <a class="btn btn-warning" asp-controller="User" asp-action="Edit" asp-route-id="@user.Id">Edit</a>
+                            </td>
+                            <td>
+                                <a class="btn btn-success" asp-controller="User" asp-action="Details" asp-route-id="@user.Id">Details</a>
+                            </td>
+                            <td>
+                                <a class="btn btn-danger" asp-controller="User" asp-action="Delete" asp-route-id="@user.Id">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+    <p class="bg-primary text-light">Page @(Model.TotalPages < Model.CurrentPage ? 0 : Model.CurrentPage)</p>
+
+    <paging total-records="Model.TotalCount"
+            page-no="Model.CurrentPage"
+            page-size="Model.PageSize"
+            show-page-size-nav="false"
+            query-string-key-page-no="pageNo"
+            query-string-key-page-size="pageSize"
+            max-displayed-pages="5"
+            class-total-pages="badge bg-primary"
+            class-total-records="badge bg-primary"
+            class-paging-control="pagination pagination-sm"
+            class-page-link="bg-light text-dark"
+            class-active-page="bg-primary text-light"
+            class-disabled-jumping-button="disabled ">
+
+    </paging>
+
+</div>

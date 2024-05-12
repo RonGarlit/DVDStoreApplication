@@ -1,0 +1,33 @@
+﻿@model DVDStore.Web.MVC.Areas.Identity.Data.ApplicationUser
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>File</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input class="btn btn-danger" type="submit" value="Delete" class="btn btn-danger" />
+        @*<a class="btn btn-primary" asp-action="Index">Back to List</a>*@
+        <a class="btn btn-primary" asp-action="Index" asp-route-SearchQuery="@ViewBag.IndexSearchQuery">Back to List</a>
+    </form>
+</div>
