@@ -1,57 +1,76 @@
 ﻿using DVDStore.Web.MVC.Common.Exceptions;
+using DVDStore.Web.MVC.Common.PropertyMapping;
 using DVDStore.Web.MVC.Common.PropertyMapping.BaseMappingCode;
 
-namespace DVDStore.Web.MVC.Common.PropertyMapping
+namespace DVDStore.Web.MVC.Areas.Security.Models
 {
-    public class UsersPropertyMapper : IUsersPropertyMapper
+    /// <summary>
+    /// The UsersPropertyMapper class is responsible for mapping property names from source types
+    /// to destination types, facilitating data transformations especially suited for situations
+    /// where property names do not match between data transfer objects and domain models.
+    /// </summary>
+    public class UsersPropertyMapper
+
     {
         #region Private Fields
 
-        // TODO:
-        private Dictionary<string, PropertyMappingValue> _usersPropertyMapping =
-          new Dictionary<string, PropertyMappingValue>(StringComparer.OrdinalIgnoreCase)
-          {
-              // TODO: Add appropriate items as needed for property mapping
-              // Example of Mapping
-              //{ "Id", new PropertyMappingValue(new List<string>() { "Id" } ) },
-              //{ "MainCategory", new PropertyMappingValue(new List<string>() { "MainCategory" } )},
-              //{ "Age", new PropertyMappingValue(new List<string>() { "DateOfBirth" } , true) },
-              { "Id", new PropertyMappingValue(new List<string>() { "Id" } ) },
-              { "LastName", new PropertyMappingValue(new List<string>() { "LastName" } ) }
-          };
+        /// <summary>
+        /// Holds the mapping definitions between property names of different models. This dictionary
+        /// is case insensitive for property name lookups.
+        /// </summary>
+        private readonly Dictionary<string, PropertyMappingValue> _usersPropertyMapping =
+            new(StringComparer.OrdinalIgnoreCase)
+            {
+                // Examples of property mappings:
+                { "Id", new PropertyMappingValue(["Id"]) }, // Used collection initializers or expressions (IDE0028) change new PropertyMappingValue(new List<string> { "Id" })  to new PropertyMappingValue(["Id"]
+                { "LastName", new PropertyMappingValue(["LastName"]) } // Used collection initializers or expressions (IDE0028) change new PropertyMappingValue(new List<string> { "LastName" })  to new PropertyMappingValue(["LastName"])
+            };
 
-        private IList<IPropertyMapping> _propertyMappings = new List<IPropertyMapping>();
+        private readonly IList<IPropertyMapping> _propertyMappings = []; // Used collection initializers or expressions (IDE0028) changed new List<IPropertyMapping>() to []
 
         #endregion Private Fields
 
         #region Public Constructors
 
+        /// <summary>
+        /// Initializes a new instance of the UsersPropertyMapper class.
+        /// Adds predefined property mappings to the internal list.
+        /// </summary>
         public UsersPropertyMapper()
         {
-            // TODO: Add appropriate items as needed for property mapping
-            // Example of mapping
-            _propertyMappings.Add(new PropertyMapping<DVDStore.Web.MVC.Areas.Identity.Data.ApplicationUser, DVDStore.Web.MVC.Areas.Identity.Data.ApplicationUser>(_usersPropertyMapping));
+            _propertyMappings.Add(new PropertyMapping<Areas.Identity.Data.ApplicationUser, Areas.Identity.Data.ApplicationUser>(_usersPropertyMapping));
         }
 
         #endregion Public Constructors
 
         #region Public Methods
 
-        public Dictionary<string, PropertyMappingValue> GetPropertyMapping
-           <TSource, TDestination>()
+        /// <summary>
+        /// Retrieves the property mapping dictionary for a specific source and destination type.
+        /// </summary>
+        /// <typeparam name="TSource">The source type from which to map properties.</typeparam>
+        /// <typeparam name="TDestination">The destination type to which properties are mapped.</typeparam>
+        /// <returns>A dictionary of property mappings.</returns>
+        /// <exception cref="PropertyMappingException">Thrown when no exact mapping is found.</exception>
+        public Dictionary<string, PropertyMappingValue> GetPropertyMapping<TSource, TDestination>()
         {
-            // get matching mapping
-            var matchingMapping = _propertyMappings
-                .OfType<PropertyMapping<TSource, TDestination>>();
+            var matchingMapping = _propertyMappings.OfType<PropertyMapping<TSource, TDestination>>();
 
             if (matchingMapping.Count() == 1)
             {
                 return matchingMapping.First().MappingDictionary;
             }
 
-            throw new PropertyMappingException($"Cannot find exact property mapping instance for <{typeof(TSource)},{typeof(TDestination)}");
+            throw new PropertyMappingException($"Cannot find exact property mapping instance for <{typeof(TSource)}, {typeof(TDestination)}>");
         }
 
+        /// <summary>
+        /// Validates whether the specified fields in a query string can be mapped correctly between the source and destination types.
+        /// </summary>
+        /// <typeparam name="TSource">The source type.</typeparam>
+        /// <typeparam name="TDestination">The destination type.</typeparam>
+        /// <param name="fields">A comma-separated list of fields to validate.</param>
+        /// <returns>True if all fields can be mapped; otherwise, false.</returns>
         public bool ValidMappingExistsFor<TSource, TDestination>(string fields)
         {
             var propertyMapping = GetPropertyMapping<TSource, TDestination>();
@@ -61,23 +80,14 @@ namespace DVDStore.Web.MVC.Common.PropertyMapping
                 return true;
             }
 
-            // the string is separated by ",", so we split it.
             var fieldsAfterSplit = fields.Split(',');
 
-            // run through the fields clauses
             foreach (var field in fieldsAfterSplit)
             {
-                // trim
                 var trimmedField = field.Trim();
+                int indexOfFirstSpace = trimmedField.IndexOf(' ');
+                var propertyName = indexOfFirstSpace == -1 ? trimmedField : trimmedField.Remove(indexOfFirstSpace);
 
-                // remove everything after the first " " - if the fields
-                // are coming from an orderBy string, this part must be
-                // ignored
-                var indexOfFirstSpace = trimmedField.IndexOf(" ");
-                var propertyName = indexOfFirstSpace == -1 ?
-                    trimmedField : trimmedField.Remove(indexOfFirstSpace);
-
-                // find the matching property
                 if (!propertyMapping.ContainsKey(propertyName))
                 {
                     return false;

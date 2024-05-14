@@ -1,6 +1,7 @@
 using DVDStore.DAL;
 using DVDStore.Web.MVC.Areas.Identity.Data;
 using DVDStore.Web.MVC.Areas.Identity.Services;
+using DVDStore.Web.MVC.Areas.Security.Repositories;
 using DVDStore.Web.MVC.Common.Exceptions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -39,13 +40,16 @@ public static class Program
             // Add services to the container.
             //=====================================================================================
             // Dependency Injection Area
-            // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-6.0
+            // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-8.0
             //=====================================================================================
             // Register the DbContext class
             // Here we are registering DbContext class
             builder.Services.AddScoped<IDVDStoreDbContext, DVDStoreDbContext>();
 
             // Register Repository Classes
+            builder.Services.AddScoped<ISecurityUnitOfWork, SecurityUnitOfWork>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 
             //=====================================================================================
             // Add Security/Identity DbContext Area
@@ -136,32 +140,26 @@ public static class Program
             logger.Info("Application Configuration Code Completed - Running WebApplication Build Method ");
             // Build the WebApplication and return it
             var app = builder.Build();
-
             //=====================================================================================
             // Configure the HTTP request pipeline.
             //=====================================================================================
-            // For production environments that are implementing HTTPS for the first time, set the
-            // initial HstsOptions.MaxAge to a small value using one of the TimeSpan methods. Set
-            // the value from hours to no more than a single day in case you need to revert the
-            // HTTPS infrastructure to HTTP. After you're confident in the sustainability of the
-            // HTTPS configuration, increase the HSTS max-age value; a commonly used value is one year.
-            // Here is how to add HSTS for Strict-Transport-Security (HSTS) header to responses.
-            // Ref lINK:
-            // https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.builder.hstsservicesextensions.addhsts?view=aspnetcore-6.0
-            // On-line example of using AddHsts:
-            // https://docs.microsoft.com/en-us/aspnet/core/security/enforcing-ssl?view=aspnetcore-6.0&tabs=visual-studio#hsts
+            // For production environments newly implementing HTTPS, it is advisable to start with a 
+            // conservative initial HSTS max-age value. This could be set to as little as a few hours or 
+            // a single day to allow for easy reversion to HTTP if necessary. Once the HTTPS setup is 
+            // verified as stable, the HSTS max-age can be increased to a standard duration, such as one 
+            // year, to enhance security.
+            //
+            // Implementing the HSTS header involves setting the Strict-Transport-Security response header
+            // with desired directives like preload, includeSubDomains, and an appropriate max-age. 
+            // It is also possible to specify domains that should be excluded from the policy.
+            //
+            // Detailed guidance on configuring HSTS in ASP.NET Core can be found in the official 
+            // Microsoft documentation available online.
+            //
+            // Reference Link:
+            // - [Enabling HSTS in ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/security/enforcing-ssl?view=aspnetcore-8.0&tabs=visual-studio%2Clinux-ubuntu#hsts)
             //=====================================================================================
-            //=====================================================================================
-            //The following highlighted code:
-            //=====================================================================================
-            //builder.Services.AddHsts(options =>
-            //{
-            //    options.Preload = true;
-            //    options.IncludeSubDomains = true;
-            //    options.MaxAge = TimeSpan.FromDays(60);
-            //    options.ExcludedHosts.Add("example.com");
-            //    options.ExcludedHosts.Add("www.example.com");
-            //});
+
 
             //=====================================================================================
             // Configure the HTTP request pipeline. ASP.NET Core implements HSTS with the UseHsts

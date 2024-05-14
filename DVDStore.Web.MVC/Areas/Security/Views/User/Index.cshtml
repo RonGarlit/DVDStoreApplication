@@ -101,7 +101,7 @@
             </table>
         }
     </div>
-    <p class="bg-primary text-light">Page @(Model.TotalPages < Model.CurrentPage ? 0 : Model.CurrentPage)</p>
+    <p class="bg-primary text-light">Page @(Model!.TotalPages < Model.CurrentPage ? 0 : Model.CurrentPage)</p>
 
     <paging total-records="Model.TotalCount"
             page-no="Model.CurrentPage"

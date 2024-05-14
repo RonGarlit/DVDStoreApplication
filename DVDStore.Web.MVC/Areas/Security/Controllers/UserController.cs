@@ -42,16 +42,16 @@ namespace DVDStore.Web.MVC.Areas.Security.Controllers
 
         [HttpGet("{id?}")]
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> Delete(string? id)
+        public Task<IActionResult> Delete(string? id)
         {
-            var user = _securityDbWork.User.GetUser(id);
+            var user = _securityDbWork.User.GetUser(id!);
             if (user == null)
             {
-                return NotFound();
+                return Task.FromResult<IActionResult>(NotFound());
             }
             // Pass Search Query parameter forward for "Back To List" tag helper
             ViewBag.IndexSearchQuery = BTLSearchQuery;
-            return View(user);
+            return Task.FromResult<IActionResult>(View(user));
         }
 
         [HttpPost("{id?}")]
@@ -59,7 +59,7 @@ namespace DVDStore.Web.MVC.Areas.Security.Controllers
         [Authorize(Roles = "Administrator")]
         public IActionResult DeleteConfirmed(string? id)
         {
-            var user = _securityDbWork.User.GetUser(id);
+            var user = _securityDbWork.User.GetUser(id!);
             if (user != null)
             {
                 _securityDbWork.User.DeleteUser(user);
@@ -81,7 +81,7 @@ namespace DVDStore.Web.MVC.Areas.Security.Controllers
                 new SelectListItem(
                     role.Name,
                     role.Id,
-                    userRoles.Any(ur => ur.Contains(role.Name)))).ToList();
+                    userRoles.Any(ur => ur.Contains(role.Name!)))).ToList();
 
             var vm = new DetailsUserModel
             {
@@ -106,7 +106,7 @@ namespace DVDStore.Web.MVC.Areas.Security.Controllers
                 new SelectListItem(
                     role.Name,
                     role.Id,
-                    userRoles.Any(ur => ur.Contains(role.Name)))).ToList();
+                    userRoles.Any(ur => ur.Contains(role.Name!)))).ToList();
 
             var vm = new EditUserViewModel
             {
@@ -124,14 +124,14 @@ namespace DVDStore.Web.MVC.Areas.Security.Controllers
                                     [FromQuery] int pageSize = 10,
                                     [FromQuery] string? SearchQuery = null)
         {
-            var UsersResourceParameters = new UsersResourceParameters();
+            var UsersResourceParameters = new UsersResourceParameters
+            {
+                PageNumber = pageNo,
+                PageSize = pageSize,
+                SearchQuery = SearchQuery,
+                OrderBy = "LastName"
+            };
 
-            UsersResourceParameters.PageNumber = pageNo;
-            UsersResourceParameters.PageSize = pageSize;
-            UsersResourceParameters.SearchQuery = SearchQuery;
-            UsersResourceParameters.OrderBy = "LastName";
-
-            //Common.PagedList<SPHOA.DAL.Resident> data = SpHoaRepository.GetResidentList(ResidentResourceParameters);
             UsersPagedModel<ApplicationUser> data = _securityDbWork.User.GetUsersPagedList(UsersResourceParameters);
             //  Get data for filter Select boxes in UI
 
@@ -148,14 +148,9 @@ namespace DVDStore.Web.MVC.Areas.Security.Controllers
             // tag helpers where required through ViewBag. 
             BTLSearchQuery = ViewBag.SearchQuery;
 
-            if (_securityDbWork != null)
-            {
-                return View(data);
-            }
-            else
-            {
-                return Problem("Entity set '_securityDbWork.User.GetUsersPagedList'  is null.");
-            }
+
+            return View(data);
+
         }
 
         [HttpPost]
@@ -163,7 +158,7 @@ namespace DVDStore.Web.MVC.Areas.Security.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> OnPostAsync(EditUserViewModel data)
         {
-            var user = _securityDbWork.User.GetUser(data.User.Id);
+            var user = _securityDbWork.User.GetUser(data.User!.Id);
             if (user == null)
             {
                 return NotFound();
@@ -179,7 +174,7 @@ namespace DVDStore.Web.MVC.Areas.Security.Controllers
             var rolesToAdd = new List<string>();
             var rolesToDelete = new List<string>();
 
-            foreach (var role in data.Roles)
+            foreach (var role in data.Roles!)
             {
                 var assignedInDb = userRolesInDb.FirstOrDefault(ur => ur == role.Text);
                 if (role.Selected)
@@ -198,12 +193,12 @@ namespace DVDStore.Web.MVC.Areas.Security.Controllers
                 }
             }
 
-            if (rolesToAdd.Any())
+            if (rolesToAdd.Count != 0)
             {
                 await _signInManager.UserManager.AddToRolesAsync(user, rolesToAdd);
             }
 
-            if (rolesToDelete.Any())
+            if (rolesToDelete.Count != 0)
             {
                 await _signInManager.UserManager.RemoveFromRolesAsync(user, rolesToDelete);
             }
@@ -213,7 +208,6 @@ namespace DVDStore.Web.MVC.Areas.Security.Controllers
 
             _securityDbWork.User.UpdateUser(user);
 
-            //return RedirectToAction("Edit", new { id = user.Id });
             return RedirectToAction("index");
         }
 

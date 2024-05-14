@@ -8,3 +8,4 @@ using System.Diagnostics.CodeAnalysis;
 // New global suppression for the entire project
 [assembly: SuppressMessage("Naming", "VSSpell001:Spell Check", Justification = "Ignore spelling issues project-wide", Scope = "module")]
 [assembly: SuppressMessage("Style", "IDE0290:Use primary constructor", Justification = "Global suppression for primary constructor suggestion", Scope = "module")]
+[assembly: SuppressMessage("Style","IDE0305:Simplify collection initialization", Justification = "<Pending>", Scope = "module")]
