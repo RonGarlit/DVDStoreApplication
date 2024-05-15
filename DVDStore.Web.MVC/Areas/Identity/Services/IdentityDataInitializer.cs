@@ -15,7 +15,7 @@ namespace DVDStore.Web.MVC.Areas.Identity.Services
         public static async Task SeedRoles(RoleManager<IdentityRole> roleManager)
         {
             // List of roles to seed
-            string[] roleNames = { "Administrator", "Manager", "User"  }; // Add or remove roles as needed
+            string[] roleNames = ["Administrator", "Manager", "User"]; // Add or remove roles as needed
 
             foreach (var roleName in roleNames)
             {
@@ -30,25 +30,23 @@ namespace DVDStore.Web.MVC.Areas.Identity.Services
         public static async Task SeedUsers(UserManager<ApplicationUser> userManager)
         {
             // List of users to seed
-            ApplicationUser[] usersToSeed = new ApplicationUser[]
-            {
-            new ApplicationUser {
+            ApplicationUser[] usersToSeed =
+            [
+            new() {
                 UserName = "admin@example.com",
                 Email = "admin@example.com",
                 FirstName = "Administrator",
                 LastName = "User",
                 EmailConfirmed = true // Since you're faking email confirmation
             },
-            new ApplicationUser
-            {
+            new() {
                 UserName = "manager@example.com",
                 Email = "manager@example.com",
                 FirstName = "Manager",
                 LastName = "User",
                 EmailConfirmed = true // Since you're faking email confirmation
             },
-            new ApplicationUser
-            {
+            new() {
                 UserName = "user@example.com",
                 Email = "user@example.com",
                 FirstName = "Regular",
@@ -56,12 +54,12 @@ namespace DVDStore.Web.MVC.Areas.Identity.Services
                 EmailConfirmed = true // Since you're faking email confirmation
             }
             // Add more users as needed
-            };
+            ];
 
             foreach (var user in usersToSeed)
             {
                 // Check if the user already exists
-                if (await userManager.FindByEmailAsync(user.Email) == null)
+                if (await userManager.FindByEmailAsync(user.Email!) == null)
                 {
                     // Create the user
                     IdentityResult result = await userManager.CreateAsync(user, "Password123!"); // Use a secure way to store the password or change it accordingly
