@@ -28,6 +28,7 @@
 //****************************************************************************/
 
 using System.Linq.Dynamic.Core;
+using System.Text;
 using DVDStore.Web.MVC.Common.PropertyMapping.BaseMappingCode;
 
 namespace DVDStore.Web.MVC.Common.Extensions
@@ -39,22 +40,15 @@ namespace DVDStore.Web.MVC.Common.Extensions
         public static IQueryable<T> ApplySort<T>(this IQueryable<T> source, string orderBy,
                Dictionary<string, PropertyMappingValue> mappingDictionary)
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
-
-            if (mappingDictionary == null)
-            {
-                throw new ArgumentNullException(nameof(mappingDictionary));
-            }
+            ArgumentNullException.ThrowIfNull(source);
+            ArgumentNullException.ThrowIfNull(mappingDictionary);
 
             if (string.IsNullOrWhiteSpace(orderBy))
             {
                 return source;
             }
 
-            var orderByString = string.Empty;
+            var orderByStringBuilder = new StringBuilder();
 
             // the orderBy string is separated by ",", so we split it.
             var orderByAfterSplit = orderBy.Split(',');
@@ -67,34 +61,28 @@ namespace DVDStore.Web.MVC.Common.Extensions
                 // so use another var.
                 var trimmedOrderByClause = orderByClause.Trim();
 
-                // if the sort option ends with with " desc", we order
-                // descending, ortherwise ascending
+                // if the sort option ends with " desc", we order
+                // descending, otherwise ascending
                 var orderDescending = trimmedOrderByClause.EndsWith(" desc");
 
                 // remove " asc" or " desc" from the orderBy clause, so we
                 // get the property name to look for in the mapping dictionary
-                var indexOfFirstSpace = trimmedOrderByClause.IndexOf(" ");
+                var indexOfFirstSpace = trimmedOrderByClause.IndexOf(' ');
                 var propertyName = indexOfFirstSpace == -1 ?
                     trimmedOrderByClause : trimmedOrderByClause.Remove(indexOfFirstSpace);
 
                 // find the matching property
-                if (!mappingDictionary.ContainsKey(propertyName))
+                if (!mappingDictionary.TryGetValue(propertyName, out PropertyMappingValue? value))
                 {
                     throw new ArgumentException($"Key mapping for {propertyName} is missing");
                 }
 
                 // get the PropertyMappingValue
-                var propertyMappingValue = mappingDictionary[propertyName];
-
-                if (propertyMappingValue == null)
-                {
-                    throw new ArgumentNullException("propertyMappingValue");
-                }
+                PropertyMappingValue propertyMappingValue = value ?? throw new ArgumentNullException(nameof(value), "Value cannot be null.");
 
                 // Run through the property names
                 // so the orderby clauses are applied in the correct order
-                foreach (var destinationProperty in
-                    propertyMappingValue.DestinationProperties)
+                foreach (var destinationProperty in propertyMappingValue.DestinationProperties)
                 {
                     // revert sort order if necessary
                     if (propertyMappingValue.Revert)
@@ -102,14 +90,18 @@ namespace DVDStore.Web.MVC.Common.Extensions
                         orderDescending = !orderDescending;
                     }
 
-                    orderByString = orderByString +
-                        (string.IsNullOrWhiteSpace(orderByString) ? string.Empty : ", ")
-                        + destinationProperty
-                        + (orderDescending ? " descending" : " ascending");
+                    // Append with comma if needed
+                    if (orderByStringBuilder.Length > 0)
+                    {
+                        orderByStringBuilder.Append(", ");
+                    }
+
+                    // Append property name with sort direction
+                    orderByStringBuilder.Append(destinationProperty + (orderDescending ? " descending" : " ascending"));
                 }
             }
 
-            return source.OrderBy(orderByString);
+            return source.OrderBy(orderByStringBuilder.ToString());
         }
 
         #endregion Public Methods

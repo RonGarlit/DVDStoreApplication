@@ -238,7 +238,6 @@ public static class Program
                 catch (Exception ex)
                 {
                     logger.Error(ex, "An error occurred while seeding the identity data.");
-                    throw;  // Ensure that failure in seeding prevents app start
                 }
             }
 

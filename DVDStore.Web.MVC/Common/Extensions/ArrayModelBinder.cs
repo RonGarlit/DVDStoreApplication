@@ -9,6 +9,7 @@ namespace DVDStore.Web.MVC.Common.Extensions
 {
     public class ArrayModelBinder : IModelBinder
     {
+        private static readonly string[] separator = [","];
         #region Public Methods
 
         public Task BindModelAsync(ModelBindingContext bindingContext)
@@ -38,7 +39,7 @@ namespace DVDStore.Web.MVC.Common.Extensions
             var converter = TypeDescriptor.GetConverter(elementType);
 
             // Convert each item in the value list to the enumerable type
-            var values = value.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries)
+            var values = value.Split(separator, StringSplitOptions.RemoveEmptyEntries)
                 .Select(x => converter.ConvertFromString(x.Trim()))
                 .ToArray();
 

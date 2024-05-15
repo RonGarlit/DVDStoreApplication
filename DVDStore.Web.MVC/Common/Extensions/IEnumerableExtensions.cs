@@ -13,10 +13,7 @@ namespace Api.Helpers
             this IEnumerable<TSource> source,
             string fields)
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
+            ArgumentNullException.ThrowIfNull(source);
 
             // create a list to hold our ExpandoObjects
             var expandoObjectList = new List<ExpandoObject>();
