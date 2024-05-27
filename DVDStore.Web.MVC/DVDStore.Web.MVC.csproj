@@ -54,4 +54,12 @@
 		<ProjectReference Include="..\DVDStore.DAL\DVDStore.DAL.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Areas\FilmCatalog\Controllers\" />
+	  <Folder Include="Areas\FilmCatalog\Models\" />
+	  <Folder Include="Areas\FilmCatalog\Common\" />
+	  <Folder Include="Areas\FilmCatalog\Repositories\" />
+	  <Folder Include="Areas\FilmCatalog\Views\" />
+	</ItemGroup>
+
 </Project>
