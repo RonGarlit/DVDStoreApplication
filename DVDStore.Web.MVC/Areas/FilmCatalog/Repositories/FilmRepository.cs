@@ -26,7 +26,7 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Repositories
                     FilmId = f.Filmid,
                     Title = f.Title,
                     Description = f.Description,
-                    Genre = f.Filmcategories.FirstOrDefault().Category.Name, // Assuming Genre is derived from the Category relationship
+                    Genre = f.Filmcategories.Select(c => c.Category.Name).DefaultIfEmpty("No Genre").FirstOrDefault() ?? "No Genre",  // Uses DefaultIfEmpty - We are assuming Genre is derived from the Category relationship
                     RentalRate = f.Rentalrate,
                     Length = (f.Length ?? 0),
                     Rating = f.Rating,
@@ -56,19 +56,19 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Repositories
         {
             var film = await _context.Films.FindAsync(filmId);
 
-            if (film == null) return null;
-
-            return new DetailsFilmModel
-            {
-                FilmId = film.Filmid,
-                Title = film.Title,
-                Description = film.Description,
-                Genre = film.Filmcategories.FirstOrDefault()?.Category.Name, // Assuming Genre is derived from the Category relationship
-                RentalRate = film.Rentalrate,
-                Length = (film.Length ?? 0),
-                Rating = film.Rating,
-                LastUpdate = film.Lastupdate
-            };
+            return film == null
+                ? throw new KeyNotFoundException($"A film with the ID {filmId} was not found.")
+                : new DetailsFilmModel
+                {
+                    FilmId = film.Filmid,
+                    Title = film.Title,
+                    Description = film.Description,
+                    Genre = film.Filmcategories.FirstOrDefault()!.Category.Name, // Assuming Genre is derived from the Category relationship
+                    RentalRate = film.Rentalrate,
+                    Length = (film.Length ?? 0),
+                    Rating = film.Rating,
+                    LastUpdate = film.Lastupdate
+                };
         }
 
         public async Task AddFilmAsync(Film film)

@@ -29,6 +29,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\DVDStore.DAL\DVDStore.DAL.csproj" />
+		<ProjectReference Include="..\DVDStore.Web.MVC\DVDStore.Web.MVC.csproj" />
 	</ItemGroup>
 
 </Project>
