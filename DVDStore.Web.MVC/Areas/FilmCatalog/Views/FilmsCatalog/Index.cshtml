@@ -1,0 +1,68 @@
+﻿@using DVDStore.Web.MVC.Areas.FilmCatalog.Models
+@model FilmsPagedModel<FilmViewModel>
+
+@{
+    ViewData["Title"] = "Films";
+}
+
+<h2>Films</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Releaseyear)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Rating)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Releaseyear)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Rating)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Filmid">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Filmid">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Filmid">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    Page @(Model.CurrentPage) of @(Model.TotalPages)
+    @if (Model.HasPrevious)
+    {
+        <a asp-action="Index" asp-route-pageNumber="@(Model.CurrentPage - 1)">Previous</a>
+    }
+    @if (Model.HasNext)
+    {
+        <a asp-action="Index" asp-route-pageNumber="@(Model.CurrentPage + 1)">Next</a>
+    }
+</div>

@@ -8,13 +8,54 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Repositories
 {
     public class FilmRepository : IFilmRepository
     {
+        #region Private Fields
+
         private readonly DVDStoreDbContext _context;
         private readonly FilmsPropertyMapper _propertyMapper;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public FilmRepository(DVDStoreDbContext context, FilmsPropertyMapper propertyMapper)
         {
             _context = context;
             _propertyMapper = propertyMapper;
+        }
+
+        #endregion Public Constructors
+
+        #region Public Methods
+
+        public async Task<FilmViewModel> AddFilm(FilmViewModel filmViewModel)
+        {
+            var film = MapToDomainModel(filmViewModel);
+            _context.Films.Add(film);
+            await _context.SaveChangesAsync();
+            return MapToViewModel(film);
+        }
+
+        public async Task<bool> DeleteFilm(int id)
+        {
+            var film = await _context.Films.Include(f => f.Filmcategories).FirstOrDefaultAsync(f => f.Filmid == id);
+            if (film == null) return false;
+
+            // Delete related Filmcategory entities
+            _context.Filmcategories.RemoveRange(film.Filmcategories);
+
+            _context.Films.Remove(film);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<FilmViewModel> GetFilm(int id)
+        {
+            var film = await _context.Films.FindAsync(id);
+            if (film == null)
+            {
+                return null!;
+            }
+            return MapToViewModel(film);
         }
 
         public Task<FilmsPagedModel<FilmViewModel>> GetPagedFilms(FilmCatalogResourceParameters resourceParameters)
@@ -47,25 +88,6 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Repositories
             return Task.FromResult(new FilmsPagedModel<FilmViewModel>(filmViewModels, filmsPagedModel.TotalCount, filmsPagedModel.CurrentPage, filmsPagedModel.PageSize));
         }
 
-        public async Task<FilmViewModel> GetFilm(int id)
-        {
-            var film = await _context.Films.FindAsync(id);
-            if (film == null)
-            {
-                return null!;
-            }
-            return MapToViewModel(film);
-        }
-
-
-        public async Task<FilmViewModel> AddFilm(FilmViewModel filmViewModel)
-        {
-            var film = MapToDomainModel(filmViewModel);
-            _context.Films.Add(film);
-            await _context.SaveChangesAsync();
-            return MapToViewModel(film);
-        }
-
         public async Task<FilmViewModel> UpdateFilm(FilmViewModel filmViewModel)
         {
             var film = await _context.Films.FindAsync(filmViewModel.Filmid);
@@ -79,20 +101,29 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Repositories
             return MapToViewModel(film);
         }
 
+        #endregion Public Methods
 
-        public async Task<bool> DeleteFilm(int id)
+        #region Private Methods
+
+        private static Film MapToDomainModel(FilmViewModel viewModel)
         {
-            var film = await _context.Films.Include(f => f.Filmcategories).FirstOrDefaultAsync(f => f.Filmid == id);
-            if (film == null) return false;
-
-            // Delete related Filmcategory entities
-            _context.Filmcategories.RemoveRange(film.Filmcategories);
-
-            _context.Films.Remove(film);
-            await _context.SaveChangesAsync();
-            return true;
+            return new Film
+            {
+                Filmid = viewModel.Filmid,
+                Title = viewModel.Title,
+                Description = viewModel.Description,
+                Releaseyear = viewModel.Releaseyear,
+                Languageid = viewModel.Languageid,
+                Originallanguageid = viewModel.Originallanguageid,
+                Rentalduration = viewModel.Rentalduration,
+                Rentalrate = viewModel.Rentalrate,
+                Length = viewModel.Length,
+                Replacementcost = viewModel.Replacementcost,
+                Rating = viewModel.Rating,
+                Specialfeatures = viewModel.Specialfeatures,
+                Lastupdate = viewModel.Lastupdate
+            };
         }
-
 
         private static FilmViewModel MapToViewModel(Film film)
         {
@@ -114,24 +145,6 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Repositories
             };
         }
 
-        private static Film MapToDomainModel(FilmViewModel viewModel)
-        {
-            return new Film
-            {
-                Filmid = viewModel.Filmid,
-                Title = viewModel.Title,
-                Description = viewModel.Description,
-                Releaseyear = viewModel.Releaseyear,
-                Languageid = viewModel.Languageid,
-                Originallanguageid = viewModel.Originallanguageid,
-                Rentalduration = viewModel.Rentalduration,
-                Rentalrate = viewModel.Rentalrate,
-                Length = viewModel.Length,
-                Replacementcost = viewModel.Replacementcost,
-                Rating = viewModel.Rating,
-                Specialfeatures = viewModel.Specialfeatures,
-                Lastupdate = viewModel.Lastupdate
-            };
-        }
+        #endregion Private Methods
     }
 }

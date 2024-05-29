@@ -10,11 +10,18 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Content Remove="Areas\FilmCatalog\Views\FilmsCatalog\_ViewImports.cshtml" />
+	  <Content Remove="Areas\FilmCatalog\Views\FilmsCatalog\_ViewStart.cshtml" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<None Remove="C:\Users\rgarlit\.nuget\packages\nlog.schema\5.3.2\contentFiles\any\any\NLog.xsd" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Include="Areas\Security\Views\User\delete.cshtml" />
+	  <None Include="Areas\FilmCatalog\Views\FilmsCatalog\_ViewImports.cshtml" />
+	  <None Include="Areas\FilmCatalog\Views\FilmsCatalog\_ViewStart.cshtml" />
+	  <None Include="Areas\Security\Views\User\Delete.cshtml" />
 	  <None Include="Areas\Security\Views\User\Details.cshtml" />
 	  <None Include="Areas\Security\Views\User\Edit.cshtml" />
 	  <None Include="Areas\Security\Views\User\Index.cshtml" />
@@ -53,10 +60,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\DVDStore.DAL\DVDStore.DAL.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Areas\FilmCatalog\Views\" />
 	</ItemGroup>
 
 </Project>

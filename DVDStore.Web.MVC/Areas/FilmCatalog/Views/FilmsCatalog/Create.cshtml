@@ -1,0 +1,82 @@
+﻿@model DVDStore.Web.MVC.Areas.FilmCatalog.Models.FilmViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<h4>Film</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Releaseyear" class="control-label"></label>
+                <input asp-for="Releaseyear" class="form-control" />
+                <span asp-validation-for="Releaseyear" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Languageid" class="control-label"></label>
+                <input asp-for="Languageid" class="form-control" />
+                <span asp-validation-for="Languageid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Originallanguageid" class="control-label"></label>
+                <input asp-for="Originallanguageid" class="form-control" />
+                <span asp-validation-for="Originallanguageid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Rentalduration" class="control-label"></label>
+                <input asp-for="Rentalduration" class="form-control" />
+                <span asp-validation-for="Rentalduration" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Rentalrate" class="control-label"></label>
+                <input asp-for="Rentalrate" class="form-control" />
+                <span asp-validation-for="Rentalrate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Length" class="control-label"></label>
+                <input asp-for="Length" class="form-control" />
+                <span asp-validation-for="Length" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Replacementcost" class="control-label"></label>
+                <input asp-for="Replacementcost" class="form-control" />
+                <span asp-validation-for="Replacementcost" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Rating" class="control-label"></label>
+                <input asp-for="Rating" class="form-control" />
+                <span asp-validation-for="Rating" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Specialfeatures" class="control-label"></label>
+                <input asp-for="Specialfeatures" class="form-control" />
+                <span asp-validation-for="Specialfeatures" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Lastupdate" class="control-label"></label>
+                <input asp-for="Lastupdate" class="form-control" />
+                <span asp-validation-for="Lastupdate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
