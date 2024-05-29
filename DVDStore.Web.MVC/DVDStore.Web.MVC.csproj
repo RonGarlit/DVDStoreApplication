@@ -56,7 +56,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Areas\FilmCatalog\Controllers\" />
 	  <Folder Include="Areas\FilmCatalog\Views\" />
 	</ItemGroup>
 

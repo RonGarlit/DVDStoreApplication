@@ -17,7 +17,6 @@
         // and sorting (SortOrder).
 
         public string SearchQuery { get; set; }
-        public string Genre { get; set; }
         public string Rating { get; set; }
         public string SortOrder { get; set; } = "Title"; // Default sort order
     }

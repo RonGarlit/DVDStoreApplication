@@ -1,29 +1,99 @@
-﻿using DVDStore.Web.MVC.Areas.FilmCatalog.Repositories;
+﻿using DVDStore.Web.MVC.Areas.FilmCatalog.Controllers;
+using DVDStore.Web.MVC.Areas.FilmCatalog.Repositories;
 using DVDStore.Web.MVC.Areas.FilmCatalog.Common;
-using Microsoft.EntityFrameworkCore;
-using System.Globalization;
 using DVDStore.Web.MVC.Areas.FilmCatalog.Models;
-using Moq;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace DVDStore.DAL.MockedUnitTests
 {
     [TestClass]
-    public class FilmRepositoryTests
+    public class FilmsCatalogControllerTests
     {
         #region Private Fields
 
+        private FilmsCatalogController? _controller;
         private FilmRepository? _filmRepository;
         private DbContextOptions<DVDStoreDbContext>? _options;
+        private DVDStoreDbContext? _context;
         private FilmsPropertyMapper? _propertyMapper;
-        private DVDStoreDbContext? context;
 
         #endregion Private Fields
 
         #region Public Methods
 
-        [TestMethod]
-        public async Task AddFilm_AddsFilmSuccessfully()
+        [TestInitialize]
+        public void TestInitialize()
         {
+            _options = new DbContextOptionsBuilder<DVDStoreDbContext>()
+                .UseInMemoryDatabase(databaseName: "Test_DVDStore")
+                .Options;
+
+            _context = new DVDStoreDbContext(_options);
+            _propertyMapper = new FilmsPropertyMapper();
+            _filmRepository = new FilmRepository(_context, _propertyMapper);
+            _controller = new FilmsCatalogController(_filmRepository);
+
+            SeedDatabase();
+        }
+
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            using var context = new DVDStoreDbContext(_options);
+            context.Database.EnsureDeleted();
+        }
+
+        [TestMethod]
+        public async Task Index_ReturnsViewResult_WithPagedFilms()
+        {
+            // Arrange
+            var resourceParameters = new FilmCatalogResourceParameters
+            {
+                PageNumber = 1,
+                PageSize = 5
+            };
+
+            // Act
+            var result = await _controller!.Index(resourceParameters);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+            var viewResult = result as ViewResult;
+            Assert.IsNotNull(viewResult);
+            var model = viewResult.Model as FilmsPagedModel<FilmViewModel>;
+            Assert.IsNotNull(model);
+            Assert.AreEqual(5, model.Count);
+            Assert.AreEqual(10, model.TotalCount);
+        }
+
+        [TestMethod]
+        public async Task Details_ReturnsViewResult_WithFilm()
+        {
+            // Arrange
+            var filmId = 1;
+
+            // Act
+            var result = await _controller!.Details(filmId);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+            var viewResult = result as ViewResult;
+            Assert.IsNotNull(viewResult);
+            var model = viewResult.Model as FilmViewModel;
+            Assert.IsNotNull(model);
+            Assert.AreEqual("ACADEMY DINOSAUR", model.Title);
+        }
+
+        [TestMethod]
+        public async Task Create_RedirectsToIndex_WhenFilmIsCreated()
+        {
+            // Arrange
             var filmViewModel = new FilmViewModel
             {
                 Filmid = 11,
@@ -40,69 +110,42 @@ namespace DVDStore.DAL.MockedUnitTests
                 Lastupdate = DateTime.Now
             };
 
-            var result = await _filmRepository!.AddFilm(filmViewModel);
+            // Act
+            var result = await _controller!.Create(filmViewModel);
 
-            Assert.IsNotNull(result);
-            Assert.AreEqual("NEW FILM", result.Title);
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
+            var redirectToActionResult = result as RedirectToActionResult;
+            Assert.IsNotNull(redirectToActionResult);
+            Assert.AreEqual("Index", redirectToActionResult.ActionName);
 
-            var filmInDb = await context!.Films.FindAsync(11);
+            var filmInDb = await _context!.Films.FindAsync(11);
             Assert.IsNotNull(filmInDb);
             Assert.AreEqual("NEW FILM", filmInDb.Title);
         }
 
         [TestMethod]
-        public async Task GetFilm_ReturnsCorrectFilm()
+        public async Task Edit_ReturnsViewResult_WithFilm()
         {
-            var result = await _filmRepository!.GetFilm(1);
+            // Arrange
+            var filmId = 1;
 
-            Assert.IsNotNull(result);
-            Assert.AreEqual("ACADEMY DINOSAUR", result.Title);
+            // Act
+            var result = await _controller!.Edit(filmId);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+            var viewResult = result as ViewResult;
+            Assert.IsNotNull(viewResult);
+            var model = viewResult.Model as FilmViewModel;
+            Assert.IsNotNull(model);
+            Assert.AreEqual("ACADEMY DINOSAUR", model.Title);
         }
 
         [TestMethod]
-        public async Task GetPagedFilms_ReturnsCorrectPagedResults()
+        public async Task Edit_RedirectsToIndex_WhenFilmIsUpdated()
         {
-            var resourceParameters = new FilmCatalogResourceParameters
-            {
-                PageNumber = 1,
-                PageSize = 5
-            };
-
-            var result = await _filmRepository!.GetPagedFilms(resourceParameters);
-
-            Assert.AreEqual(5, result.Count);
-            Assert.AreEqual(10, result.TotalCount);
-        }
-
-        [TestCleanup]
-        public void TestCleanup()
-        {
-            context = new DVDStoreDbContext(_options);
-            context.Database.EnsureDeleted();
-        }
-
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            _options = new DbContextOptionsBuilder<DVDStoreDbContext>()
-                .UseInMemoryDatabase(databaseName: "Test_DVDStore")
-                .Options;
-
-            context = new DVDStoreDbContext(_options);
-            _propertyMapper = new FilmsPropertyMapper();
-            _filmRepository = new FilmRepository(context, _propertyMapper);
-
-            context.Actors.AddRange(GetActorList());
-            context.Films.AddRange(GetFilmList());
-            context.Customers.AddRange(GetCustomerList());
-            context.Categories.AddRange(GetCategoriesList());
-            context.Filmcategories.AddRange(GetFilmCategoriesList());
-            context.SaveChanges();
-        }
-
-        [TestMethod]
-        public async Task UpdateFilm_UpdatesFilmSuccessfully()
-        {
+            // Arrange
             var filmViewModel = new FilmViewModel
             {
                 Filmid = 1,
@@ -119,19 +162,72 @@ namespace DVDStore.DAL.MockedUnitTests
                 Lastupdate = DateTime.Now
             };
 
-            var result = await _filmRepository!.UpdateFilm(filmViewModel);
+            // Act
+            var result = await _controller!.Edit(filmViewModel);
 
-            Assert.IsNotNull(result);
-            Assert.AreEqual("UPDATED TITLE", result.Title);
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
+            var redirectToActionResult = result as RedirectToActionResult;
+            Assert.IsNotNull(redirectToActionResult);
+            Assert.AreEqual("Index", redirectToActionResult.ActionName);
 
-            var filmInDb = await context!.Films.FindAsync(1);
+            var filmInDb = await _context!.Films.FindAsync(filmViewModel.Filmid);
             Assert.IsNotNull(filmInDb);
             Assert.AreEqual("UPDATED TITLE", filmInDb.Title);
         }
 
+
+        [TestMethod]
+        public async Task Delete_ReturnsViewResult_WithFilm()
+        {
+            // Arrange
+            var filmId = 1;
+
+            // Act
+            var result = await _controller!.Delete(filmId);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+            var viewResult = result as ViewResult;
+            Assert.IsNotNull(viewResult);
+            var model = viewResult.Model as FilmViewModel;
+            Assert.IsNotNull(model);
+            Assert.AreEqual("ACADEMY DINOSAUR", model.Title);
+        }
+
+        [TestMethod]
+        public async Task DeleteConfirmed_RedirectsToIndex_WhenFilmIsDeleted()
+        {
+            // Arrange
+            var filmId = 1;
+
+            // Act
+            var result = await _controller!.DeleteConfirmed(filmId);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
+            var redirectToActionResult = result as RedirectToActionResult;
+            Assert.IsNotNull(redirectToActionResult);
+            Assert.AreEqual("Index", redirectToActionResult.ActionName);
+
+            var filmInDb = await _context!.Films.FindAsync(filmId);
+            Assert.IsNull(filmInDb);
+        }
+
+
         #endregion Public Methods
 
         #region Private Methods
+
+        private void SeedDatabase()
+        {
+            _context!.Actors.AddRange(GetActorList());
+            _context.Films.AddRange(GetFilmList());
+            _context.Customers.AddRange(GetCustomerList());
+            _context.Categories.AddRange(GetCategoriesList());
+            _context.Filmcategories.AddRange(GetFilmCategoriesList());
+            _context.SaveChanges();
+        }
 
         private static List<Actor> GetActorList()
         {

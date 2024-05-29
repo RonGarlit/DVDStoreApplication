@@ -1,96 +1,137 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using DVDStore.Web.MVC.Areas.FilmCatalog.Models;
+﻿using Microsoft.EntityFrameworkCore;
 using DVDStore.Web.MVC.Areas.FilmCatalog.Common;
-using DVDStore.Web.MVC.Common;
+using DVDStore.Web.MVC.Areas.FilmCatalog.Models;
 using DVDStore.DAL;
+using DVDStore.Web.MVC.Common.Extensions;
 
 namespace DVDStore.Web.MVC.Areas.FilmCatalog.Repositories
 {
     public class FilmRepository : IFilmRepository
     {
-        private readonly IDVDStoreDbContext _context;
+        private readonly DVDStoreDbContext _context;
+        private readonly FilmsPropertyMapper _propertyMapper;
 
-        public FilmRepository(IDVDStoreDbContext context)
+        public FilmRepository(DVDStoreDbContext context, FilmsPropertyMapper propertyMapper)
         {
             _context = context;
+            _propertyMapper = propertyMapper;
         }
 
-        public async Task<PagedList<DetailsFilmModel>> GetAllFilmsAsync(FilmCatalogResourceParameters parameters)
+        public Task<FilmsPagedModel<FilmViewModel>> GetPagedFilms(FilmCatalogResourceParameters resourceParameters)
         {
-            var collection = _context.Films
-                .ApplySort(parameters.SortOrder)
-                .Select(f => new DetailsFilmModel
-                {
-                    FilmId = f.Filmid,
-                    Title = f.Title,
-                    Description = f.Description,
-                    Genre = f.Filmcategories.Select(c => c.Category.Name).DefaultIfEmpty("No Genre").FirstOrDefault() ?? "No Genre",  // Uses DefaultIfEmpty - We are assuming Genre is derived from the Category relationship
-                    RentalRate = f.Rentalrate,
-                    Length = (f.Length ?? 0),
-                    Rating = f.Rating,
-                    LastUpdate = f.Lastupdate
-                });
+            var collectionBeforePaging = _context.Films.AsQueryable();
 
-            if (!string.IsNullOrEmpty(parameters.SearchQuery))
+            // Apply filtering
+            if (!string.IsNullOrEmpty(resourceParameters.SearchQuery))
             {
-                collection = collection.Where(f => f.Title.Contains(parameters.SearchQuery)
-                                                   || f.Description.Contains(parameters.SearchQuery));
+                var searchQuery = resourceParameters.SearchQuery.Trim().ToLowerInvariant();
+                collectionBeforePaging = collectionBeforePaging
+                    .Where(f => f.Title.ToLowerInvariant().Contains(searchQuery, StringComparison.OrdinalIgnoreCase) ||
+                                f.Description.ToLowerInvariant().Contains(searchQuery, StringComparison.OrdinalIgnoreCase));
             }
 
-            if (!string.IsNullOrEmpty(parameters.Genre))
+            if (!string.IsNullOrEmpty(resourceParameters.Rating))
             {
-                collection = collection.Where(f => f.Genre == parameters.Genre);
+                var ratingForWhereClause = resourceParameters.Rating.Trim();
+                collectionBeforePaging = collectionBeforePaging
+                    .Where(f => string.Equals(f.Rating, ratingForWhereClause, StringComparison.OrdinalIgnoreCase));
             }
 
-            if (!string.IsNullOrEmpty(parameters.Rating))
-            {
-                collection = collection.Where(f => f.Rating == parameters.Rating);
-            }
+            // Apply sorting
+            collectionBeforePaging = collectionBeforePaging.ApplySort(resourceParameters.SortOrder, _propertyMapper.GetPropertyMapping<Film, Film>());
 
-            return await Task.FromResult(PagedList<DetailsFilmModel>.Create(collection, parameters.PageNumber, parameters.PageSize));
+            var filmsPagedModel = FilmsPagedModel<Film>.Create(collectionBeforePaging, resourceParameters.PageNumber, resourceParameters.PageSize);
+
+            var filmViewModels = filmsPagedModel.Select(f => MapToViewModel(f)).ToList();
+
+            return Task.FromResult(new FilmsPagedModel<FilmViewModel>(filmViewModels, filmsPagedModel.TotalCount, filmsPagedModel.CurrentPage, filmsPagedModel.PageSize));
         }
 
-        public async Task<DetailsFilmModel> GetFilmByIdAsync(int filmId)
+        public async Task<FilmViewModel> GetFilm(int id)
         {
-            var film = await _context.Films.FindAsync(filmId);
-
-            return film == null
-                ? throw new KeyNotFoundException($"A film with the ID {filmId} was not found.")
-                : new DetailsFilmModel
-                {
-                    FilmId = film.Filmid,
-                    Title = film.Title,
-                    Description = film.Description,
-                    Genre = film.Filmcategories.FirstOrDefault()!.Category.Name, // Assuming Genre is derived from the Category relationship
-                    RentalRate = film.Rentalrate,
-                    Length = (film.Length ?? 0),
-                    Rating = film.Rating,
-                    LastUpdate = film.Lastupdate
-                };
+            var film = await _context.Films.FindAsync(id);
+            if (film == null)
+            {
+                return null!;
+            }
+            return MapToViewModel(film);
         }
 
-        public async Task AddFilmAsync(Film film)
+
+        public async Task<FilmViewModel> AddFilm(FilmViewModel filmViewModel)
         {
-            await _context.Films.AddAsync(film);
+            var film = MapToDomainModel(filmViewModel);
+            _context.Films.Add(film);
             await _context.SaveChangesAsync();
+            return MapToViewModel(film);
         }
 
-        public async Task UpdateFilmAsync(Film film)
+        public async Task<FilmViewModel> UpdateFilm(FilmViewModel filmViewModel)
         {
-            _context.Films.Update(film);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task DeleteFilmAsync(int filmId)
-        {
-            var film = await _context.Films.FindAsync(filmId);
-            if (film != null)
+            var film = await _context.Films.FindAsync(filmViewModel.Filmid);
+            if (film == null)
             {
-                _context.Films.Remove(film);
-                await _context.SaveChangesAsync();
+                return null!;
             }
+
+            _context.Entry(film).CurrentValues.SetValues(filmViewModel);
+            await _context.SaveChangesAsync();
+            return MapToViewModel(film);
+        }
+
+
+        public async Task<bool> DeleteFilm(int id)
+        {
+            var film = await _context.Films.Include(f => f.Filmcategories).FirstOrDefaultAsync(f => f.Filmid == id);
+            if (film == null) return false;
+
+            // Delete related Filmcategory entities
+            _context.Filmcategories.RemoveRange(film.Filmcategories);
+
+            _context.Films.Remove(film);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+
+        private static FilmViewModel MapToViewModel(Film film)
+        {
+            return new FilmViewModel
+            {
+                Filmid = film.Filmid,
+                Title = film.Title,
+                Description = film.Description,
+                Releaseyear = film.Releaseyear,
+                Languageid = film.Languageid,
+                Originallanguageid = film.Originallanguageid,
+                Rentalduration = film.Rentalduration,
+                Rentalrate = film.Rentalrate,
+                Length = film.Length,
+                Replacementcost = film.Replacementcost,
+                Rating = film.Rating,
+                Specialfeatures = film.Specialfeatures,
+                Lastupdate = film.Lastupdate
+            };
+        }
+
+        private static Film MapToDomainModel(FilmViewModel viewModel)
+        {
+            return new Film
+            {
+                Filmid = viewModel.Filmid,
+                Title = viewModel.Title,
+                Description = viewModel.Description,
+                Releaseyear = viewModel.Releaseyear,
+                Languageid = viewModel.Languageid,
+                Originallanguageid = viewModel.Originallanguageid,
+                Rentalduration = viewModel.Rentalduration,
+                Rentalrate = viewModel.Rentalrate,
+                Length = viewModel.Length,
+                Replacementcost = viewModel.Replacementcost,
+                Rating = viewModel.Rating,
+                Specialfeatures = viewModel.Specialfeatures,
+                Lastupdate = viewModel.Lastupdate
+            };
         }
     }
 }
