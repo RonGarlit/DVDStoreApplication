@@ -1,4 +1,30 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿//*****************************************************************************
+//  ScholarshipApplication v1.0
+//
+//  Copyright 2024
+//  Developed by:
+//     Ronald Garlit.
+//
+//
+//  Use is subject to license terms.
+//*****************************************************************************
+//
+//  FileName: UserController.cs (Areas.Security.Controllers)
+//  Version: 0.1
+//  Author: Ronald Garlit
+//
+//  Description:
+//
+//  User Controller for management of users in the Security. Highly Restricted
+//  area access only.
+//
+//  Change History
+//
+//  WHEN            WHO        WHAT
+//-----------------------------------------------------------------------------
+//  2022-03-23      RGARLIT    STARTED DEVELOPMENT
+//****************************************************************************/
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -7,6 +33,9 @@ using DVDStore.Web.MVC.Areas.Security.Models;
 using DVDStore.Web.MVC.Common;
 using System.Data;
 using DVDStore.Web.MVC.Areas.Security.Repositories;
+using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
+using System.Linq;
 
 namespace DVDStore.Web.MVC.Areas.Security.Controllers
 {
@@ -19,15 +48,17 @@ namespace DVDStore.Web.MVC.Areas.Security.Controllers
 
         private readonly ISecurityUnitOfWork _securityDbWork;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly ILogger<UserController> _logger;
 
         #endregion Private Fields
 
         #region Public Constructors
 
-        public UserController(ISecurityUnitOfWork securityDbWork, SignInManager<ApplicationUser> signInManager)
+        public UserController(ISecurityUnitOfWork securityDbWork, SignInManager<ApplicationUser> signInManager, ILogger<UserController> logger)
         {
             _securityDbWork = securityDbWork;
             _signInManager = signInManager;
+            _logger = logger;
         }
 
         #endregion Public Constructors
@@ -44,9 +75,11 @@ namespace DVDStore.Web.MVC.Areas.Security.Controllers
         [Authorize(Roles = "Administrator")]
         public Task<IActionResult> Delete(string? id)
         {
+            _logger.LogInformation("User Delete Page Entered for ID: {UserIdToDelete}", id);
             var user = _securityDbWork.User.GetUser(id!);
             if (user == null)
             {
+                _logger.LogWarning("User Delete Page Entered for ID: {UserIdToDelete} - User Not Found", id);
                 return Task.FromResult<IActionResult>(NotFound());
             }
             // Pass Search Query parameter forward for "Back To List" tag helper
@@ -59,9 +92,11 @@ namespace DVDStore.Web.MVC.Areas.Security.Controllers
         [Authorize(Roles = "Administrator")]
         public IActionResult DeleteConfirmed(string? id)
         {
+            _logger.LogInformation("User Delete Confirmed for ID: {UserIdToDelete}", id);
             var user = _securityDbWork.User.GetUser(id!);
             if (user != null)
             {
+                _logger.LogInformation("User Delete Confirmed for ID: {UserIdToDelete} - User Deleted", id);
                 _securityDbWork.User.DeleteUser(user);
             }
 
@@ -72,6 +107,7 @@ namespace DVDStore.Web.MVC.Areas.Security.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Details(string id)
         {
+            _logger.LogInformation("User Details Page Entered for ID: {UserIdToDetail}", id);
             var user = _securityDbWork.User.GetUser(id);
             var roles = _securityDbWork.Role.GetRoles();
 
@@ -97,6 +133,7 @@ namespace DVDStore.Web.MVC.Areas.Security.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(string id)
         {
+            _logger.LogInformation("User Edit Page Entered for ID: {UserIdToEdit}", id);
             var user = _securityDbWork.User.GetUser(id);
             var roles = _securityDbWork.Role.GetRoles();
 
@@ -124,6 +161,7 @@ namespace DVDStore.Web.MVC.Areas.Security.Controllers
                                     [FromQuery] int pageSize = 10,
                                     [FromQuery] string? SearchQuery = null)
         {
+            _logger.LogInformation("User Administration Page Entered");
             var UsersResourceParameters = new UsersResourceParameters
             {
                 PageNumber = pageNo,
@@ -148,9 +186,7 @@ namespace DVDStore.Web.MVC.Areas.Security.Controllers
             // tag helpers where required through ViewBag. 
             BTLSearchQuery = ViewBag.SearchQuery;
 
-
             return View(data);
-
         }
 
         [HttpPost]
@@ -158,18 +194,20 @@ namespace DVDStore.Web.MVC.Areas.Security.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> OnPostAsync(EditUserViewModel data)
         {
+            _logger.LogInformation("User Edit Page Post Entered for ID: {UserIdToEdit}", data.User!.Id);
             var user = _securityDbWork.User.GetUser(data.User!.Id);
             if (user == null)
             {
+                _logger.LogWarning("User Edit Page Post Entered for ID: {UserIdToEdit} - User Not Found", data.User!.Id);
                 return NotFound();
             }
 
             var userRolesInDb = await _signInManager.UserManager.GetRolesAsync(user);
 
-            //Loop through the roles in ViewModel
-            //Check if the Role is Assigned In DB
-            //If Assigned -> Do Nothing
-            //If Not Assigned -> Add Role
+            // Loop through the roles in ViewModel
+            // Check if the Role is Assigned In DB
+            // If Assigned -> Do Nothing
+            // If Not Assigned -> Add Role
 
             var rolesToAdd = new List<string>();
             var rolesToDelete = new List<string>();
