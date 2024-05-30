@@ -176,7 +176,7 @@ namespace DVDStore.Web.MVC.Areas.Security.Controllers
             // Prep some needed ViewBag Variables
             ViewBag.SearchQuery = "";
 
-            // Load up the ViewBag variables with data from the filters and search boxes
+                
             if (UsersResourceParameters.SearchQuery != null)
             {
                 ViewBag.SearchQuery = UsersResourceParameters.SearchQuery;

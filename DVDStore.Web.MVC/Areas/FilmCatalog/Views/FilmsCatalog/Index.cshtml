@@ -1,68 +1,101 @@
-﻿@using DVDStore.Web.MVC.Areas.FilmCatalog.Models
-@model FilmsPagedModel<FilmViewModel>
+﻿@model DVDStore.Web.MVC.Areas.FilmCatalog.Models.FilmsPagedModel<DVDStore.Web.MVC.Areas.FilmCatalog.Models.FilmViewModel>
+<div class="container-fluid">
+    @{
+        ViewData["Title"] = "Films";
+    }
 
-@{
-    ViewData["Title"] = "Films";
-}
+    <h1>Films</h1>
 
-<h2>Films</h2>
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+    <paging total-records="Model.TotalCount"
+            page-no="Model.CurrentPage"
+            page-size="Model.PageSize"
+            show-page-size-nav="false"
+            query-string-key-page-no="pageNo"
+            query-string-key-page-size="pageSize"
+            max-displayed-pages="5"
+            class-total-pages="badge bg-primary"
+            class-total-records="badge bg-primary"
+            class-paging-control="pagination pagination-sm"
+            class-page-link="bg-light text-dark"
+            class-active-page="bg-primary text-light"
+            class-disabled-jumping-button="disabled ">
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.First().Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().Releaseyear)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().Rating)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
+    </paging>
+    <p class="bg-primary text-light">Page @(Model.TotalPages < Model.CurrentPage ? 0 : Model.CurrentPage)</p>
+    <div class="table-responsive-lg">
+        @if (@Model != null && @Model.Any())
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Releaseyear)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Rating)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Filmid">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Filmid">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Filmid">Delete</a>
-                </td>
-            </tr>
+            <table class="table table-hover table-striped">
+                <thead class="table-primary">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.First().Title)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.First().Description)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.First().Releaseyear)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.First().Rating)
+                        </th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Details</th>
+                        <th scope="col">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Releaseyear)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Rating)
+                            </td>
+                            <td>
+                                <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Filmid">Edit</a>
+                            </td>
+                            <td>
+                                <a class="btn btn-success" asp-action="Details" asp-route-id="@item.Filmid">Details</a>
+                            </td>
+                            <td>
+                                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Filmid">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         }
-    </tbody>
-</table>
+    </div>
 
-<div>
-    Page @(Model.CurrentPage) of @(Model.TotalPages)
-    @if (Model.HasPrevious)
-    {
-        <a asp-action="Index" asp-route-pageNumber="@(Model.CurrentPage - 1)">Previous</a>
-    }
-    @if (Model.HasNext)
-    {
-        <a asp-action="Index" asp-route-pageNumber="@(Model.CurrentPage + 1)">Next</a>
-    }
+    <p class="bg-primary text-light">Page @(Model!.TotalPages < Model.CurrentPage ? 0 : Model.CurrentPage)</p>
+
+    <paging total-records="Model.TotalCount"
+            page-no="Model.CurrentPage"
+            page-size="Model.PageSize"
+            show-page-size-nav="false"
+            query-string-key-page-no="pageNo"
+            query-string-key-page-size="pageSize"
+            max-displayed-pages="5"
+            class-total-pages="badge bg-primary"
+            class-total-records="badge bg-primary"
+            class-paging-control="pagination pagination-sm"
+            class-page-link="bg-light text-dark"
+            class-active-page="bg-primary text-light"
+            class-disabled-jumping-button="disabled ">
+
+    </paging>
 </div>

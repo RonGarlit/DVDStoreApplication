@@ -1,7 +1,6 @@
 ﻿using DVDStore.Web.MVC.Areas.FilmCatalog.Common;
 using DVDStore.Web.MVC.Areas.FilmCatalog.Models;
 using DVDStore.Web.MVC.Areas.FilmCatalog.Repositories;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DVDStore.Web.MVC.Areas.FilmCatalog.Controllers
@@ -12,15 +11,23 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Controllers
     {
         #region Private Fields
 
-        private readonly FilmRepository _filmRepository;
+        private readonly IFilmRepository _filmRepository;
+        private readonly ILogger<FilmsCatalogController> _logger;
 
         #endregion Private Fields
 
+        #region Private Properties
+
+        private static string? BTLSearchQuery { get; set; }
+
+        #endregion Private Properties
+
         #region Public Constructors
 
-        public FilmsCatalogController(FilmRepository filmRepository)
+        public FilmsCatalogController(IFilmRepository filmRepository, ILogger<FilmsCatalogController> logger)
         {
             _filmRepository = filmRepository;
+            _logger = logger;
         }
 
         #endregion Public Constructors
@@ -51,11 +58,15 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Controllers
         [HttpGet("{id?}")]
         public async Task<IActionResult> Delete(int id)
         {
+            _logger.LogInformation("Films Catalog Delete Page Entered");
             var model = await _filmRepository.GetFilm(id);
             if (model == null)
             {
+                _logger.LogWarning("Films Catalog Delete Page Entered - Film Not Found");
                 return NotFound();
             }
+            // Pass Search Query parameter forward for "Back To List" tag helper
+            ViewBag.IndexSearchQuery = BTLSearchQuery;
             return View(model);
         }
 
@@ -69,6 +80,8 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Controllers
             {
                 return NotFound();
             }
+            // Pass Search Query parameter forward for "Back To List" tag helper
+            ViewBag.IndexSearchQuery = BTLSearchQuery;
             return RedirectToAction(nameof(Index));
         }
 
@@ -93,6 +106,8 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Controllers
             {
                 return NotFound();
             }
+            // Pass Search Query parameter forward for "Back To List" tag helper
+            ViewBag.IndexSearchQuery = BTLSearchQuery;
             return View(model);
         }
 
@@ -115,9 +130,34 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Controllers
 
         // GET: Films
         [HttpGet]
-        public async Task<IActionResult> Index(FilmCatalogResourceParameters resourceParameters)
+        public async Task<IActionResult> Index([FromQuery] int pageNo = 1,
+                                               [FromQuery] int pageSize = 10,
+                                               [FromQuery] string? SearchQuery = null)
         {
+            _logger.LogInformation("Films Catalog Index Page Entered");
+            // Pass Search Query parameter forward for "Back To List" tag helper
+            var resourceParameters = new FilmCatalogResourceParameters
+            {
+                PageNumber = pageNo,
+                PageSize = pageSize,
+                SearchQuery = SearchQuery
+            };
+
+            // Await the task to get the model
             var model = await _filmRepository.GetPagedFilms(resourceParameters);
+
+            // Prep some needed ViewBag Variables
+            ViewBag.SearchQuery = "";
+
+            // Load up the ViewBag variables with data from the filters and search boxes
+            if (resourceParameters.SearchQuery != null)
+            {
+                ViewBag.SearchQuery = resourceParameters.SearchQuery;
+            }
+
+            // Save the search query parameter forward so that is can be added to the "Back To List"
+            BTLSearchQuery = ViewBag.SearchQuery;
+
             return View(model);
         }
 

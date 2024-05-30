@@ -1,4 +1,6 @@
 using DVDStore.DAL;
+using DVDStore.Web.MVC.Areas.FilmCatalog.Common;
+using DVDStore.Web.MVC.Areas.FilmCatalog.Repositories;
 using DVDStore.Web.MVC.Areas.Identity.Data;
 using DVDStore.Web.MVC.Areas.Identity.Services;
 using DVDStore.Web.MVC.Areas.Security.Repositories;
@@ -50,6 +52,10 @@ public static class Program
             builder.Services.AddScoped<ISecurityUnitOfWork, SecurityUnitOfWork>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+            builder.Services.AddScoped<IFilmRepository, FilmRepository>();
+
+            // Register FilmsPropertyMapper
+            builder.Services.AddScoped<FilmsPropertyMapper>();
 
             //=====================================================================================
             // Add Security/Identity DbContext Area
