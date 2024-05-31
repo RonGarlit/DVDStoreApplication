@@ -24,10 +24,8 @@ namespace DVDStore.DAL
         [Display(Name = "Title")]
         public string Title { get; set; } // title (length: 255)
 
-        [MaxLength(2147483647)]
-        [StringLength(2147483647)]
         [Display(Name = "Description")]
-        public string Description { get; set; } // description (length: 2147483647)
+        public string Description { get; set; } // description
 
         public Filmtext()
         {

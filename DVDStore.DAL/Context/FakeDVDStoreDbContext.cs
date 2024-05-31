@@ -37,7 +37,7 @@ namespace DVDStore.DAL
         public DbSet<Filmtext> Filmtexts { get; set; } // filmtext
         public DbSet<Inventory> Inventories { get; set; } // inventory
         public DbSet<Language> Languages { get; set; } // language
-        public DbSet<NLog> NLogs { get; set; } // NLog
+        public DbSet<Log> Logs { get; set; } // logs
         public DbSet<Payment> Payments { get; set; } // payment
         public DbSet<Rental> Rentals { get; set; } // rental
         public DbSet<Salesbyfilmcategory> Salesbyfilmcategories { get; set; } // salesbyfilmcategory
@@ -66,7 +66,7 @@ namespace DVDStore.DAL
             Filmtexts = new FakeDbSet<Filmtext>("Filmid");
             Inventories = new FakeDbSet<Inventory>("Inventoryid");
             Languages = new FakeDbSet<Language>("Languageid");
-            NLogs = new FakeDbSet<NLog>("Id");
+            Logs = new FakeDbSet<Log>("Logid");
             Payments = new FakeDbSet<Payment>("Paymentid");
             Rentals = new FakeDbSet<Rental>("Rentalid");
             Salesbyfilmcategories = new FakeDbSet<Salesbyfilmcategory>();
@@ -277,12 +277,12 @@ namespace DVDStore.DAL
 
         // Stored Procedures
 
-        public int NLogAddEntryP(string machineName, DateTime? logged, string level, string message, string logger, string properties, string exception)
+        public int Insertlog(string level, string callSite, string type, string message, string stackTrace, string innerException, string additionalInfo)
         {
             return 0;
         }
 
-        // NLogAddEntryPAsync() cannot be created due to having out parameters, or is relying on the procedure result (int)
+        // InsertlogAsync() cannot be created due to having out parameters, or is relying on the procedure result (int)
 
         public DbSet<UspGetDatabaseStatisticsReturnModel> UspGetDatabaseStatisticsReturnModel { get; set; }
         public List<UspGetDatabaseStatisticsReturnModel> UspGetDatabaseStatistics()

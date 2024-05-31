@@ -37,7 +37,7 @@ namespace DVDStore.DAL
         DbSet<Filmtext> Filmtexts { get; set; } // filmtext
         DbSet<Inventory> Inventories { get; set; } // inventory
         DbSet<Language> Languages { get; set; } // language
-        DbSet<NLog> NLogs { get; set; } // NLog
+        DbSet<Log> Logs { get; set; } // logs
         DbSet<Payment> Payments { get; set; } // payment
         DbSet<Rental> Rentals { get; set; } // rental
         DbSet<Salesbyfilmcategory> Salesbyfilmcategories { get; set; } // salesbyfilmcategory
@@ -92,8 +92,8 @@ namespace DVDStore.DAL
         IQueryable<TResult> FromExpression<TResult> (Expression<Func<IQueryable<TResult>>> expression);
 
         // Stored Procedures
-        int NLogAddEntryP(string machineName, DateTime? logged, string level, string message, string logger, string properties, string exception);
-        // NLogAddEntryPAsync() cannot be created due to having out parameters, or is relying on the procedure result (int)
+        int Insertlog(string level, string callSite, string type, string message, string stackTrace, string innerException, string additionalInfo);
+        // InsertlogAsync() cannot be created due to having out parameters, or is relying on the procedure result (int)
 
         List<UspGetDatabaseStatisticsReturnModel> UspGetDatabaseStatistics();
         List<UspGetDatabaseStatisticsReturnModel> UspGetDatabaseStatistics(out int procResult);

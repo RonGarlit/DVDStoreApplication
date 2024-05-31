@@ -48,7 +48,7 @@ namespace DVDStore.DAL
         public DbSet<Filmtext> Filmtexts { get; set; } // filmtext
         public DbSet<Inventory> Inventories { get; set; } // inventory
         public DbSet<Language> Languages { get; set; } // language
-        public DbSet<NLog> NLogs { get; set; } // NLog
+        public DbSet<Log> Logs { get; set; } // logs
         public DbSet<Payment> Payments { get; set; } // payment
         public DbSet<Rental> Rentals { get; set; } // rental
         public DbSet<Salesbyfilmcategory> Salesbyfilmcategories { get; set; } // salesbyfilmcategory
@@ -94,7 +94,7 @@ namespace DVDStore.DAL
             modelBuilder.ApplyConfiguration(new FilmtextMap());
             modelBuilder.ApplyConfiguration(new InventoryMap());
             modelBuilder.ApplyConfiguration(new LanguageMap());
-            modelBuilder.ApplyConfiguration(new NLogMap());
+            modelBuilder.ApplyConfiguration(new LogMap());
             modelBuilder.ApplyConfiguration(new PaymentMap());
             modelBuilder.ApplyConfiguration(new RentalMap());
             modelBuilder.ApplyConfiguration(new SalesbyfilmcategoryMap());
@@ -117,44 +117,44 @@ namespace DVDStore.DAL
         static partial void OnCreateModelPartial(ModelBuilder modelBuilder, string schema);
 
         // Stored Procedures
-        public int NLogAddEntryP(string machineName, DateTime? logged, string level, string message, string logger, string properties, string exception)
+        public int Insertlog(string level, string callSite, string type, string message, string stackTrace, string innerException, string additionalInfo)
         {
-            var machineNameParam = new SqlParameter { ParameterName = "@machineName", SqlDbType = SqlDbType.NVarChar, Direction = ParameterDirection.Input, Value = machineName, Size = 200 };
-            if (machineNameParam.Value == null)
-                machineNameParam.Value = DBNull.Value;
-
-            var loggedParam = new SqlParameter { ParameterName = "@logged", SqlDbType = SqlDbType.DateTime, Direction = ParameterDirection.Input, Value = logged.GetValueOrDefault() };
-            if (!logged.HasValue)
-                loggedParam.Value = DBNull.Value;
-
-            var levelParam = new SqlParameter { ParameterName = "@level", SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input, Value = level, Size = 5 };
+            var levelParam = new SqlParameter { ParameterName = "@level", SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input, Value = level, Size = -1 };
             if (levelParam.Value == null)
                 levelParam.Value = DBNull.Value;
 
-            var messageParam = new SqlParameter { ParameterName = "@message", SqlDbType = SqlDbType.NVarChar, Direction = ParameterDirection.Input, Value = message, Size = -1 };
+            var callSiteParam = new SqlParameter { ParameterName = "@callSite", SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input, Value = callSite, Size = -1 };
+            if (callSiteParam.Value == null)
+                callSiteParam.Value = DBNull.Value;
+
+            var typeParam = new SqlParameter { ParameterName = "@type", SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input, Value = type, Size = -1 };
+            if (typeParam.Value == null)
+                typeParam.Value = DBNull.Value;
+
+            var messageParam = new SqlParameter { ParameterName = "@message", SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input, Value = message, Size = -1 };
             if (messageParam.Value == null)
                 messageParam.Value = DBNull.Value;
 
-            var loggerParam = new SqlParameter { ParameterName = "@logger", SqlDbType = SqlDbType.NVarChar, Direction = ParameterDirection.Input, Value = logger, Size = 300 };
-            if (loggerParam.Value == null)
-                loggerParam.Value = DBNull.Value;
+            var stackTraceParam = new SqlParameter { ParameterName = "@stackTrace", SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input, Value = stackTrace, Size = -1 };
+            if (stackTraceParam.Value == null)
+                stackTraceParam.Value = DBNull.Value;
 
-            var propertiesParam = new SqlParameter { ParameterName = "@properties", SqlDbType = SqlDbType.NVarChar, Direction = ParameterDirection.Input, Value = properties, Size = -1 };
-            if (propertiesParam.Value == null)
-                propertiesParam.Value = DBNull.Value;
+            var innerExceptionParam = new SqlParameter { ParameterName = "@innerException", SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input, Value = innerException, Size = -1 };
+            if (innerExceptionParam.Value == null)
+                innerExceptionParam.Value = DBNull.Value;
 
-            var exceptionParam = new SqlParameter { ParameterName = "@exception", SqlDbType = SqlDbType.NVarChar, Direction = ParameterDirection.Input, Value = exception, Size = -1 };
-            if (exceptionParam.Value == null)
-                exceptionParam.Value = DBNull.Value;
+            var additionalInfoParam = new SqlParameter { ParameterName = "@additionalInfo", SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input, Value = additionalInfo, Size = -1 };
+            if (additionalInfoParam.Value == null)
+                additionalInfoParam.Value = DBNull.Value;
 
             var procResultParam = new SqlParameter { ParameterName = "@procResult", SqlDbType = SqlDbType.Int, Direction = ParameterDirection.Output };
 
-            Database.ExecuteSqlRaw("EXEC @procResult = [dbo].[NLog_AddEntry_p] @machineName, @logged, @level, @message, @logger, @properties, @exception", machineNameParam, loggedParam, levelParam, messageParam, loggerParam, propertiesParam, exceptionParam, procResultParam);
+            Database.ExecuteSqlRaw("EXEC @procResult = [dbo].[Insertlog] @level, @callSite, @type, @message, @stackTrace, @innerException, @additionalInfo", levelParam, callSiteParam, typeParam, messageParam, stackTraceParam, innerExceptionParam, additionalInfoParam, procResultParam);
 
             return (int)procResultParam.Value;
         }
 
-        // NLogAddEntryPAsync() cannot be created due to having out parameters, or is relying on the procedure result (int)
+        // InsertlogAsync() cannot be created due to having out parameters, or is relying on the procedure result (int)
 
         public List<UspGetDatabaseStatisticsReturnModel> UspGetDatabaseStatistics()
         {

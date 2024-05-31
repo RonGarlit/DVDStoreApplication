@@ -18,7 +18,7 @@ namespace DVDStore.DAL
 
             builder.Property(x => x.Fid).HasColumnName(@"FID").HasColumnType("int").IsRequired(false);
             builder.Property(x => x.Title).HasColumnName(@"title").HasColumnType("varchar(255)").IsRequired(false).IsUnicode(false).HasMaxLength(255);
-            builder.Property(x => x.Description).HasColumnName(@"description").HasColumnType("text(2147483647)").IsRequired(false).IsUnicode(false).HasMaxLength(2147483647);
+            builder.Property(x => x.Description).HasColumnName(@"description").HasColumnType("varchar(max)").IsRequired(false).IsUnicode(false);
             builder.Property(x => x.Category).HasColumnName(@"category").HasColumnType("varchar(25)").IsRequired().IsUnicode(false).HasMaxLength(25);
             builder.Property(x => x.Price).HasColumnName(@"price").HasColumnType("decimal(4,2)").HasPrecision(4,2).IsRequired(false);
             builder.Property(x => x.Length).HasColumnName(@"length").HasColumnType("smallint").IsRequired(false);

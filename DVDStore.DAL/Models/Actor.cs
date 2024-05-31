@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace DVDStore.DAL
 {
+    // ****************************************************************************************************
+    // This is not a commercial licence, therefore only a few tables/views/stored procedures are generated.
+    // ****************************************************************************************************
 
     // actor
     public partial class Actor

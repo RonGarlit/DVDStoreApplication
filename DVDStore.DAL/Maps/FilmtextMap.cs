@@ -18,7 +18,7 @@ namespace DVDStore.DAL
 
             builder.Property(x => x.Filmid).HasColumnName(@"filmid").HasColumnType("smallint").IsRequired().ValueGeneratedNever();
             builder.Property(x => x.Title).HasColumnName(@"title").HasColumnType("varchar(255)").IsRequired().IsUnicode(false).HasMaxLength(255);
-            builder.Property(x => x.Description).HasColumnName(@"description").HasColumnType("text(2147483647)").IsRequired(false).IsUnicode(false).HasMaxLength(2147483647);
+            builder.Property(x => x.Description).HasColumnName(@"description").HasColumnType("varchar(max)").IsRequired(false).IsUnicode(false);
 
             InitializePartial(builder);
         }

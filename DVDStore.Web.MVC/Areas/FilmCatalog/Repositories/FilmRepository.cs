@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DVDStore.DAL;
 using DVDStore.Web.MVC.Areas.FilmCatalog.Common;
 using DVDStore.Web.MVC.Areas.FilmCatalog.Models;
-using DVDStore.DAL;
 using DVDStore.Web.MVC.Common.Extensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace DVDStore.Web.MVC.Areas.FilmCatalog.Repositories
 {
@@ -60,22 +60,23 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Repositories
 
         public async Task<FilmsPagedModel<FilmViewModel>> GetPagedFilms(FilmCatalogResourceParameters resourceParameters)
         {
+            // Fetch all films
             var collectionBeforePaging = _context.Films.AsQueryable();
 
             // Apply filtering
             if (!string.IsNullOrEmpty(resourceParameters.SearchQuery))
             {
-                var searchQuery = resourceParameters.SearchQuery.Trim();
+                var searchQuery = resourceParameters.SearchQuery.Trim().ToLowerInvariant();
                 collectionBeforePaging = collectionBeforePaging
-                    .Where(f => f.Title.Contains(searchQuery, StringComparison.OrdinalIgnoreCase) ||
-                                f.Description.Contains(searchQuery, StringComparison.OrdinalIgnoreCase));
+                    .Where(f => (f.Title != null && f.Title.ToLower().Contains(searchQuery)) ||
+                                (f.Description != null && f.Description.ToLower().Contains(searchQuery)));
             }
 
             if (!string.IsNullOrEmpty(resourceParameters.Rating))
             {
-                var ratingForWhereClause = resourceParameters.Rating.Trim();
+                var ratingForWhereClause = resourceParameters.Rating.Trim().ToLowerInvariant();
                 collectionBeforePaging = collectionBeforePaging
-                    .Where(f => string.Equals(f.Rating, ratingForWhereClause, StringComparison.OrdinalIgnoreCase));
+                    .Where(f => (f.Rating != null && f.Rating.ToLower() == ratingForWhereClause));
             }
 
             // Apply sorting
@@ -89,7 +90,6 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Repositories
 
             return new FilmsPagedModel<FilmViewModel>(filmViewModels, filmsPagedModel.TotalCount, filmsPagedModel.CurrentPage, filmsPagedModel.PageSize);
         }
-
 
         public async Task<FilmViewModel> UpdateFilm(FilmViewModel filmViewModel)
         {
