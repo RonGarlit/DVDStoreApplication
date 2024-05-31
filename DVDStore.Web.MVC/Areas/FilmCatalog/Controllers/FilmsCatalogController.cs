@@ -135,7 +135,6 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Controllers
                                                [FromQuery] string? SearchQuery = null)
         {
             _logger.LogInformation("Films Catalog Index Page Entered");
-            // Pass Search Query parameter forward for "Back To List" tag helper
             var resourceParameters = new FilmCatalogResourceParameters
             {
                 PageNumber = pageNo,
@@ -143,23 +142,10 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Controllers
                 SearchQuery = SearchQuery
             };
 
-            // Await the task to get the model
             var model = await _filmRepository.GetPagedFilms(resourceParameters);
-
-            // Prep some needed ViewBag Variables
-            ViewBag.SearchQuery = "";
-
-            // Load up the ViewBag variables with data from the filters and search boxes
-            if (resourceParameters.SearchQuery != null)
-            {
-                ViewBag.SearchQuery = resourceParameters.SearchQuery;
-            }
-
-            // Save the search query parameter forward so that is can be added to the "Back To List"
-            BTLSearchQuery = ViewBag.SearchQuery;
-
             return View(model);
         }
+
 
         #endregion Public Methods
     }

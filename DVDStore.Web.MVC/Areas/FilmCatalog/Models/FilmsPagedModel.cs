@@ -1,52 +1,32 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using DVDStore.Web.MVC.Common;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace DVDStore.Web.MVC.Areas.FilmCatalog.Models
 {
-    public class FilmsPagedModel<T> : List<T>, IPagedList
+    public class FilmsPagedModel<T> : List<T>
     {
-        #region Public Constructors
+        public int CurrentPage { get; private set; }
+        public int TotalPages { get; private set; }
+        public int PageSize { get; private set; }
+        public int TotalCount { get; private set; }
 
-        public FilmsPagedModel(List<T> items,
-                                  int totalCount,
-                                  int pageNumber,
-                                  int pageSize)
+        public FilmsPagedModel(List<T> items, int count, int pageNumber, int pageSize)
         {
-            TotalCount = totalCount;
+            TotalCount = count;
             PageSize = pageSize;
             CurrentPage = pageNumber;
-            TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+            TotalPages = (int)Math.Ceiling(count / (double)pageSize);
             AddRange(items);
         }
 
-        #endregion Public Constructors
-
-        #region Public Properties
-
-        public int CurrentPage { get; private set; }
-        public bool HasNext => CurrentPage < TotalPages;
-        public bool HasPrevious => CurrentPage > 1;
-        public int PageSize { get; private set; }
-        public int TotalCount { get; private set; }
-        public int TotalPages { get; private set; }
-
-        #endregion Public Properties
-
-        #region Public Methods
-
-        public static FilmsPagedModel<T> Create(IQueryable<T> source, int pageNumber, int pageSize)
+        public static async Task<FilmsPagedModel<T>> CreateAsync(IQueryable<T> source, int pageNumber, int pageSize)
         {
-            if (pageNumber == 0)
-            {
-                pageNumber = 1;
-            }
-
-            var count = source.Count();
-            var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            var count = await source.CountAsync();
+            var items = await source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
             return new FilmsPagedModel<T>(items, count, pageNumber, pageSize);
         }
-
-        #endregion Public Methods
     }
 }

@@ -7,6 +7,7 @@
 		<Version>1.0.0.0</Version>
 		<AssemblyVersion>1.0.0.0</AssemblyVersion>
 		<FileVersion>1.0.0.0</FileVersion>
+		<UserSecretsId>03310cfc-72f7-4071-84ef-b02a9e8dc5e4</UserSecretsId>
 	</PropertyGroup>
 
 	<ItemGroup>

@@ -58,17 +58,17 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Repositories
             return MapToViewModel(film);
         }
 
-        public Task<FilmsPagedModel<FilmViewModel>> GetPagedFilms(FilmCatalogResourceParameters resourceParameters)
+        public async Task<FilmsPagedModel<FilmViewModel>> GetPagedFilms(FilmCatalogResourceParameters resourceParameters)
         {
             var collectionBeforePaging = _context.Films.AsQueryable();
 
             // Apply filtering
             if (!string.IsNullOrEmpty(resourceParameters.SearchQuery))
             {
-                var searchQuery = resourceParameters.SearchQuery.Trim().ToLowerInvariant();
+                var searchQuery = resourceParameters.SearchQuery.Trim();
                 collectionBeforePaging = collectionBeforePaging
-                    .Where(f => f.Title.ToLowerInvariant().Contains(searchQuery, StringComparison.OrdinalIgnoreCase) ||
-                                f.Description.ToLowerInvariant().Contains(searchQuery, StringComparison.OrdinalIgnoreCase));
+                    .Where(f => f.Title.Contains(searchQuery, StringComparison.OrdinalIgnoreCase) ||
+                                f.Description.Contains(searchQuery, StringComparison.OrdinalIgnoreCase));
             }
 
             if (!string.IsNullOrEmpty(resourceParameters.Rating))
@@ -81,12 +81,15 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Repositories
             // Apply sorting
             collectionBeforePaging = collectionBeforePaging.ApplySort(resourceParameters.SortOrder, _propertyMapper.GetPropertyMapping<Film, Film>());
 
-            var filmsPagedModel = FilmsPagedModel<Film>.Create(collectionBeforePaging, resourceParameters.PageNumber, resourceParameters.PageSize);
+            // Create paged model
+            var filmsPagedModel = await FilmsPagedModel<Film>.CreateAsync(collectionBeforePaging, resourceParameters.PageNumber, resourceParameters.PageSize);
 
+            // Map to view model
             var filmViewModels = filmsPagedModel.Select(f => MapToViewModel(f)).ToList();
 
-            return Task.FromResult(new FilmsPagedModel<FilmViewModel>(filmViewModels, filmsPagedModel.TotalCount, filmsPagedModel.CurrentPage, filmsPagedModel.PageSize));
+            return new FilmsPagedModel<FilmViewModel>(filmViewModels, filmsPagedModel.TotalCount, filmsPagedModel.CurrentPage, filmsPagedModel.PageSize);
         }
+
 
         public async Task<FilmViewModel> UpdateFilm(FilmViewModel filmViewModel)
         {

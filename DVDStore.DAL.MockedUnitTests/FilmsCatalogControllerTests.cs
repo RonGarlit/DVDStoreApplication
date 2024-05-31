@@ -9,6 +9,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Moq;
+using Microsoft.Extensions.Logging;
+using DVDStore.Web.MVC.Common;
 
 namespace DVDStore.DAL.MockedUnitTests
 {
@@ -22,6 +25,7 @@ namespace DVDStore.DAL.MockedUnitTests
         private DbContextOptions<DVDStoreDbContext>? _options;
         private DVDStoreDbContext? _context;
         private FilmsPropertyMapper? _propertyMapper;
+        private Mock<ILogger<FilmsCatalogController>>? _mockLogger;
 
         #endregion Private Fields
 
@@ -34,12 +38,18 @@ namespace DVDStore.DAL.MockedUnitTests
                 .UseInMemoryDatabase(databaseName: "Test_DVDStore")
                 .Options;
 
+            _mockLogger = new Mock<ILogger<FilmsCatalogController>>();
             _context = new DVDStoreDbContext(_options);
             _propertyMapper = new FilmsPropertyMapper();
             _filmRepository = new FilmRepository(_context, _propertyMapper);
-            _controller = new FilmsCatalogController(_filmRepository);
+            _controller = new FilmsCatalogController(_filmRepository, _mockLogger.Object);
 
-            SeedDatabase();
+            _context!.Actors.AddRange(GetActorList());
+            _context.Films.AddRange(GetFilmList());
+            _context.Customers.AddRange(GetCustomerList());
+            _context.Categories.AddRange(GetCategoriesList());
+            _context.Filmcategories.AddRange(GetFilmCategoriesList());
+            _context.SaveChanges();
         }
 
         [TestCleanup]
@@ -53,24 +63,45 @@ namespace DVDStore.DAL.MockedUnitTests
         public async Task Index_ReturnsViewResult_WithPagedFilms()
         {
             // Arrange
-            var resourceParameters = new FilmCatalogResourceParameters
-            {
-                PageNumber = 1,
-                PageSize = 5
-            };
+            int pageNo = 1;
+            int pageSize = 5;
+            string searchQuery = null;  // Adjust based on what you're testing, for simplicity here we don't filter by search query
 
             // Act
-            var result = await _controller!.Index(resourceParameters);
+            var result = await _controller!.Index(pageNo, pageSize, searchQuery);
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(ViewResult));
             var viewResult = result as ViewResult;
             Assert.IsNotNull(viewResult);
+
+            // We assume that the FilmRepository is correctly implementing paging and that FilmsPagedModel is being used in the controller.
+            Assert.IsInstanceOfType(viewResult.Model, typeof(FilmsPagedModel<FilmViewModel>));
             var model = viewResult.Model as FilmsPagedModel<FilmViewModel>;
-            Assert.IsNotNull(model);
-            Assert.AreEqual(5, model.Count);
-            Assert.AreEqual(10, model.TotalCount);
+
+            // Assert that the page size and number are correct as per the request
+            Assert.AreEqual(pageSize, model.PageSize);
+            Assert.AreEqual(pageNo, model.CurrentPage);
+            Assert.AreEqual(10, model.TotalCount);  // Total count from the seeded data
+            Assert.AreEqual(2, model.TotalPages);   // Expected total pages
+
+            // Assert that we received exactly 'pageSize' films in the result
+            Assert.AreEqual(pageSize, model.Count);
         }
+
+        private void SeedDatabase()
+        {
+            // Assuming _context is already set up
+            _context.Films.AddRange(GetFilmList());  // This is your actual data initialization method
+            _context.SaveChanges();
+        }
+
+
+
+
+
+
+
 
         [TestMethod]
         public async Task Details_ReturnsViewResult_WithFilm()
@@ -219,15 +250,7 @@ namespace DVDStore.DAL.MockedUnitTests
 
         #region Private Methods
 
-        private void SeedDatabase()
-        {
-            _context!.Actors.AddRange(GetActorList());
-            _context.Films.AddRange(GetFilmList());
-            _context.Customers.AddRange(GetCustomerList());
-            _context.Categories.AddRange(GetCategoriesList());
-            _context.Filmcategories.AddRange(GetFilmCategoriesList());
-            _context.SaveChanges();
-        }
+
 
         private static List<Actor> GetActorList()
         {
