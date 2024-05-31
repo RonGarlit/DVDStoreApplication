@@ -1,17 +1,12 @@
-﻿using DVDStore.Web.MVC.Areas.FilmCatalog.Controllers;
-using DVDStore.Web.MVC.Areas.FilmCatalog.Repositories;
-using DVDStore.Web.MVC.Areas.FilmCatalog.Common;
+﻿using DVDStore.Web.MVC.Areas.FilmCatalog.Common;
+using DVDStore.Web.MVC.Areas.FilmCatalog.Controllers;
 using DVDStore.Web.MVC.Areas.FilmCatalog.Models;
+using DVDStore.Web.MVC.Areas.FilmCatalog.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
-using Moq;
 using Microsoft.Extensions.Logging;
-using DVDStore.Web.MVC.Common;
+using Moq;
+using System.Globalization;
 
 namespace DVDStore.DAL.MockedUnitTests
 {
@@ -88,20 +83,6 @@ namespace DVDStore.DAL.MockedUnitTests
             // Assert that we received exactly 'pageSize' films in the result
             Assert.AreEqual(pageSize, model.Count);
         }
-
-        private void SeedDatabase()
-        {
-            // Assuming _context is already set up
-            _context.Films.AddRange(GetFilmList());  // This is your actual data initialization method
-            _context.SaveChanges();
-        }
-
-
-
-
-
-
-
 
         [TestMethod]
         public async Task Details_ReturnsViewResult_WithFilm()
@@ -207,7 +188,6 @@ namespace DVDStore.DAL.MockedUnitTests
             Assert.AreEqual("UPDATED TITLE", filmInDb.Title);
         }
 
-
         [TestMethod]
         public async Task Delete_ReturnsViewResult_WithFilm()
         {
@@ -245,12 +225,9 @@ namespace DVDStore.DAL.MockedUnitTests
             Assert.IsNull(filmInDb);
         }
 
-
         #endregion Public Methods
 
         #region Private Methods
-
-
 
         private static List<Actor> GetActorList()
         {

@@ -71,7 +71,7 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Controllers
         }
 
         // POST: Films/Delete/5
-        [HttpPost("{id?}"), ActionName("Delete")]
+        [HttpPost("{id}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -84,6 +84,7 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Controllers
             ViewBag.IndexSearchQuery = BTLSearchQuery;
             return RedirectToAction(nameof(Index));
         }
+
 
         // GET: Films/Details/5
         [HttpGet("{id?}")]
