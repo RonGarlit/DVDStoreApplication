@@ -53,8 +53,8 @@ namespace DVDStore.Web.MVC.Areas.Security.Repositories
                 var searchQuery = UsersResourceParameters.SearchQuery.Trim();
                 // Build out the IQueryable collection in EF LINQ of the columns
                 // we want to search here.
-                collection = collection.Where(a => a.FirstName.Contains(searchQuery)
-                || a.LastName.Contains(searchQuery)
+                collection = collection.Where(a => a.FirstName!.Contains(searchQuery)
+                || a.LastName!.Contains(searchQuery)
                 || a.Email!.Contains(searchQuery));
             }
 

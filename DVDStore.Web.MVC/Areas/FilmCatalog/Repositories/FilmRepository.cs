@@ -30,7 +30,7 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Repositories
         public async Task<FilmViewModel> AddFilm(FilmViewModel filmViewModel)
         {
             var film = MapToDomainModel(filmViewModel);
-            _context.Films.Add(film);
+            await _context.Films.AddAsync(film);
             await _context.SaveChangesAsync();
             return MapToViewModel(film);
         }
@@ -66,17 +66,11 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Repositories
             // Apply filtering
             if (!string.IsNullOrEmpty(resourceParameters.SearchQuery))
             {
-                var searchQuery = resourceParameters.SearchQuery.Trim().ToLowerInvariant();
+                var searchQuery = resourceParameters.SearchQuery.Trim();
                 collectionBeforePaging = collectionBeforePaging
-                    .Where(f => (f.Title != null && f.Title.ToLower().Contains(searchQuery)) ||
-                                (f.Description != null && f.Description.ToLower().Contains(searchQuery)));
-            }
-
-            if (!string.IsNullOrEmpty(resourceParameters.Rating))
-            {
-                var ratingForWhereClause = resourceParameters.Rating.Trim().ToLowerInvariant();
-                collectionBeforePaging = collectionBeforePaging
-                    .Where(f => (f.Rating != null && f.Rating.ToLower() == ratingForWhereClause));
+                    .Where(f => f.Title.Contains(searchQuery)
+                    || f.Description.Contains(searchQuery)
+                    || f.Rating.Contains(searchQuery));
             }
 
             // Apply sorting
