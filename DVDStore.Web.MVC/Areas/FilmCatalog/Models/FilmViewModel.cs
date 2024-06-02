@@ -1,4 +1,32 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿/**********************************************************************************
+**
+**  DVDStore Application v1.0
+**
+**  Copyright 2024
+**  Developed by:
+**     Ronald Garlit.
+**
+**  This software was created for educational purposes.
+**
+**  Use is subject to license terms.
+***********************************************************************************
+**
+**  FileName: FilmViewModel.cs (DVDStore Application)
+**  Version: 0.1
+**  Author: Ronald Garlit
+**
+**  Description: This file contains the FilmViewModel class for the DVDStore web application.
+**
+**  The FilmViewModel class is a view model used for displaying and editing film information.
+**
+**  Change History
+**
+**  WHEN			WHO        WHAT
+**---------------------------------------------------------------------------------
+**  2024-05-28		RGARLIT     STARTED DEVELOPMENT
+***********************************************************************************/
+
+using System.ComponentModel.DataAnnotations;
 
 namespace DVDStore.Web.MVC.Areas.FilmCatalog.Models
 {

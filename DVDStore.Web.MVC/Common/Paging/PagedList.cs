@@ -1,29 +1,30 @@
-﻿//*****************************************************************************
-//  SpHoa v1.0
-//
-//  Copyright 2022
-//  Developed by:
-//     Ronald Garlit.
-//
-//
-//  Use is subject to license terms.
-//*****************************************************************************
-//
-//  FileName: PagedList.cs (Common Code)
-//  Version: 0.1
-//  Author: Ronald Garlit
-//
-//  Description:
-//
-//  My PagedList class used for pagination work for UI, Repository and Database
-//  calls.
-//
-//  Change History
-//
-//  WHEN			WHO        WHAT
-//-----------------------------------------------------------------------------
-//  2022-06-30		RGARLIT     STARTED DEVELOPMENT
-//****************************************************************************/
+﻿/**********************************************************************************
+**
+**  DVDStore Application v1.0
+**
+**  Copyright 2024
+**  Developed by:
+**     Ronald Garlit.
+**
+**  This software was created for educational purposes.
+**
+**  Use is subject to license terms.
+***********************************************************************************
+**
+**  FileName: PagedList.cs (DVDStore Application)
+**  Version: 0.1
+**  Author: Ronald Garlit
+**
+**  Description: This file contains the PagedList class for the DVDStore web application.
+**
+**  The PagedList class is used for pagination work for UI, repository, and database calls.
+**
+**  Change History
+**
+**  WHEN			WHO        WHAT
+**---------------------------------------------------------------------------------
+**  2024-04-06		RGARLIT     STARTED DEVELOPMENT
+***********************************************************************************/
 
 namespace DVDStore.Web.MVC.Common
 {
@@ -61,7 +62,6 @@ namespace DVDStore.Web.MVC.Common
             {
                 pageNumber = 1;
             }
-
 
             var count = source.Count();
             var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();

@@ -1,4 +1,32 @@
-﻿using DVDStore.Web.MVC.Common.Exceptions;
+﻿/**********************************************************************************
+**
+**  DVDStore Application v1.0
+**
+**  Copyright 2024
+**  Developed by:
+**     Ronald Garlit.
+**
+**  This software was created for educational purposes.
+**
+**  Use is subject to license terms.
+***********************************************************************************
+**
+**  FileName: UsersPropertyMapper.cs (DVDStore Application)
+**  Version: 0.1
+**  Author: Ronald Garlit
+**
+**  Description: This file contains the UsersPropertyMapper class for the DVDStore web application.
+**
+**  The UsersPropertyMapper class provides property mapping for sorting and filtering user data.
+**
+**  Change History
+**
+**  WHEN			WHO        WHAT
+**---------------------------------------------------------------------------------
+**  2024-05-08		RGARLIT     STARTED DEVELOPMENT
+***********************************************************************************/
+
+using DVDStore.Web.MVC.Common.Exceptions;
 using DVDStore.Web.MVC.Common.PropertyMapping;
 using DVDStore.Web.MVC.Common.PropertyMapping.BaseMappingCode;
 

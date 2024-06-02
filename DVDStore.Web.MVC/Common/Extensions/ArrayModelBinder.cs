@@ -1,15 +1,41 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System;
+﻿/**********************************************************************************
+**
+**  DVDStore Application v1.0
+**
+**  Copyright 2024
+**  Developed by:
+**     Ronald Garlit.
+**
+**  This software was created for educational purposes.
+**
+**  Use is subject to license terms.
+***********************************************************************************
+**
+**  FileName: ArrayModelBinder.cs (DVDStore Application)
+**  Version: 0.1
+**  Author: Ronald Garlit
+**
+**  Description: This file contains the ArrayModelBinder class for the DVDStore web application.
+**
+**  The ArrayModelBinder class provides a custom model binder for binding arrays from query parameters.
+**
+**  Change History
+**
+**  WHEN			WHO        WHAT
+**---------------------------------------------------------------------------------
+**  2024-03-31		RGARLIT     STARTED DEVELOPMENT
+***********************************************************************************/
+
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.ComponentModel;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace DVDStore.Web.MVC.Common.Extensions
 {
     public class ArrayModelBinder : IModelBinder
     {
         private static readonly string[] separator = [","];
+
         #region Public Methods
 
         public Task BindModelAsync(ModelBindingContext bindingContext)

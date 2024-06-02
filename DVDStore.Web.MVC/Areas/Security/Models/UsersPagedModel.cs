@@ -1,10 +1,37 @@
-﻿using DVDStore.Web.MVC.Common;
+﻿/**********************************************************************************
+**
+**  DVDStore Application v1.0
+**
+**  Copyright 2024
+**  Developed by:
+**     Ronald Garlit.
+**
+**  This software was created for educational purposes.
+**
+**  Use is subject to license terms.
+***********************************************************************************
+**
+**  FileName: UsersPagedModel.cs (DVDStore Application)
+**  Version: 0.1
+**  Author: Ronald Garlit
+**
+**  Description: This file contains the UsersPagedModel class for the DVDStore web application.
+**
+**  The UsersPagedModel class is used for pagination of user data.
+**
+**  Change History
+**
+**  WHEN			WHO        WHAT
+**---------------------------------------------------------------------------------
+**  2024-05-08		RGARLIT     STARTED DEVELOPMENT
+***********************************************************************************/
+
+using DVDStore.Web.MVC.Common;
 
 namespace DVDStore.Web.MVC.Areas.Security.Models
 {
     public class UsersPagedModel<T> : List<T>, IPagedList
     {
-
         #region Public Constructors
 
         public UsersPagedModel(List<T> items,
@@ -41,13 +68,11 @@ namespace DVDStore.Web.MVC.Areas.Security.Models
                 pageNumber = 1;
             }
 
-
             var count = source.Count();
             var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
             return new UsersPagedModel<T>(items, count, pageNumber, pageSize);
         }
 
         #endregion Public Methods
-
     }
 }

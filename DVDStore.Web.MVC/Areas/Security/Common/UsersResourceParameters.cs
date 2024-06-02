@@ -1,4 +1,33 @@
-﻿using DVDStore.Web.MVC.Common.ResourceParameters;
+﻿/**********************************************************************************
+**
+**  DVDStore Application v1.0
+**
+**  Copyright 2024 
+**  Developed by:
+**     Ronald Garlit.
+**
+**  This software was created for educational purposes.
+**
+**  Use is subject to license terms.
+***********************************************************************************
+**
+**  FileName: UsersResourceParameters.cs (DVDStore Application)
+**  Version: 0.1
+**  Author: Ronald Garlit
+**
+**  Description: This file contains the UsersResourceParameters class for the DVDStore web application.
+**  
+**  The UsersResourceParameters class is used for defining query parameters for user resources.
+**
+**  Change History
+**
+**  WHEN			WHO        WHAT
+**---------------------------------------------------------------------------------
+**  2024-05-08		RGARLIT     STARTED DEVELOPMENT 
+***********************************************************************************/
+
+
+using DVDStore.Web.MVC.Common.ResourceParameters;
 
 namespace DVDStore.Web.MVC.Common
 {

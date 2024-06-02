@@ -1,35 +1,34 @@
-﻿//*****************************************************************************
-//  SpHoa v1.0
-//
-//  Copyright 2022
-//  Developed by:
-//     Ronald Garlit.
-//
-//
-//  Use is subject to license terms.
-//*****************************************************************************
-//
-//  FileName: IQueryableExtensions.cs (Common Code)
-//  Version: 0.1
-//  Author: Ronald Garlit
-//
-//  Description:
-//
-//  This is the IQueryableExtensions class.  It gives us the ApplySort LINQ
-//  Extension.  This uses the System.Linq.Dynamic.Core library from Dynamic_Linq.
-//  It is a FREE & Open Source LINQ Dynamic Query Library.
-//  See: https://dynamic-linq.net/
-//
-//  Change History
-//
-//  WHEN			WHO        WHAT
-//-----------------------------------------------------------------------------
-//  2022-07-06		RGARLIT     STARTED DEVELOPMENT
-//****************************************************************************/
+﻿/**********************************************************************************
+**
+**  DVDStore Application v1.0
+**
+**  Copyright 2024
+**  Developed by:
+**     Ronald Garlit.
+**
+**  This software was created for educational purposes.
+**
+**  Use is subject to license terms.
+***********************************************************************************
+**
+**  FileName: IQueryableExtensions.cs (DVDStore Application)
+**  Version: 0.1
+**  Author: Ronald Garlit
+**
+**  Description: This file contains the IQueryableExtensions class for the DVDStore web application.
+**
+**  The IQueryableExtensions class provides extension methods for querying data.
+**
+**  Change History
+**
+**  WHEN			WHO        WHAT
+**---------------------------------------------------------------------------------
+**  2024-03-31		RGARLIT     STARTED DEVELOPMENT
+***********************************************************************************/
 
+using DVDStore.Web.MVC.Common.PropertyMapping.BaseMappingCode;
 using System.Linq.Dynamic.Core;
 using System.Text;
-using DVDStore.Web.MVC.Common.PropertyMapping.BaseMappingCode;
 
 namespace DVDStore.Web.MVC.Common.Extensions
 {

@@ -1,3 +1,31 @@
+/**********************************************************************************
+**
+**  DVDStore Application v1.0
+**
+**  Copyright 2024 
+**  Developed by:
+**     Ronald Garlit.
+**
+**  This software was created for educational purposes.
+**
+**  Use is subject to license terms.
+***********************************************************************************
+**
+**  FileName: Program.cs (DVDStore Application)
+**  Version: 0.1
+**  Author: Ronald Garlit
+**
+**  Description: This file contains the entry point for the DVDStore web application.
+**  
+**  The main method initializes the NLog configuration and sets up the web application host.
+**
+**  Change History
+**
+**  WHEN			WHO        WHAT
+**---------------------------------------------------------------------------------
+**  2024-06-01		RGARLIT     STARTED DEVELOPMENT 
+***********************************************************************************/
+
 using DVDStore.DAL;
 using DVDStore.Web.MVC.Areas.FilmCatalog.Common;
 using DVDStore.Web.MVC.Areas.FilmCatalog.Repositories;

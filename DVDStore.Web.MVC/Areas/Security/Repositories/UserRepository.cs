@@ -1,7 +1,35 @@
-﻿using DVDStore.Web.MVC.Areas.Identity.Data;
+﻿/**********************************************************************************
+**
+**  DVDStore Application v1.0
+**
+**  Copyright 2024
+**  Developed by:
+**     Ronald Garlit.
+**
+**  This software was created for educational purposes.
+**
+**  Use is subject to license terms.
+***********************************************************************************
+**
+**  FileName: UserRepository.cs (DVDStore Application)
+**  Version: 0.1
+**  Author: Ronald Garlit
+**
+**  Description: This file contains the UserRepository class for the DVDStore web application.
+**
+**  The UserRepository class handles data access for user entities.
+**
+**  Change History
+**
+**  WHEN			WHO        WHAT
+**---------------------------------------------------------------------------------
+**  2024-05-08		RGARLIT     STARTED DEVELOPMENT
+***********************************************************************************/
+
+using DVDStore.Web.MVC.Areas.Identity.Data;
 using DVDStore.Web.MVC.Areas.Security.Models;
-using DVDStore.Web.MVC.Common.Extensions;
 using DVDStore.Web.MVC.Common;
+using DVDStore.Web.MVC.Common.Extensions;
 
 namespace DVDStore.Web.MVC.Areas.Security.Repositories
 {
@@ -72,7 +100,6 @@ namespace DVDStore.Web.MVC.Areas.Security.Repositories
             return UsersPagedModel<ApplicationUser>.Create(collection, UsersResourceParameters.PageNumber, UsersResourceParameters.PageSize);
         }
 
-
         public ApplicationUser UpdateUser(ApplicationUser user)
         {
             _context.Update(user);
@@ -80,6 +107,7 @@ namespace DVDStore.Web.MVC.Areas.Security.Repositories
 
             return user;
         }
+
         public ApplicationUser DeleteUser(ApplicationUser user)
         {
             _context.Users.Remove(user);

@@ -1,41 +1,40 @@
-﻿//*****************************************************************************
-//  ScholarshipApplication v1.0
-//
-//  Copyright 2024
-//  Developed by:
-//     Ronald Garlit.
-//
-//
-//  Use is subject to license terms.
-//*****************************************************************************
-//
-//  FileName: UserController.cs (Areas.Security.Controllers)
-//  Version: 0.1
-//  Author: Ronald Garlit
-//
-//  Description:
-//
-//  User Controller for management of users in the Security. Highly Restricted
-//  area access only.
-//
-//  Change History
-//
-//  WHEN            WHO        WHAT
-//-----------------------------------------------------------------------------
-//  2022-03-23      RGARLIT    STARTED DEVELOPMENT
-//****************************************************************************/
+﻿/**********************************************************************************
+**
+**  DVDStore Application v1.0
+**
+**  Copyright 2024
+**  Developed by:
+**     Ronald Garlit.
+**
+**  This software was created for educational purposes.
+**
+**  Use is subject to license terms.
+***********************************************************************************
+**
+**  FileName: UserController.cs (DVDStore Application)
+**  Version: 0.1
+**  Author: Ronald Garlit
+**
+**  Description: This file contains the UserController class for the DVDStore web application.
+**
+**  The UserController class handles user-related actions, such as creating, updating, and deleting users.
+**
+**  Change History
+**
+**  WHEN			WHO        WHAT
+**---------------------------------------------------------------------------------
+**  2024-05-08		RGARLIT     STARTED DEVELOPMENT
+***********************************************************************************/
+
+using DVDStore.Web.MVC.Areas.Identity.Data;
+using DVDStore.Web.MVC.Areas.Security.Models;
+using DVDStore.Web.MVC.Areas.Security.Repositories;
+using DVDStore.Web.MVC.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using DVDStore.Web.MVC.Areas.Identity.Data;
-using DVDStore.Web.MVC.Areas.Security.Models;
-using DVDStore.Web.MVC.Common;
 using System.Data;
-using DVDStore.Web.MVC.Areas.Security.Repositories;
-using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
-using System.Linq;
 
 namespace DVDStore.Web.MVC.Areas.Security.Controllers
 {
@@ -176,14 +175,13 @@ namespace DVDStore.Web.MVC.Areas.Security.Controllers
             // Prep some needed ViewBag Variables
             ViewBag.SearchQuery = "";
 
-                
             if (UsersResourceParameters.SearchQuery != null)
             {
                 ViewBag.SearchQuery = UsersResourceParameters.SearchQuery;
             }
 
             // Save the search query parameter forward so that is can be added to the "Back To List"
-            // tag helpers where required through ViewBag. 
+            // tag helpers where required through ViewBag.
             BTLSearchQuery = ViewBag.SearchQuery;
 
             return View(data);

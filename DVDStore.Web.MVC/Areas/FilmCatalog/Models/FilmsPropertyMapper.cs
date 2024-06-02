@@ -1,9 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
+﻿/**********************************************************************************
+**
+**  DVDStore Application v1.0
+**
+**  Copyright 2024
+**  Developed by:
+**     Ronald Garlit.
+**
+**  This software was created for educational purposes.
+**
+**  Use is subject to license terms.
+***********************************************************************************
+**
+**  FileName: FilmsPropertyMapper.cs (DVDStore Application)
+**  Version: 0.1
+**  Author: Ronald Garlit
+**
+**  Description: This file contains the FilmsPropertyMapper class for the DVDStore web application.
+**
+**  The FilmsPropertyMapper class provides property mapping for sorting and filtering film data.
+**
+**  Change History
+**
+**  WHEN			WHO        WHAT
+**---------------------------------------------------------------------------------
+**  2024-05-28		RGARLIT     STARTED DEVELOPMENT
+***********************************************************************************/
+
+using DVDStore.DAL;
 using DVDStore.Web.MVC.Common.Exceptions;
 using DVDStore.Web.MVC.Common.PropertyMapping;
 using DVDStore.Web.MVC.Common.PropertyMapping.BaseMappingCode;
-using DVDStore.DAL;
 
 namespace DVDStore.Web.MVC.Areas.FilmCatalog.Common
 {
