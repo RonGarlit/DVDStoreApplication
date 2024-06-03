@@ -7,11 +7,45 @@
 <h2>Store</h2>
 
 <div class="container-fluid">
-    <h1>Store Films</h1>
+    <h1>Find Film/Actors</h1>
 
-    <p>
-        <a class="btn btn-primary" asp-action="Create">Create New</a>
-    </p>
+    @*Setup the Search Box Form*@
+    <form method="get" class="form-inline">
+        <div class="row">
+            <div class="col-sm-4 col-md-3 col-lg-3 col-xl-2">
+                <label for="SearchQuery" class="form-label">Search: </label>
+            </div>
+            <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                <input type="text" name="SearchQuery"
+                       value="@(Context.Request.Query["SearchQuery"])"
+                       class="form-control"
+                       placeholder="Place text you want to search for here..."
+                       aria-describedby="button-addon" />
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-sm-2 col-md-3 col-lg-3 col-xl-2">
+            </div>
+            <div class="col col-sm-4 col-md-3 col-lg-3 col-xl-4">
+                <p></p> @* This HTML paragraph tag is being used for hard spacing *@
+                <button class="btn btn-primary"
+                        type="submit"
+                        id="button-addon">
+                    Filter/Search
+                </button>
+                <p></p> @* This HTML paragraph tag is being used for hard spacing *@
+            </div>
+            <div class="col col-sm-2 col-md-3 col-lg-3 col-xl-2">
+            </div>
+            <div class="col col-sm-3 col-md-3 col-lg-3 col-xl-2">
+                <p></p> @* This HTML paragraph tag is being used for hard spacing *@
+                @*Display Print search button based on data selected *@
+
+                <p></p> @* This HTML paragraph tag is being used for hard spacing *@
+            </div>
+        </div>
+    </form>
 
     <paging total-records="Model.TotalCount"
             page-no="Model.CurrentPage"
