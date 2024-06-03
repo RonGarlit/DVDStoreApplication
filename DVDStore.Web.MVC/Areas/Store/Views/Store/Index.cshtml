@@ -1,0 +1,76 @@
+﻿@model DVDStore.Web.MVC.Areas.Store.Models.StorePagedModel<DVDStore.Web.MVC.Areas.Store.Models.FilmlistViewModel>
+
+@{
+    ViewData["Title"] = "Store";
+}
+
+<h2>Store</h2>
+
+<div class="container-fluid">
+    <h1>Store Films</h1>
+
+    <p>
+        <a class="btn btn-primary" asp-action="Create">Create New</a>
+    </p>
+
+    <paging total-records="Model.TotalCount"
+            page-no="Model.CurrentPage"
+            page-size="Model.PageSize"
+            show-page-size-nav="false"
+            query-string-key-page-no="pageNo"
+            query-string-key-page-size="pageSize"
+            max-displayed-pages="5"
+            class-total-pages="badge bg-primary"
+            class-total-records="badge bg-primary"
+            class-paging-control="pagination pagination-sm"
+            class-page-link="bg-light text-dark"
+            class-active-page="bg-primary text-light"
+            class-disabled-jumping-button="disabled ">
+
+    </paging>
+    <p class="bg-primary text-light">Page @(Model.TotalPages < Model.CurrentPage ? 0 : Model.CurrentPage)</p>
+    <div class="table-responsive-lg">
+        @if (Model != null && Model.Any())
+        {
+            <table class="table table-hover table-striped">
+                <thead class="table-primary">
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.First().Title)</th>
+                        <th>@Html.DisplayNameFor(model => model.First().Description)</th>
+                        <th>@Html.DisplayNameFor(model => model.First().Category)</th>
+                        <th>@Html.DisplayNameFor(model => model.First().Rating)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Category)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Rating)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+
+    <p class="bg-primary text-light">Page @(Model!.TotalPages < Model.CurrentPage ? 0 : Model.CurrentPage)</p>
+
+    <paging total-records="Model.TotalCount"
+            page-no="Model.CurrentPage"
+            page-size="Model.PageSize"
+            show-page-size-nav="false"
+            query-string-key-page-no="pageNo"
+            query-string-key-page-size="pageSize"
+            max-displayed-pages="5"
+            class-total-pages="badge bg-primary"
+            class-total-records="badge bg-primary"
+            class-paging-control="pagination pagination-sm"
+            class-page-link="bg-light text-dark"
+            class-active-page="bg-primary text-light"
+            class-disabled-jumping-button="disabled ">
+
+    </paging>
+</div>

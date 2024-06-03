@@ -32,6 +32,8 @@ using DVDStore.Web.MVC.Areas.FilmCatalog.Repositories;
 using DVDStore.Web.MVC.Areas.Identity.Data;
 using DVDStore.Web.MVC.Areas.Identity.Services;
 using DVDStore.Web.MVC.Areas.Security.Repositories;
+using DVDStore.Web.MVC.Areas.Store.Models;
+using DVDStore.Web.MVC.Areas.Store.Repositories;
 using DVDStore.Web.MVC.Common.Exceptions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -81,9 +83,11 @@ public static class Program
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IRoleRepository, RoleRepository>();
             builder.Services.AddScoped<IFilmRepository, FilmRepository>();
+            builder.Services.AddScoped<IFilmlistRepository, FilmlistRepository>();
 
             // Register FilmsPropertyMapper
             builder.Services.AddScoped<FilmsPropertyMapper>();
+            builder.Services.AddScoped<FilmlistPropertyMapper>();
 
             //=====================================================================================
             // Add Security/Identity DbContext Area
