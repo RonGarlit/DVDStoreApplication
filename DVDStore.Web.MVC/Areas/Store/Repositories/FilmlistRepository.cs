@@ -31,8 +31,9 @@ namespace DVDStore.Web.MVC.Areas.Store.Repositories
             {
                 var searchQuery = resourceParameters.SearchQuery.Trim().ToLowerInvariant();
                 collectionBeforePaging = collectionBeforePaging
-                    .Where(f => f.Title.ToLower().Contains(searchQuery) ||
-                                f.Description.ToLower().Contains(searchQuery));
+                    .Where(f => f.Title.ToLower().Contains(searchQuery) 
+                    || f.Description.ToLower().Contains(searchQuery)
+                    || f.Actors.ToLower().Contains(searchQuery));
             }
 
             if (!string.IsNullOrEmpty(resourceParameters.Category))
