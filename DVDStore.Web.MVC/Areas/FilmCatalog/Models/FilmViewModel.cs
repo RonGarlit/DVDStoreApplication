@@ -40,15 +40,15 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Models
         [Required]
         [MaxLength(255)]
         [Display(Name = "Title")]
-        public string Title { get; set; }
+        public string? Title { get; set; }
 
         [MaxLength(2147483647)]
         [Display(Name = "Description")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [MaxLength(4)]
         [Display(Name = "Release Year")]
-        public string Releaseyear { get; set; }
+        public string? Releaseyear { get; set; }
 
         [Required]
         [Display(Name = "Language ID")]
@@ -74,11 +74,11 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Models
 
         [MaxLength(10)]
         [Display(Name = "Rating")]
-        public string Rating { get; set; }
+        public string? Rating { get; set; }
 
         [MaxLength(255)]
         [Display(Name = "Special Features")]
-        public string Specialfeatures { get; set; }
+        public string? Specialfeatures { get; set; }
 
         [Required]
         [Display(Name = "Last Update")]

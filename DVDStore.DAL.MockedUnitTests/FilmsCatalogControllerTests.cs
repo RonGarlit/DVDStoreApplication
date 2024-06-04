@@ -60,7 +60,7 @@ namespace DVDStore.DAL.MockedUnitTests
             // Arrange
             int pageNo = 1;
             int pageSize = 5;
-            string searchQuery = null;  // Adjust based on what you're testing, for simplicity here we don't filter by search query
+            string searchQuery = null!;  // Adjust based on what you're testing, for simplicity here we don't filter by search query
 
             // Act
             var result = await _controller!.Index(pageNo, pageSize, searchQuery);
@@ -75,13 +75,13 @@ namespace DVDStore.DAL.MockedUnitTests
             var model = viewResult.Model as FilmsPagedModel<FilmViewModel>;
 
             // Assert that the page size and number are correct as per the request
-            Assert.AreEqual(pageSize, model.PageSize);
-            Assert.AreEqual(pageNo, model.CurrentPage);
-            Assert.AreEqual(10, model.TotalCount);  // Total count from the seeded data
-            Assert.AreEqual(2, model.TotalPages);   // Expected total pages
+            Assert.AreEqual(pageSize, model?.PageSize);
+            Assert.AreEqual(pageNo, model?.CurrentPage);
+            Assert.AreEqual(10, model?.TotalCount);  // Total count from the seeded data
+            Assert.AreEqual(2, model?.TotalPages);   // Expected total pages
 
             // Assert that we received exactly 'pageSize' films in the result
-            Assert.AreEqual(pageSize, model.Count);
+            Assert.AreEqual(pageSize, model?.Count);
         }
 
         [TestMethod]

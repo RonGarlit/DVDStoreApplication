@@ -45,8 +45,8 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Common
         // a search query (SearchQuery), filtering by genre (Genre) and rating (Rating),
         // and sorting (SortOrder).
 
-        public string SearchQuery { get; set; }
-        public string Rating { get; set; }
-        public string SortOrder { get; set; } = "Title"; // Default sort order
+        public string? SearchQuery { get; set; }
+        public string? Rating { get; set; }
+        public string? SortOrder { get; set; } = "Title"; // Default sort order
     }
 }

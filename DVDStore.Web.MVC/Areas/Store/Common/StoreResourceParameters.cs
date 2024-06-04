@@ -12,9 +12,9 @@
             set => _pageSize = (value > maxPageSize) ? maxPageSize : value;
         }
 
-        public string SearchQuery { get; set; }
-        public string Category { get; set; }
-        public string Rating { get; set; }
-        public string SortOrder { get; set; }
+        public string? SearchQuery { get; set; }
+        public string? Category { get; set; }
+        public string? Rating { get; set; }
+        public string? SortOrder { get; set; }
     }
 }
