@@ -60,9 +60,6 @@ namespace DVDStore.Web.MVC.Areas.Security.Repositories
             // Check parameters
             //=================================================================
 
-            // Check for null using ArgumentNullException throw helper
-            ArgumentNullException.ThrowIfNull(UsersResourceParameters);
-
             // Setup IQueryable for table object we are going to get data for.
             // We load the collection variable accordingly as we process the resource
             // parameter object passed into the repository
