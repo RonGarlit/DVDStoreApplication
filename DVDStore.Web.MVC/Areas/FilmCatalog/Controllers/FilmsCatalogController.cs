@@ -31,12 +31,14 @@
 using DVDStore.Web.MVC.Areas.FilmCatalog.Common;
 using DVDStore.Web.MVC.Areas.FilmCatalog.Models;
 using DVDStore.Web.MVC.Areas.FilmCatalog.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DVDStore.Web.MVC.Areas.FilmCatalog.Controllers
 {
     [Area("FilmCatalog")]
     [Route("FilmCatalog/[controller]/[action]")]
+    [Authorize(Roles = "Manager")]
     public class FilmsCatalogController : Controller
     {
         #region Private Fields
@@ -66,13 +68,16 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Controllers
 
         // GET: Films/Create
         [HttpGet("{id?}")]
+        [Authorize(Roles = "Manager")]
         public IActionResult Create()
         {
             return View();
         }
 
         // POST: Films/Create
+
         [HttpPost("{id?}")]
+        [Authorize(Roles = "Manager")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(FilmViewModel model)
         {
@@ -86,6 +91,7 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Controllers
 
         // GET: Films/Delete/5
         [HttpGet("{id?}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Delete(int id)
         {
             _logger.LogInformation("Films Catalog Delete Page Entered");
@@ -102,6 +108,7 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Controllers
 
         // POST: Films/Delete/5
         [HttpPost("{id}")]
+        [Authorize(Roles = "Manager")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -117,6 +124,7 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Controllers
 
         // GET: Films/Details/5
         [HttpGet("{id?}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Details(int id)
         {
             var model = await _filmRepository.GetFilm(id);
@@ -129,6 +137,7 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Controllers
 
         // GET: Films/Edit/5
         [HttpGet("{id?}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Edit(int id)
         {
             var model = await _filmRepository.GetFilm(id);
@@ -143,6 +152,7 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Controllers
 
         // POST: Films/Edit/5
         [HttpPost("{id?}")]
+        [Authorize(Roles = "Manager")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(FilmViewModel model)
         {
@@ -160,6 +170,7 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Controllers
 
         // GET: Films
         [HttpGet]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Index([FromQuery] int pageNo = 1,
                                                [FromQuery] int pageSize = 10,
                                                [FromQuery] string? SearchQuery = null)
