@@ -1,32 +1,4 @@
-﻿/**********************************************************************************
-**
-**  DVDStore Application v1.0
-**
-**  Copyright 2024
-**  Developed by:
-**     Ronald Garlit.
-**
-**  This software was created for educational purposes.
-**
-**  Use is subject to license terms.
-***********************************************************************************
-**
-**  FileName: FilmViewModel.cs (DVDStore Application)
-**  Version: 0.1
-**  Author: Ronald Garlit
-**
-**  Description: This file contains the FilmViewModel class for the DVDStore web application.
-**
-**  The FilmViewModel class is a view model used for displaying and editing film information.
-**
-**  Change History
-**
-**  WHEN			WHO        WHAT
-**---------------------------------------------------------------------------------
-**  2024-05-28		RGARLIT     STARTED DEVELOPMENT
-***********************************************************************************/
-
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DVDStore.Web.MVC.Areas.FilmCatalog.Models
 {
@@ -40,15 +12,16 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Models
         [Required]
         [MaxLength(255)]
         [Display(Name = "Title")]
-        public string? Title { get; set; }
+        public string Title { get; set; }
 
         [MaxLength(2147483647)]
         [Display(Name = "Description")]
-        public string? Description { get; set; }
+        public string Description { get; set; }
 
         [MaxLength(4)]
         [Display(Name = "Release Year")]
-        public string? Releaseyear { get; set; }
+        [RegularExpression(@"\d{4}", ErrorMessage = "Please enter a valid four-digit year.")]
+        public string Releaseyear { get; set; }
 
         [Required]
         [Display(Name = "Language ID")]
@@ -74,11 +47,11 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Models
 
         [MaxLength(10)]
         [Display(Name = "Rating")]
-        public string? Rating { get; set; }
+        public string Rating { get; set; }
 
         [MaxLength(255)]
         [Display(Name = "Special Features")]
-        public string? Specialfeatures { get; set; }
+        public string Specialfeatures { get; set; }
 
         [Required]
         [Display(Name = "Last Update")]
