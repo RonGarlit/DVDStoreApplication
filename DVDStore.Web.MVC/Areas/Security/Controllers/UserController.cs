@@ -30,11 +30,13 @@ using DVDStore.Web.MVC.Areas.Identity.Data;
 using DVDStore.Web.MVC.Areas.Security.Models;
 using DVDStore.Web.MVC.Areas.Security.Repositories;
 using DVDStore.Web.MVC.Common;
+using DVDStore.Web.MVC.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Data;
+using System.Diagnostics;
 
 namespace DVDStore.Web.MVC.Areas.Security.Controllers
 {
@@ -72,19 +74,28 @@ namespace DVDStore.Web.MVC.Areas.Security.Controllers
 
         [HttpGet("{id?}")]
         [Authorize(Roles = "Administrator")]
-        public Task<IActionResult> Delete(string? id)
+        public IActionResult Delete(string? id)
         {
-            _logger.LogInformation("User Delete Page Entered for ID: {UserIdToDelete}", id);
-            var user = _securityDbWork.User.GetUser(id!);
-            if (user == null)
+            try
             {
-                _logger.LogWarning("User Delete Page Entered for ID: {UserIdToDelete} - User Not Found", id);
-                return Task.FromResult<IActionResult>(NotFound());
+                _logger.LogInformation("User Delete Page Entered for ID: {UserIdToDelete}", id);
+                var user = _securityDbWork.User.GetUser(id!);
+                if (user == null)
+                {
+                    _logger.LogWarning("User Delete Page Entered for ID: {UserIdToDelete} - User Not Found", id);
+                    return NotFound("User Not Found");
+                }
+                // Pass Search Query parameter forward for "Back To List" tag helper
+                ViewBag.IndexSearchQuery = BTLSearchQuery;
+                return View(user);
             }
-            // Pass Search Query parameter forward for "Back To List" tag helper
-            ViewBag.IndexSearchQuery = BTLSearchQuery;
-            return Task.FromResult<IActionResult>(View(user));
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error accessing User Delete page for ID: {UserIdToDelete}", id);
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            }
         }
+
 
         [HttpPost("{id?}")]
         [ValidateAntiForgeryToken]
@@ -106,53 +117,77 @@ namespace DVDStore.Web.MVC.Areas.Security.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Details(string id)
         {
-            _logger.LogInformation("User Details Page Entered for ID: {UserIdToDetail}", id);
-            var user = _securityDbWork.User.GetUser(id);
-            var roles = _securityDbWork.Role.GetRoles();
-
-            var userRoles = await _signInManager.UserManager.GetRolesAsync(user);
-
-            var roleItems = roles.Select(role =>
-                new SelectListItem(
-                    role.Name,
-                    role.Id,
-                    userRoles.Any(ur => ur.Contains(role.Name!)))).ToList();
-
-            var vm = new DetailsUserModel
+            try
             {
-                User = user,
-                Roles = roleItems
-            };
-            // Pass Search Query parameter forward for "Back To List" tag helper
-            ViewBag.IndexSearchQuery = BTLSearchQuery;
-            return View(vm);
+                _logger.LogInformation("User Details Page Entered for ID: {UserIdToDetail}", id);
+                var user = _securityDbWork.User.GetUser(id);
+                if (user == null)
+                {
+                    _logger.LogWarning("User Details Page for ID: {UserIdToDetail} - User Not Found", id);
+                    return NotFound("User Not Found");
+                }
+                var roles = _securityDbWork.Role.GetRoles();
+                var userRoles = await _signInManager.UserManager.GetRolesAsync(user);
+                var roleItems = roles.Select(role =>
+                    new SelectListItem(
+                        role.Name,
+                        role.Id,
+                        userRoles.Any(ur => ur.Contains(role.Name!)))).ToList();
+
+                var vm = new DetailsUserModel
+                {
+                    User = user,
+                    Roles = roleItems
+                };
+                // Pass Search Query parameter forward for "Back To List" tag helper
+                ViewBag.IndexSearchQuery = BTLSearchQuery;
+                return View(vm);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading User Details page for ID: {UserIdToDetail}", id);
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            }
         }
+
 
         [HttpGet("{id?}")]
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(string id)
         {
-            _logger.LogInformation("User Edit Page Entered for ID: {UserIdToEdit}", id);
-            var user = _securityDbWork.User.GetUser(id);
-            var roles = _securityDbWork.Role.GetRoles();
-
-            var userRoles = await _signInManager.UserManager.GetRolesAsync(user);
-
-            var roleItems = roles.Select(role =>
-                new SelectListItem(
-                    role.Name,
-                    role.Id,
-                    userRoles.Any(ur => ur.Contains(role.Name!)))).ToList();
-
-            var vm = new EditUserViewModel
+            try
             {
-                User = user,
-                Roles = roleItems
-            };
-            // Pass Search Query parameter forward for "Back To List" tag helper
-            ViewBag.IndexSearchQuery = BTLSearchQuery;
-            return View(vm);
+                _logger.LogInformation("User Edit Page Entered for ID: {UserIdToEdit}", id);
+                var user = _securityDbWork.User.GetUser(id);
+                if (user == null)
+                {
+                    _logger.LogWarning("User Edit Page for ID: {UserIdToEdit} - User Not Found", id);
+                    return NotFound("User Not Found");
+                }
+                var roles = _securityDbWork.Role.GetRoles();
+                var userRoles = await _signInManager.UserManager.GetRolesAsync(user);
+                var roleItems = roles.Select(role =>
+                    new SelectListItem(
+                        role.Name,
+                        role.Id,
+                        userRoles.Any(ur => ur.Contains(role.Name!)))).ToList();
+
+                var vm = new EditUserViewModel
+                {
+                    User = user,
+                    Roles = roleItems
+                };
+                // Pass Search Query parameter forward for "Back To List" tag helper
+                ViewBag.IndexSearchQuery = BTLSearchQuery;
+                return View(vm);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error accessing User Edit page for ID: {UserIdToEdit}", id);
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            }
         }
+
 
         [HttpGet]
         [Authorize(Roles = "Administrator")]
@@ -160,31 +195,35 @@ namespace DVDStore.Web.MVC.Areas.Security.Controllers
                                     [FromQuery] int pageSize = 10,
                                     [FromQuery] string? SearchQuery = null)
         {
-            _logger.LogInformation("User Administration Page Entered");
-            var UsersResourceParameters = new UsersResourceParameters
+            try
             {
-                PageNumber = pageNo,
-                PageSize = pageSize,
-                SearchQuery = SearchQuery,
-                OrderBy = "LastName"
-            };
+                _logger.LogInformation("User Administration Page Entered");
+                var UsersResourceParameters = new UsersResourceParameters
+                {
+                    PageNumber = pageNo,
+                    PageSize = pageSize,
+                    SearchQuery = SearchQuery,
+                    OrderBy = "LastName"
+                };
 
-            UsersPagedModel<ApplicationUser> data = _securityDbWork.User.GetUsersPagedList(UsersResourceParameters);
-            //  Get data for filter Select boxes in UI
+                UsersPagedModel<ApplicationUser> data = _securityDbWork.User.GetUsersPagedList(UsersResourceParameters);
+                // Get data for filter Select boxes in UI
 
-            // Prep some needed ViewBag Variables
-            ViewBag.SearchQuery = "";
+                // Prep some needed ViewBag Variables
+                ViewBag.SearchQuery = UsersResourceParameters.SearchQuery ?? "";
 
-            if (UsersResourceParameters.SearchQuery != null)
-            {
-                ViewBag.SearchQuery = UsersResourceParameters.SearchQuery;
+                // Save the search query parameter forward so that it can be added to the "Back To List"
+                // tag helpers where required through ViewBag.
+                ViewBag.BTLSearchQuery = ViewBag.SearchQuery;
+
+                return View(data);
             }
-
-            // Save the search query parameter forward so that is can be added to the "Back To List"
-            // tag helpers where required through ViewBag.
-            BTLSearchQuery = ViewBag.SearchQuery;
-
-            return View(data);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading User Administration page - {ErrorMessage}", ex.Message);
+                // Return a custom error view or a standard error response as needed
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            }
         }
 
         [HttpPost]

@@ -31,8 +31,10 @@
 using DVDStore.Web.MVC.Areas.FilmCatalog.Common;
 using DVDStore.Web.MVC.Areas.FilmCatalog.Models;
 using DVDStore.Web.MVC.Areas.FilmCatalog.Repositories;
+using DVDStore.Web.MVC.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace DVDStore.Web.MVC.Areas.FilmCatalog.Controllers
 {
@@ -66,13 +68,21 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Controllers
 
         #region Public Methods
 
-        // GET: Films/Create
         [HttpGet("{id?}")]
         [Authorize(Roles = "Manager")]
         public IActionResult Create()
         {
-            return View();
+            try
+            {
+                return View();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while accessing the Create Film page");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            }
         }
+
 
         // POST: Films/Create
 
@@ -81,111 +91,170 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(FilmViewModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                await _filmRepository.AddFilm(model);
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    await _filmRepository.AddFilm(model);
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(model);
             }
-            return View(model);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while creating a film");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            }
         }
 
-        // GET: Films/Delete/5
+
         [HttpGet("{id?}")]
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Delete(int id)
         {
-            _logger.LogInformation("Films Catalog Delete Page Entered");
-            var model = await _filmRepository.GetFilm(id);
-            if (model == null)
+            try
             {
-                _logger.LogWarning("Films Catalog Delete Page Entered - Film Not Found");
-                return NotFound();
+                _logger.LogInformation("Films Catalog Delete Page Entered");
+                var model = await _filmRepository.GetFilm(id);
+                if (model == null)
+                {
+                    _logger.LogWarning("Films Catalog Delete Page Entered - Film Not Found");
+                    return NotFound();
+                }
+                ViewBag.IndexSearchQuery = BTLSearchQuery;
+                return View(model);
             }
-            // Pass Search Query parameter forward for "Back To List" tag helper
-            ViewBag.IndexSearchQuery = BTLSearchQuery;
-            return View(model);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error accessing Film Delete page");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            }
         }
 
-        // POST: Films/Delete/5
+
         [HttpPost("{id}")]
         [Authorize(Roles = "Manager")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var success = await _filmRepository.DeleteFilm(id);
-            if (!success)
+            try
             {
-                return NotFound();
+                var success = await _filmRepository.DeleteFilm(id);
+                if (!success)
+                {
+                    return NotFound();
+                }
+                ViewBag.IndexSearchQuery = BTLSearchQuery;
+                return RedirectToAction(nameof(Index));
             }
-            // Pass Search Query parameter forward for "Back To List" tag helper
-            ViewBag.IndexSearchQuery = BTLSearchQuery;
-            return RedirectToAction(nameof(Index));
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while confirming film deletion");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            }
         }
 
-        // GET: Films/Details/5
+
         [HttpGet("{id?}")]
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Details(int id)
         {
-            var model = await _filmRepository.GetFilm(id);
-            if (model == null)
+            try
             {
-                return NotFound();
+                var model = await _filmRepository.GetFilm(id);
+                if (model == null)
+                {
+                    return NotFound();
+                }
+                return View(model);
             }
-            return View(model);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading Film Details page for Film ID: {FilmId}", id);
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            }
         }
 
-        // GET: Films/Edit/5
+
         [HttpGet("{id?}")]
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Edit(int id)
         {
-            var model = await _filmRepository.GetFilm(id);
-            if (model == null)
+            try
             {
-                return NotFound();
+                _logger.LogInformation("Attempting to retrieve film for edit. Film ID: {FilmId}", id);
+                var model = await _filmRepository.GetFilm(id);
+                if (model == null)
+                {
+                    _logger.LogWarning("Edit attempted for non-existing film. Film ID: {FilmId}", id);
+                    return NotFound();
+                }
+                // Pass Search Query parameter forward for "Back To List" tag helper
+                ViewBag.IndexSearchQuery = BTLSearchQuery;
+                return View(model);
             }
-            // Pass Search Query parameter forward for "Back To List" tag helper
-            ViewBag.IndexSearchQuery = BTLSearchQuery;
-            return View(model);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving film for edit. Film ID: {FilmId}", id);
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            }
         }
 
-        // POST: Films/Edit/5
+
         [HttpPost("{id?}")]
         [Authorize(Roles = "Manager")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(FilmViewModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var updatedModel = await _filmRepository.UpdateFilm(model);
-                if (updatedModel == null)
+                if (ModelState.IsValid)
                 {
-                    return NotFound();
+                    _logger.LogInformation("Attempting to update film. Film ID: {FilmId}", model.Filmid);
+                    var updatedModel = await _filmRepository.UpdateFilm(model);
+                    if (updatedModel == null)
+                    {
+                        _logger.LogWarning("Failed to find the film for update. Film ID: {FilmId}", model.Filmid);
+                        return NotFound();
+                    }
+                    return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction(nameof(Index));
+                return View(model);
             }
-            return View(model);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating film. Film ID: {FilmId}", model.Filmid);
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            }
         }
 
-        // GET: Films
+
         [HttpGet]
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Index([FromQuery] int pageNo = 1,
                                                [FromQuery] int pageSize = 10,
                                                [FromQuery] string? SearchQuery = null)
         {
-            _logger.LogInformation("Films Catalog Index Page Entered");
-            var resourceParameters = new FilmCatalogResourceParameters
+            try
             {
-                PageNumber = pageNo,
-                PageSize = pageSize,
-                SearchQuery = SearchQuery
-            };
+                _logger.LogInformation("Films Catalog Index Page Entered");
+                var resourceParameters = new FilmCatalogResourceParameters
+                {
+                    PageNumber = pageNo,
+                    PageSize = pageSize,
+                    SearchQuery = SearchQuery
+                };
 
-            var model = await _filmRepository.GetPagedFilms(resourceParameters);
-            return View(model);
+                var model = await _filmRepository.GetPagedFilms(resourceParameters);
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading Films Catalog Index page {ErrorMessage}", ex.Message);
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            }
         }
+
 
         #endregion Public Methods
     }

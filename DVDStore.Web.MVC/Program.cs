@@ -35,6 +35,7 @@ using DVDStore.Web.MVC.Areas.Security.Repositories;
 using DVDStore.Web.MVC.Areas.Store.Models;
 using DVDStore.Web.MVC.Areas.Store.Repositories;
 using DVDStore.Web.MVC.Common.Exceptions;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -218,7 +219,22 @@ public static class Program
                 // the request pipeline and generates an error page response. The error page is made
                 // available only to local requests. You can use the ExceptionHandlerOptions to control
                 // the behavior of the error page.
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler(appBuilder =>
+                {
+                    appBuilder.Run(async context =>
+                    {
+                        var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
+                        var exception = exceptionHandlerPathFeature?.Error;
+
+                        // Log the exception details
+                        logger.Error(exception, "Unhandled exception.");
+
+                        // Optionally, you could add more information to the log, such as user info, request path, etc.
+
+                        // Redirect to the error page
+                        context.Response.Redirect("/Home/Error");
+                    });
+                });
                 // The default HSTS value is 30 days. You may want to change this for production
                 // scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
