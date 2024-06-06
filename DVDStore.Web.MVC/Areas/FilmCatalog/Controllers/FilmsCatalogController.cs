@@ -68,7 +68,7 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Controllers
 
         #region Public Methods
 
-        [HttpGet("{id?}")]
+        [HttpGet]
         [Authorize(Roles = "Manager")]
         public IActionResult Create()
         {
@@ -86,7 +86,7 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Controllers
 
         // POST: Films/Create
 
-        [HttpPost("{id?}")]
+        [HttpPost]
         [Authorize(Roles = "Manager")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(FilmViewModel model)
@@ -201,7 +201,7 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Controllers
         }
 
 
-        [HttpPost("{id?}")]
+        [HttpPost]
         [Authorize(Roles = "Manager")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(FilmViewModel model)
