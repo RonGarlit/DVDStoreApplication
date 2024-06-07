@@ -209,6 +209,8 @@ public static class Program
             if (app.Environment.IsDevelopment())
             {
                 logger.Info("Application Environment Code - Running in Development Environment ");
+                logger.Info("https://localhost:7266");
+                logger.Info("http://localhost:5031");
                 app.UseMigrationsEndPoint();  // This is the default migration page for development
                 app.UseDeveloperExceptionPage(); // This is the default exception page for development
             }
