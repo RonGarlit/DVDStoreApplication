@@ -29,6 +29,7 @@ namespace DVDStore.Web.MVC.Areas.Store.Controllers
             try
             {
                 _logger.LogInformation("Store Index Page Entered");
+                _logger.LogDebug("Page Number: {PageNumber}, Page Size: {PageSize}, Search Query: {SearchQuery}", pageNo, pageSize, SearchQuery);
 
                 var resourceParameters = new StoreResourceParameters
                 {

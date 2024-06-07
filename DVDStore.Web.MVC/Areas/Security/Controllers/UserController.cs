@@ -198,6 +198,7 @@ namespace DVDStore.Web.MVC.Areas.Security.Controllers
             try
             {
                 _logger.LogInformation("User Administration Page Entered");
+                _logger.LogDebug("Page Number: {PageNumber}, Page Size: {PageSize}, Search Query: {SearchQuery}", pageNo, pageSize, SearchQuery);
                 var UsersResourceParameters = new UsersResourceParameters
                 {
                     PageNumber = pageNo,

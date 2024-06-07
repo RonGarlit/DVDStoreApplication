@@ -56,6 +56,7 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Controllers
 
         #endregion Private Properties
 
+
         #region Public Constructors
 
         public FilmsCatalogController(IFilmRepository filmRepository, ILogger<FilmsCatalogController> logger)
@@ -238,6 +239,7 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Controllers
             try
             {
                 _logger.LogInformation("Films Catalog Index Page Entered");
+                _logger.LogDebug("Page Number: {PageNumber}, Page Size: {PageSize}, Search Query: {SearchQuery}", pageNo, pageSize, SearchQuery);
                 var resourceParameters = new FilmCatalogResourceParameters
                 {
                     PageNumber = pageNo,
