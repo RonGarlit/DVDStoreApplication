@@ -41,7 +41,7 @@
             <form asp-action="DeleteConfirmed" asp-route-id="@Model.Filmid">
                 <input type="hidden" asp-for="Filmid" />
                 <input type="submit" value="Delete" class="btn btn-danger" /> |
-                <a asp-action="Index" class="btn btn-primary">Back to List</a>
+                <a asp-action="Index" class="btn btn-primary" asp-route-SearchQuery="@ViewBag.IndexSearchQuery">Back to List</a>
             </form>
         </div>
     </div>

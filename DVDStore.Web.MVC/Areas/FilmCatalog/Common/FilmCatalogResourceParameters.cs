@@ -29,12 +29,20 @@
 
 namespace DVDStore.Web.MVC.Areas.FilmCatalog.Common
 {
+    /// <summary>
+    /// This class defines query parameters for film catalog resources 
+    /// along with default values for pagination.
+    /// </summary>
     public class FilmCatalogResourceParameters
     {
+        // The maximum page size is 50 items.
         private const int MaxPageSize = 50;
-        public int PageNumber { get; set; } = 1;
-        private int _pageSize = 10;
 
+        // The default page number is 1.
+        public int PageNumber { get; set; } = 1;
+        // The default page size is 10 items.
+        private int _pageSize = 10;
+        // The page size is limited to 50 items.
         public int PageSize
         {
             get => _pageSize;
@@ -44,7 +52,6 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Common
         // This class includes properties for pagination (PageNumber and PageSize),
         // a search query (SearchQuery), filtering by genre (Genre) and rating (Rating),
         // and sorting (SortOrder).
-
         public string? SearchQuery { get; set; }
         public string? Rating { get; set; }
         public string? SortOrder { get; set; } = "Title"; // Default sort order

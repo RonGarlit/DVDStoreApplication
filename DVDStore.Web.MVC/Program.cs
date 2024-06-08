@@ -17,7 +17,10 @@
 **
 **  Description: This file contains the entry point for the DVDStore web application.
 **  
-**  The main method initializes the NLog configuration and sets up the web application host.
+**  The main method initializes the NLog configuration and sets up the web application host. 
+**  The application services are registered, and the application is configured to use the
+**  necessary middle-ware components. The application is then run, and the global exception
+**  handler is triggered if an exception occurs.
 **
 **  Change History
 **
