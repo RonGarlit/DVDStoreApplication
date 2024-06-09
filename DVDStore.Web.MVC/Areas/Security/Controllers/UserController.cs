@@ -49,12 +49,15 @@ namespace DVDStore.Web.MVC.Areas.Security.Controllers
     public class UserController : Controller
     {
         #region Private Fields
-        // Security Database Unit of Work using the UserRepository and RoleRepository
-        private readonly ISecurityUnitOfWork _securityDbWork;
-        // SignInManager for User Authentication
-        private readonly SignInManager<ApplicationUser> _signInManager;
+
         // Logger for Logging
         private readonly ILogger<UserController> _logger;
+
+        // Security Database Unit of Work using the UserRepository and RoleRepository
+        private readonly ISecurityUnitOfWork _securityDbWork;
+
+        // SignInManager for User Authentication
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
         #endregion Private Fields
 
@@ -77,6 +80,7 @@ namespace DVDStore.Web.MVC.Areas.Security.Controllers
         #endregion Public Constructors
 
         #region Private Properties
+
         /// <summary>
         /// BLTSearchQuery - Back To List Search Query
         /// </summary>
@@ -85,6 +89,7 @@ namespace DVDStore.Web.MVC.Areas.Security.Controllers
         #endregion Private Properties
 
         #region Public Methods
+
         /// <summary>
         /// Delete User Get Method
         /// </summary>
@@ -261,6 +266,83 @@ namespace DVDStore.Web.MVC.Areas.Security.Controllers
         }
 
         /// <summary>
+        /// Post Method for User Edit Page
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> EditPostAsync(EditUserViewModel data)
+        {
+            // Log the User Edit Page Post Entry
+            _logger.LogInformation("User Edit Page Post Entered for ID: {UserIdToEdit}", data.User!.Id);
+            // Get the User from the Database using the ID through the Security Database Unit of Work
+            var user = _securityDbWork.User.GetUser(data.User!.Id);
+            // Check if the User is Null
+            if (user == null)
+            {
+                // Log the User Not Found
+                _logger.LogWarning("User Edit Page Post Entered for ID: {UserIdToEdit} - User Not Found", data.User!.Id);
+                // Return a Not Found Response
+                return NotFound();
+            }
+            // Get the Roles from the Database using the Security Database Unit of Work
+            var userRolesInDb = await _signInManager.UserManager.GetRolesAsync(user);
+
+            // Loop through the roles in ViewModel
+            // Check if the Role is Assigned In DB
+            // If Assigned -> Do Nothing
+            // If Not Assigned -> Add Role
+
+            // create lists to hold roles to add and delete
+            var rolesToAdd = new List<string>();
+            var rolesToDelete = new List<string>();
+            // Loop through the Roles in the ViewModel
+            foreach (var role in data.Roles!)
+            {
+                // Check if the Role is Assigned in the Database
+                var assignedInDb = userRolesInDb.FirstOrDefault(ur => ur == role.Text);
+                if (role.Selected)
+                {
+                    // Check if the Role is Assigned in the Database
+                    if (assignedInDb == null)
+                    {
+                        // Add the Role to the Roles to Add List
+                        rolesToAdd.Add(role.Text);
+                    }
+                }
+                else
+                {
+                    // Check if the Role is Assigned in the Database
+                    if (assignedInDb != null)
+                    {
+                        // Add the Role to the Roles to Delete List
+                        rolesToDelete.Add(role.Text);
+                    }
+                }
+            }
+            // Check roles to add
+            if (rolesToAdd.Count != 0)
+            {
+                // Add the Roles to the User
+                await _signInManager.UserManager.AddToRolesAsync(user, rolesToAdd);
+            }
+            // Check roles to delete
+            if (rolesToDelete.Count != 0)
+            {
+                await _signInManager.UserManager.RemoveFromRolesAsync(user, rolesToDelete);
+            }
+            // Update the User Information
+            user.FirstName = data.User.FirstName;
+            user.LastName = data.User.LastName;
+            // Update the User using the Security Database Unit of Work
+            _securityDbWork.User.UpdateUser(user);
+            //  Redirect to the User Index Page
+            return RedirectToAction("index");
+        }
+
+        /// <summary>
         /// Get the User Administration Page with Pagination
         /// </summary>
         /// <param name="pageNo"></param>
@@ -308,83 +390,6 @@ namespace DVDStore.Web.MVC.Areas.Security.Controllers
                 // Return a custom error view or a standard error response as needed
                 return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
-        }
-
-        /// <summary>
-        /// Post Method for User Edit Page
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> EditPostAsync(EditUserViewModel data)
-        {
-            // Log the User Edit Page Post Entry
-            _logger.LogInformation("User Edit Page Post Entered for ID: {UserIdToEdit}", data.User!.Id);
-            // Get the User from the Database using the ID through the Security Database Unit of Work
-            var user = _securityDbWork.User.GetUser(data.User!.Id);
-            // Check if the User is Null
-            if (user == null)
-            {
-                // Log the User Not Found
-                _logger.LogWarning("User Edit Page Post Entered for ID: {UserIdToEdit} - User Not Found", data.User!.Id);
-                // Return a Not Found Response
-                return NotFound();
-            }
-            // Get the Roles from the Database using the Security Database Unit of Work
-            var userRolesInDb = await _signInManager.UserManager.GetRolesAsync(user);
-
-            // Loop through the roles in ViewModel
-            // Check if the Role is Assigned In DB
-            // If Assigned -> Do Nothing
-            // If Not Assigned -> Add Role
-            
-            // create lists to hold roles to add and delete
-            var rolesToAdd = new List<string>();
-            var rolesToDelete = new List<string>();
-            // Loop through the Roles in the ViewModel
-            foreach (var role in data.Roles!)
-            {
-                // Check if the Role is Assigned in the Database
-                var assignedInDb = userRolesInDb.FirstOrDefault(ur => ur == role.Text);
-                if (role.Selected)
-                {
-                    // Check if the Role is Assigned in the Database
-                    if (assignedInDb == null)
-                    {
-                        // Add the Role to the Roles to Add List
-                        rolesToAdd.Add(role.Text);
-                    }
-                }
-                else
-                {
-                    // Check if the Role is Assigned in the Database
-                    if (assignedInDb != null)
-                    {
-                        // Add the Role to the Roles to Delete List
-                        rolesToDelete.Add(role.Text);
-                    }
-                }
-            }
-            // Check roles to add
-            if (rolesToAdd.Count != 0)
-            {
-                // Add the Roles to the User
-                await _signInManager.UserManager.AddToRolesAsync(user, rolesToAdd);
-            }
-            // Check roles to delete
-            if (rolesToDelete.Count != 0)
-            {
-                await _signInManager.UserManager.RemoveFromRolesAsync(user, rolesToDelete);
-            }
-            // Update the User Information
-            user.FirstName = data.User.FirstName;
-            user.LastName = data.User.LastName;
-            // Update the User using the Security Database Unit of Work
-            _securityDbWork.User.UpdateUser(user);
-            //  Redirect to the User Index Page
-            return RedirectToAction("index");
         }
 
         #endregion Public Methods
