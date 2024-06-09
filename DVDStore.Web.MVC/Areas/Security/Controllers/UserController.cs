@@ -318,7 +318,7 @@ namespace DVDStore.Web.MVC.Areas.Security.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> OnPostAsync(EditUserViewModel data)
+        public async Task<IActionResult> EditPostAsync(EditUserViewModel data)
         {
             // Log the User Edit Page Post Entry
             _logger.LogInformation("User Edit Page Post Entered for ID: {UserIdToEdit}", data.User!.Id);
