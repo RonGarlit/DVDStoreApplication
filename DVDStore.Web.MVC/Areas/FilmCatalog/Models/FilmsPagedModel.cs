@@ -54,3 +54,20 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Models
         }
     }
 }
+
+/*
+
+R2D2 (playing a message with Leia)
+       _--~~--_
+     /~/_|  |_\~\
+    |____________|                    Help Me Obi Wan.
+    |[][][][][][]|:=  .               You're my only hope!
+  __| __         |__ \  ' .          /
+ |  ||. |   ==   |  |  \    ' .     /
+(|  ||__|   ==   |  |)   \      '<
+ |  |[] []  ==   |  |      \    '\|
+ |  |____________|  |        \    |
+ /__\            /__\          \ / \
+  ~~              ~~
+
+*/

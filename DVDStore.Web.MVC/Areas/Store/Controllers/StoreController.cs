@@ -103,3 +103,19 @@ namespace DVDStore.Web.MVC.Areas.Store.Controllers
         #endregion Public Methods
     }
 }
+
+/*
+ 
+  @         @
+ @@  ..-..  @@
+ @@@' _ _ '@@@
+  @(  . .  )@
+   |  (_)  |
+   |   _   |
+   |_     _|
+  /|_'---'_|\
+ / | '\_/' | \
+/  |  | |  |  \       -abg
+
+
+*/

@@ -1,17 +1,76 @@
-﻿using DVDStore.Web.MVC.Areas.Identity.Data;
+﻿/**********************************************************************************
+**
+**  DVDStore Application v1.0
+**
+**  Copyright 2024
+**  Developed by:
+**     Ronald Garlit.
+**
+**  This software was created for educational purposes.
+**
+**  Use is subject to license terms.
+***********************************************************************************
+**
+**  FileName: IdentityDataInitializer.cs (DVDStore Application)
+**  Version: 1.0
+**  Author: Ronald Garlit
+**
+**  Description:
+**  This class contains static methods for seeding initial data into the ASP.NET Core
+**  Identity system. It is responsible for creating predefined roles and users for
+**  the DVDStore application. The SeedData method is the entry point, which calls
+**  SeedRoles to create roles and SeedUsers to create users and assign them to roles.
+**
+**  The SeedRoles method creates roles specified in the roleNames array if they do not
+**  already exist in the database. It ensures that roles like "Administrator", "Manager",
+**  and "User" are available for user assignment.
+**
+**  The SeedUsers method creates user accounts if they do not already exist in the database.
+**  It uses the UserManager service to create users with predefined usernames, emails,
+**  first names, last names, and confirms their email addresses. Each user is assigned a
+**  predefined password. After creating the users, it assigns them to the appropriate roles
+**  based on their first name.
+**
+**  Note:
+**  - Ensure to use a secure way to store and manage passwords.
+**  - Modify the roles and users to match the specific requirements of the application.
+**
+**  Change History
+**
+**  WHEN            WHO          WHAT
+**---------------------------------------------------------------------------------
+**  2024-05-31      RGARLIT      STARTED DEVELOPMENT
+***********************************************************************************/
+
+using DVDStore.Web.MVC.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
-using System.Threading.Tasks;
 
 namespace DVDStore.Web.MVC.Areas.Identity.Services
 {
+    /// <summary>
+    /// Identity Data Initializer class to seed initial data into the ASP.NET Core Identity system.
+    /// </summary>
     public static class IdentityDataInitializer
     {
+        #region Public Methods
+
+        /// <summary>
+        /// Seed initial data into the ASP.NET Core Identity system.
+        /// </summary>
+        /// <param name="userManager"></param>
+        /// <param name="roleManager"></param>
+        /// <returns></returns>
         public static async Task SeedData(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             await SeedRoles(roleManager);
             await SeedUsers(userManager);
         }
 
+        /// <summary>
+        /// Seed roles into the ASP.NET Core Identity system.
+        /// </summary>
+        /// <param name="roleManager"></param>
+        /// <returns></returns>
         public static async Task SeedRoles(RoleManager<IdentityRole> roleManager)
         {
             // List of roles to seed
@@ -27,6 +86,11 @@ namespace DVDStore.Web.MVC.Areas.Identity.Services
             }
         }
 
+        /// <summary>
+        /// Seed users into the ASP.NET Core Identity system.
+        /// </summary>
+        /// <param name="userManager"></param>
+        /// <returns></returns>
         public static async Task SeedUsers(UserManager<ApplicationUser> userManager)
         {
             // List of users to seed
@@ -81,5 +145,24 @@ namespace DVDStore.Web.MVC.Areas.Identity.Services
                 }
             }
         }
+
+        #endregion Public Methods
     }
 }
+
+/*
+          .---.     .---.
+         ( -o- )---( -o- )
+         ;-...-`   `-...-;
+        /                 \
+       /                   \
+      | /_               _\ |
+      \`'.`'"--.....--"'`.'`/
+       \  '.   `._.`   .'  /
+    _.-''.  `-.,___,.-`  .''-._
+   `--._  `'-._______.-'`  _.--`
+   jgs  /                 \
+       /.-'`\   .'.   /`'-.\
+      `      '.'   '.'
+
+*/

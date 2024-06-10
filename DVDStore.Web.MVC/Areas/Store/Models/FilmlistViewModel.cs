@@ -1,7 +1,39 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿/**********************************************************************************
+**
+**  DVDStore Application v1.0
+**
+**  Copyright 2024
+**  Developed by:
+**     Ronald Garlit.
+**
+**  This software was created for educational purposes.
+**
+**  Use is subject to license terms.
+***********************************************************************************
+**
+**  FileName: FilmlistViewModel.cs (DVDStore Application)
+**  Version: 1.0
+**  Author: Ronald Garlit
+**  
+**  Description: 
+**  This file contains the FilmlistViewModel class which represents the view model
+**  for the film list in the Store area. It includes properties such as Film ID, 
+**  Title, Description, Category, Price, Length, Rating, and Actors with appropriate 
+**  data annotations for display names and validation.
+**
+**  Change History
+**
+**  WHEN            WHO          WHAT
+**---------------------------------------------------------------------------------
+**  2024-05-31      RGARLIT      STARTED DEVELOPMENT
+***********************************************************************************/
+using System.ComponentModel.DataAnnotations;
 
 namespace DVDStore.Web.MVC.Areas.Store.Models
 {
+    /// <summary>
+    /// FilmlistViewModel class represents the view model for the film list in the Store area.
+    /// </summary>
     public class FilmlistViewModel
     {
         [Display(Name = "Film ID")]
@@ -33,3 +65,28 @@ namespace DVDStore.Web.MVC.Areas.Store.Models
         public string Actors { get; set; }
     }
 }
+
+/*
+         (@@@)  (@@)
+       (@@@@@@@@@@@)
+      (@@@@@@@@@@@@@@)
+     (@@@@@@@@@@@@@@@@)
+     (@@         (@@@@@@)
+    (@@@ ~~  ~~  (@@@@@@)
+    (@@@   (     (@@@@@@@)
+   (@@@@    _    (@@@@@@@@)
+  (@@@@@    _)   (@@@@@@@)
+ (@@@@@@_________(@@@@@@@@)
+        /        \
+       /         |
+       |      |  |              Alice
+       |      |__|
+       |       | |
+       |       | |
+       |       | |
+       |       | |
+       |_______| |
+        |[[[[[(__)
+        |[[[[[[[[       teb
+
+*/

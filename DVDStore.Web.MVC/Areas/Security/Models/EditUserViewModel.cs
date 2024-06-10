@@ -38,3 +38,25 @@ namespace DVDStore.Web.MVC.Areas.Security.Models
         public IList<SelectListItem>? Roles { get; set; }
     }
 }
+
+/*
+                                   __ 1      1 __        _.xxxxxx.
+                   [xxxxxxxxxxxxxx|##|xxxxxxxx|##|xxxxxxXXXXXXXXX|
+   ____            [XXXXXXXXXXXXXXXXXXXXX/.\||||||XXXXXXXXXXXXXXX|
+  |::: `-------.-.__[=========---___/::::|::::::|::::||X O^XXXXXX|
+  |::::::::::::|2|%%%%%%%%%%%%\::::::::::|::::::|::::||X /
+  |::::,-------|_|~~~~~~~~~~~~~`---=====-------------':||  5
+   ~~~~                       |===|:::::|::::::::|::====:\O
+                              |===|:::::|:.----.:|:||::||:|
+                              |=3=|::4::`'::::::`':||__||:|
+                              |===|:::::::/  ))\:::`----':/
+  BlasTech Industries'        `===|::::::|  // //~`######b
+  DL-44 Heavy Blaster Pistol      `--------=====/  ######B
+                                                   `######b
+  1 .......... Sight Adjustments                    #######b
+  2 ............... Stun Setting                    #######B
+  3 ........... Air Cooling Vent                    `#######b
+  4 ................. Power Pack                     #######P
+  5 ... Power Pack Release Lever             LS      `#####B
+
+ */
