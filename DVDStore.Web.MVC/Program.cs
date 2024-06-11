@@ -2,7 +2,7 @@
 **
 **  DVDStore Application v1.0
 **
-**  Copyright 2024 
+**  Copyright 2024
 **  Developed by:
 **     Ronald Garlit.
 **
@@ -16,8 +16,8 @@
 **  Author: Ronald Garlit
 **
 **  Description: This file contains the entry point for the DVDStore web application.
-**  
-**  The main method initializes the NLog configuration and sets up the web application host. 
+**
+**  The main method initializes the NLog configuration and sets up the web application host.
 **  The application services are registered, and the application is configured to use the
 **  necessary middle-ware components. The application is then run, and the global exception
 **  handler is triggered if an exception occurs.
@@ -26,7 +26,7 @@
 **
 **  WHEN			WHO        WHAT
 **---------------------------------------------------------------------------------
-**  2024-06-01		RGARLIT     STARTED DEVELOPMENT 
+**  2024-06-01		RGARLIT     STARTED DEVELOPMENT
 ***********************************************************************************/
 
 using DVDStore.DAL;
@@ -39,21 +39,25 @@ using DVDStore.Web.MVC.Areas.Store.Models;
 using DVDStore.Web.MVC.Areas.Store.Repositories;
 using DVDStore.Web.MVC.Common.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using NLog;
 using NLog.Extensions.Logging;
 using NLog.Web;
-using System;
 
 namespace DVDStore.Web.MVC;
-
+/// <summary>
+/// Program - This class contains the entry point for the DVDStore web application.
+/// </summary>
 public static class Program
 {
+    /// <summary>
+    /// Main - Program entry point. Initializes the NLog configuration and sets up the web application host.
+    /// </summary>
+    /// <param name="args"></param>
+    /// <exception cref="InvalidOperationException"></exception>
+    /// <exception cref="IntentionalException"></exception>
     public static void Main(string[] args)
     {
         //=====================================================================================
@@ -185,23 +189,22 @@ public static class Program
             //=====================================================================================
             // Configure the HTTP request pipeline.
             //=====================================================================================
-            // For production environments newly implementing HTTPS, it is advisable to start with a 
-            // conservative initial HSTS max-age value. This could be set to as little as a few hours or 
-            // a single day to allow for easy reversion to HTTP if necessary. Once the HTTPS setup is 
-            // verified as stable, the HSTS max-age can be increased to a standard duration, such as one 
+            // For production environments newly implementing HTTPS, it is advisable to start with a
+            // conservative initial HSTS max-age value. This could be set to as little as a few hours or
+            // a single day to allow for easy reversion to HTTP if necessary. Once the HTTPS setup is
+            // verified as stable, the HSTS max-age can be increased to a standard duration, such as one
             // year, to enhance security.
             //
             // Implementing the HSTS header involves setting the Strict-Transport-Security response header
-            // with desired directives like preload, includeSubDomains, and an appropriate max-age. 
+            // with desired directives like preload, includeSubDomains, and an appropriate max-age.
             // It is also possible to specify domains that should be excluded from the policy.
             //
-            // Detailed guidance on configuring HSTS in ASP.NET Core can be found in the official 
+            // Detailed guidance on configuring HSTS in ASP.NET Core can be found in the official
             // Microsoft documentation available online.
             //
             // Reference Link:
             // - [Enabling HSTS in ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/security/enforcing-ssl?view=aspnetcore-8.0&tabs=visual-studio%2Clinux-ubuntu#hsts)
             //=====================================================================================
-
 
             //=====================================================================================
             // Configure the HTTP request pipeline. ASP.NET Core implements HSTS with the UseHsts
@@ -300,7 +303,6 @@ public static class Program
                 }
             }
 
-
             logger.Info("Application Middle-ware Setup Completed - Starting the WebApplication via Run Method");
             // Run the application
             logger.Info("Application starting up");
@@ -335,10 +337,9 @@ public static class Program
 }
 
 /*
- 
-  
+
     	Millennium Falcon
-  
+
                               ____          ____
                              / --.|        |.-- \
                             /,---||        ||---.\
@@ -394,5 +395,5 @@ public static class Program
                   `-888 //      /     ||ooo  \ oo88 \\ __,-'
                        `--..__ /'     ||888  `\ oo8;--'
                               ```-----''-----''''
- 
+
  */
