@@ -2,7 +2,7 @@
 **
 **  DVDStore Application v1.0
 **
-**  Copyright 2024 
+**  Copyright 2024
 **  Developed by:
 **     Ronald Garlit.
 **
@@ -16,16 +16,15 @@
 **  Author: Ronald Garlit
 **
 **  Description: This file contains the UsersResourceParameters class for the DVDStore web application.
-**  
+**
 **  The UsersResourceParameters class is used for defining query parameters for user resources.
 **
 **  Change History
 **
 **  WHEN			WHO        WHAT
 **---------------------------------------------------------------------------------
-**  2024-05-08		RGARLIT     STARTED DEVELOPMENT 
+**  2024-05-08		RGARLIT     STARTED DEVELOPMENT
 ***********************************************************************************/
-
 
 using DVDStore.Web.MVC.Common.ResourceParameters;
 
@@ -40,7 +39,6 @@ namespace DVDStore.Web.MVC.Common
         /// development
         /// </summary>
         public override string? Fields { get; set; }
-
 
         /// <summary>
         /// Max Page Size is set in the base class.  Default is 100.
@@ -80,16 +78,17 @@ namespace DVDStore.Web.MVC.Common
 
             set => _pageSize = value > maxPageSize ? maxPageSize : value;
         }
+
         /// <summary>
         /// This is where the search query parameters are passed in.  Note that
         /// you can only search the hard coded columns setup in the
         /// TextbookRepository method using the PageList class.
         /// </summary>
         public override string? SearchQuery { get; set; }
-
     }
 }
-/* 
+
+/*
            |~
            |.---.
           .'_____`. /\
@@ -111,7 +110,5 @@ namespace DVDStore.Web.MVC.Common
     LS |  ||.'`.||  |   )
        |  `'|  |`'  |  /
        |    |  |    |\/   Boba Fett
-
-
 
  */

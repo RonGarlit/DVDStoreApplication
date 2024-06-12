@@ -2,7 +2,7 @@
 **
 **  DVDStore Application v1.0
 **
-**  Copyright 2024 
+**  Copyright 2024
 **  Developed by:
 **     Ronald Garlit.
 **
@@ -16,18 +16,16 @@
 **  Author: Ronald Garlit
 **
 **  Description: This file contains the ObjectExtensions class for the DVDStore web application.
-**  
+**
 **  The ObjectExtensions class provides extension methods for shaping data objects.
 **
 **  Change History
 **
 **  WHEN			WHO        WHAT
 **---------------------------------------------------------------------------------
-**  2024-03-31		RGARLIT     STARTED DEVELOPMENT 
+**  2024-03-31		RGARLIT     STARTED DEVELOPMENT
 ***********************************************************************************/
 
-using System;
-using System.Collections.Generic;
 using System.Dynamic;
 using System.Reflection;
 

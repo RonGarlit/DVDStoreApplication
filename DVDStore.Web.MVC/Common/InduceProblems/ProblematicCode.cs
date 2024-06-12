@@ -14,11 +14,11 @@
 **  FileName: ProblematicCode.cs (DVDStore Application)
 **  Version: 1.0
 **  Author: Ronald Garlit
-**  
-**  Description: 
-**  This class is designed to demonstrate various common coding issues that are typically flagged 
-**  by static code analysis tools like SonarLint. The issues highlighted include the use of magic numbers, 
-**  synchronous file reading, redundant calculations, inefficient collection usage, dead code, 
+**
+**  Description:
+**  This class is designed to demonstrate various common coding issues that are typically flagged
+**  by static code analysis tools like SonarLint. The issues highlighted include the use of magic numbers,
+**  synchronous file reading, redundant calculations, inefficient collection usage, dead code,
 **  predictable random number generation, exposure of exception details, and unnecessary use of the async keyword.
 **  It also includes an unused private string variable to demonstrate code that is never utilized.
 **
@@ -41,6 +41,7 @@
 **---------------------------------------------------------------------------------
 **  2024-06-05      RGARLIT      CREATED CLASS TO DEMONSTRATE COMMON CODING ISSUES
 ***********************************************************************************/
+
 namespace DVDStore.Web.MVC.Common.InduceProblems
 {
     public class ProblematicCode

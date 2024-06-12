@@ -6,4 +6,3 @@
         IUserRepository User { get; }
     }
 }
-

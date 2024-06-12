@@ -2,7 +2,7 @@
 **
 **  DVDStore Application v1.0
 **
-**  Copyright 2024 
+**  Copyright 2024
 **  Developed by:
 **     Ronald Garlit.
 **
@@ -16,18 +16,18 @@
 **  Author: Ronald Garlit
 **
 **  Description: This file contains the DetailsUserModel class for the DVDStore web application.
-**  
+**
 **  The DetailsUserModel class is a view model used for displaying detailed user information.
 **
 **  Change History
 **
 **  WHEN			WHO        WHAT
 **---------------------------------------------------------------------------------
-**  2024-05-08		RGARLIT     STARTED DEVELOPMENT 
+**  2024-05-08		RGARLIT     STARTED DEVELOPMENT
 ***********************************************************************************/
 
-using Microsoft.AspNetCore.Mvc.Rendering;
 using DVDStore.Web.MVC.Areas.Identity.Data;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DVDStore.Web.MVC.Areas.Security.Models
 {
@@ -38,6 +38,7 @@ namespace DVDStore.Web.MVC.Areas.Security.Models
         public IList<SelectListItem>? Roles { get; set; }
     }
 }
+
 /*
                        .-.
                       |_:_|
@@ -61,6 +62,5 @@ namespace DVDStore.Web.MVC.Areas.Security.Models
       snd |     : : :_/_|  /'._\  '--|_\
           /___.-/_|-'   \  \
                          '-'
-
 
 */

@@ -40,13 +40,16 @@ namespace DVDStore.Web.MVC.Areas.Store.Controllers
     public class StoreController : Controller
     {
         #region Private Fields
+
         // create a private field for the IFilmlistRepository and ILogger
         private readonly IFilmlistRepository _filmlistRepository;
+
         private readonly ILogger<StoreController> _logger;
 
         #endregion Private Fields
 
         #region Public Constructors
+
         /// <summary>
         /// Store Controller Constructor
         /// </summary>
@@ -105,7 +108,7 @@ namespace DVDStore.Web.MVC.Areas.Store.Controllers
 }
 
 /*
- 
+
   @         @
  @@  ..-..  @@
  @@@' _ _ '@@@
@@ -116,6 +119,5 @@ namespace DVDStore.Web.MVC.Areas.Store.Controllers
   /|_'---'_|\
  / | '\_/' | \
 /  |  | |  |  \       -abg
-
 
 */

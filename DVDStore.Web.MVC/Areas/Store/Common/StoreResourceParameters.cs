@@ -14,8 +14,8 @@
 **  FileName: StoreResourceParameters.cs (DVDStore Application)
 **  Version: 1.0
 **  Author: Ronald Garlit
-**  
-**  Description: 
+**
+**  Description:
 **  This file contains the StoreResourceParameters class which is used to
 **  encapsulate the parameters for resource requests in the store area of the
 **  DVDStore application. It includes properties such as Page Number, Page Size,
@@ -39,12 +39,14 @@ namespace DVDStore.Web.MVC.Areas.Store.Common
 
         // max page size field
         private const int maxPageSize = 50;
+
         // page size field
         private int _pageSize = 10;
 
         #endregion Private Fields
 
         #region Public Properties
+
         /// <summary>
         /// Category property
         /// </summary>
@@ -63,14 +65,17 @@ namespace DVDStore.Web.MVC.Areas.Store.Common
             get => _pageSize;
             set => _pageSize = (value > maxPageSize) ? maxPageSize : value;
         }
+
         /// <summary>
         /// Rating property
         /// </summary>
         public string? Rating { get; set; }
+
         /// <summary>
         /// Search query property
         /// </summary>
         public string? SearchQuery { get; set; }
+
         /// <summary>
         /// Sort order property
         /// </summary>

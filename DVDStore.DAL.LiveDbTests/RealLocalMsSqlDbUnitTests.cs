@@ -1,7 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace DVDStore.DAL.LiveDbTests
 {
@@ -200,7 +197,7 @@ namespace DVDStore.DAL.LiveDbTests
         public void TestCountTableNames()
         {
             // Arrange
-            var expectedCount = 18; // The number of tables in the database 
+            var expectedCount = 18; // The number of tables in the database
 
             // Act
             var count = tableNames.Count;

@@ -14,8 +14,8 @@
 **  FileName: FilmViewModel.cs (DVDStore Application)
 **  Version: 1.0
 **  Author: Ronald Garlit
-**  
-**  Description: 
+**
+**  Description:
 **  This file contains the FilmViewModel class which represents the view model
 **  for film details in the DVDStore application. It includes properties such as
 **  Film ID, Title, Description, Release Year, Language ID, Rental Duration,
@@ -88,8 +88,9 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Models
         public DateTime Lastupdate { get; set; }
     }
 }
+
 /*
- 
+
            .            .                     .
                   _        .                          .            (
                  (_)        .       .                                     .
@@ -111,6 +112,5 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Models
         .     +              .                                       <=>
                                                .                .      .
    .                 *                 .                *                ` -
-
 
  */

@@ -90,6 +90,7 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Common
         }
     }
 }
+
 /*
                       _    _  __  _  _ _____  ___ ___
                       | /\ | |__| |\ |   |   |___ |  \

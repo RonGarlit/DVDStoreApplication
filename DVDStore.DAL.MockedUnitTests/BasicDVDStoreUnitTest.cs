@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using System.Globalization;
+
 /**********************************************************************************
 **
 **  DVDStore.DAL.MockedUnitTests v1.0
@@ -10,7 +11,7 @@ using System.Globalization;
 **  Developed by:
 **     Ronald Garlit.
 **
-**  This software is released into the public domain for training purposes and use 
+**  This software is released into the public domain for training purposes and use
 **  for presentations to members of the Southwest Florida Coders User group.
 **
 **  Use is subject to license terms.
@@ -20,17 +21,18 @@ using System.Globalization;
 **  Version: 1.0
 **  Author: Ronald Garlit
 **
-**  Description: 
+**  Description:
 **  This class was my starter class during development and uses MOQ for Mocking.
-**  
-**  
+**
+**
 **
 **  Change History
 **
 **  WHEN			WHO        WHAT
 **---------------------------------------------------------------------------------
-**  2024-03-10		RGARLIT     STARTED DEVELOPMENT 
+**  2024-03-10		RGARLIT     STARTED DEVELOPMENT
 ***********************************************************************************/
+
 namespace DVDStore.DAL.MockedUnitTests
 {
     [TestClass]
@@ -82,7 +84,7 @@ namespace DVDStore.DAL.MockedUnitTests
         public void Test004_Actor_Exists()
         {
             // Arrange
-            var expectedActor = new Actor { Actorid = 6, Firstname = "BETTE", Lastname = "NICHOLSON", Lastupdate = DateTime.Parse("2006-02-15 05:03:42.000", CultureInfo.InvariantCulture)};
+            var expectedActor = new Actor { Actorid = 6, Firstname = "BETTE", Lastname = "NICHOLSON", Lastupdate = DateTime.Parse("2006-02-15 05:03:42.000", CultureInfo.InvariantCulture) };
 
             // Act
             var actualActor = _dvdStoreDbContext?.Actors.FirstOrDefault(a => a.Actorid == expectedActor.Actorid);
@@ -163,9 +165,6 @@ namespace DVDStore.DAL.MockedUnitTests
             Assert.AreEqual(expectedCustomer.Createdate, actualCustomer.Createdate);
             Assert.AreEqual(expectedCustomer.Lastupdate, actualCustomer.Lastupdate);
         }
-
-
-
 
         [TestInitialize]
         public void TestInitialize()
@@ -276,7 +275,6 @@ namespace DVDStore.DAL.MockedUnitTests
                 new Film { Filmid = 10, Title = "ALADDIN CALENDAR", Description = "A Action-Packed Tale of a Man And a Lumberjack who must Reach a Feminist in Ancient China", Releaseyear = "2006", Languageid = 1, Rentalduration = 6, Rentalrate = 4.99m, Length = 63, Replacementcost = 24.99m, Rating = "NC-17", Specialfeatures = "Trailers,Deleted Scenes", Lastupdate = DateTime.Parse("2006-02-15 05:03:42.000", CultureInfo.InvariantCulture) }
             ];
         }
-
 
         #endregion Private Methods
     }

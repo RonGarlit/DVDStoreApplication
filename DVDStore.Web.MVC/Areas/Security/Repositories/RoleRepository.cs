@@ -64,5 +64,4 @@ namespace DVDStore.Web.MVC.Areas.Security.Repositories
     /\        //       /\   Arakyd Viper Probe Droid
               /\                 - Front View -
 
-
  */

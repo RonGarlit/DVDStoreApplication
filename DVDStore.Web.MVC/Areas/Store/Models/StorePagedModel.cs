@@ -61,6 +61,7 @@ namespace DVDStore.Web.MVC.Areas.Store.Models
         #endregion Public Properties
 
         #region Public Methods
+
         /// <summary>
         /// CreateAsync method creates a paginated model from an IQueryable source.
         /// </summary>
@@ -106,7 +107,5 @@ namespace DVDStore.Web.MVC.Areas.Store.Models
     /\/_|                             "|__|___|"
    /_ |  \_                           _.' |' |
      \_\\__\                         (___(___)
-
-
 
  */

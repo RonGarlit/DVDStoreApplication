@@ -2,16 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+using DVDStore.Web.MVC.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using DVDStore.Web.MVC.Areas.Identity.Data;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
 
 namespace DVDStore.Web.MVC.Areas.Identity.Pages.Account
 {
@@ -69,7 +66,6 @@ namespace DVDStore.Web.MVC.Areas.Identity.Pages.Account
             /// </summary>
             [Required]
             public string Code { get; set; }
-
         }
 
         public IActionResult OnGet(string code = null)

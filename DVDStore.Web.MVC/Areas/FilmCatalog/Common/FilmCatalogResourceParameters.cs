@@ -15,7 +15,7 @@
 **  Version: 0.1
 **  Author: Ronald Garlit
 **
-**  Description: This file contains the FilmCatalogResourceParameters class for the 
+**  Description: This file contains the FilmCatalogResourceParameters class for the
 **  DVDStore web application.
 **
 **  The FilmCatalogResourceParameters class defines query parameters for film catalog resources.
@@ -30,7 +30,7 @@
 namespace DVDStore.Web.MVC.Areas.FilmCatalog.Common
 {
     /// <summary>
-    /// This class defines query parameters for film catalog resources 
+    /// This class defines query parameters for film catalog resources
     /// along with default values for pagination.
     /// </summary>
     public class FilmCatalogResourceParameters
@@ -40,8 +40,10 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Common
 
         // The default page number is 1.
         public int PageNumber { get; set; } = 1;
+
         // The default page size is 10 items.
         private int _pageSize = 10;
+
         // The page size is limited to 50 items.
         public int PageSize
         {
@@ -53,6 +55,7 @@ namespace DVDStore.Web.MVC.Areas.FilmCatalog.Common
         // a search query (SearchQuery), filtering by genre (Genre) and rating (Rating),
         // and sorting (SortOrder).
         public string? SearchQuery { get; set; }
+
         public string? Rating { get; set; }
         public string? SortOrder { get; set; } = "Title"; // Default sort order
     }

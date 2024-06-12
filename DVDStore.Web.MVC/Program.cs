@@ -47,6 +47,7 @@ using NLog.Extensions.Logging;
 using NLog.Web;
 
 namespace DVDStore.Web.MVC;
+
 /// <summary>
 /// Program - This class contains the entry point for the DVDStore web application.
 /// </summary>

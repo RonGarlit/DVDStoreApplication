@@ -1,9 +1,8 @@
-﻿using DVDStore.Web.MVC.Areas.FilmCatalog.Repositories;
-using DVDStore.Web.MVC.Areas.FilmCatalog.Common;
+﻿using DVDStore.Web.MVC.Areas.FilmCatalog.Common;
+using DVDStore.Web.MVC.Areas.FilmCatalog.Models;
+using DVDStore.Web.MVC.Areas.FilmCatalog.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
-using DVDStore.Web.MVC.Areas.FilmCatalog.Models;
-using Moq;
 
 namespace DVDStore.DAL.MockedUnitTests
 {

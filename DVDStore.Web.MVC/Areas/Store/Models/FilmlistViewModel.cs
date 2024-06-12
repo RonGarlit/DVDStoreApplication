@@ -14,11 +14,11 @@
 **  FileName: FilmlistViewModel.cs (DVDStore Application)
 **  Version: 1.0
 **  Author: Ronald Garlit
-**  
-**  Description: 
+**
+**  Description:
 **  This file contains the FilmlistViewModel class which represents the view model
-**  for the film list in the Store area. It includes properties such as Film ID, 
-**  Title, Description, Category, Price, Length, Rating, and Actors with appropriate 
+**  for the film list in the Store area. It includes properties such as Film ID,
+**  Title, Description, Category, Price, Length, Rating, and Actors with appropriate
 **  data annotations for display names and validation.
 **
 **  Change History
@@ -27,6 +27,7 @@
 **---------------------------------------------------------------------------------
 **  2024-05-31      RGARLIT      STARTED DEVELOPMENT
 ***********************************************************************************/
+
 using System.ComponentModel.DataAnnotations;
 
 namespace DVDStore.Web.MVC.Areas.Store.Models
