@@ -14,6 +14,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notes and Scripts", "Notes and Scripts", "{23183425-EC7B-43A1-B90C-2F32DFCE7BAD}"
 	ProjectSection(SolutionItems) = preProject
 		DVDSTore-NLog Create Scripts.sql = DVDSTore-NLog Create Scripts.sql
+		README.md = README.md
 	EndProjectSection
 EndProject
 Global
