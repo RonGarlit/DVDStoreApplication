@@ -87,6 +87,8 @@ The solution includes comprehensive unit tests to ensure the reliability and cor
 To get started with the DVDStoreApplication, clone the repository and open the solution in Visual Studio or your preferred IDE. Ensure you have the necessary dependencies installed and update the database connection strings as needed.  
 
 **Read these two documents first!!!**  
+You can find these in the folder named **Notes and Scripts**. 
+
 "001-GettingSetUp.docx" and "002-BuildDVDStoreDatabase.docx".
 
 ## Contributing
