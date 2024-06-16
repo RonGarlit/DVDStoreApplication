@@ -17,6 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notes and Scripts", "Notes 
 		002-BuildDVDStoreDatabase.docx = 002-BuildDVDStoreDatabase.docx
 		CreateDVDStoreDBWithData.sql = CreateDVDStoreDBWithData.sql
 		DVDStore Query Collection.sql = DVDStore Query Collection.sql
+		DVDStore-Documentation.html = DVDStore-Documentation.html
 		DVDSTore-NLog Create Scripts.sql = DVDSTore-NLog Create Scripts.sql
 		README.md = README.md
 	EndProjectSection
