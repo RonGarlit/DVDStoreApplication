@@ -13,9 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DVDStore.DAL.LiveDbTests", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notes and Scripts", "Notes and Scripts", "{23183425-EC7B-43A1-B90C-2F32DFCE7BAD}"
 	ProjectSection(SolutionItems) = preProject
-		DVDSTore-NLog Create Scripts.sql = DVDSTore-NLog Create Scripts.sql
+		001-GettingSetUp.docx = 001-GettingSetUp.docx
+		002-BuildDVDStoreDatabase.docx = 002-BuildDVDStoreDatabase.docx
 		CreateDVDStoreDBWithData.sql = CreateDVDStoreDBWithData.sql
 		DVDStore Query Collection.sql = DVDStore Query Collection.sql
+		DVDSTore-NLog Create Scripts.sql = DVDSTore-NLog Create Scripts.sql
 		README.md = README.md
 	EndProjectSection
 EndProject
