@@ -73,7 +73,7 @@
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"
             },
-            "console": "externalTerminal",
+            //"console": "externalTerminal",
             "launchBrowser": {
                 "enabled": true,
                 "args": "${auto-detect-url}",

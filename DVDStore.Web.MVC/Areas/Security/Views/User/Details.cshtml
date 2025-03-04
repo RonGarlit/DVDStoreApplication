@@ -14,12 +14,12 @@
             @Html.HiddenFor(h => @Model.User!.Id)
             ;
             <div class="row">
-                <div class="form-group col-sm-6">
+@*                 <div class="form-group col-sm-6">
                     <label asp-for="@Model.User!!.FirstName" class="form-label"></label>
                     <input asp-for="@Model.User!!.FirstName" class="form-control" autocomplete="on" aria-required="true" disabled="disabled" />
                     <span asp-validation-for="@Model.User!!.FirstName" class="text-danger">
                     </span>
-                </div>
+                </div> *@
 
                 <div class="form-group col-sm-6">
                     <label asp-for="@Model.User!.LastName" class="form-label"></label>
